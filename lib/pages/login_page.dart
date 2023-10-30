@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nifti_locapp/components/cta_button.dart';
@@ -86,9 +88,9 @@ class _LoginPageState extends State<LoginPage> {
               fit: BoxFit.cover),
         ),
         child: Column(
-         // mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Padding(padding:EdgeInsets.only(top: 150)),
+            const Padding(padding: EdgeInsets.only(top: 150)),
             // ? Nifti Logo
             const Image(image: AssetImage('images/nifti_logo_white.png')),
 
