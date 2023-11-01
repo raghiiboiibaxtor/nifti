@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/button.dart';
 import 'package:nifti_locapp/functions/functions.dart';
+import 'package:nifti_locapp/pages/connection_page.dart';
 
 class BlankPage extends StatefulWidget {
   const BlankPage({super.key});
@@ -13,6 +14,7 @@ class BlankPage extends StatefulWidget {
 }
 
 class _BlankPageState extends State<BlankPage> {
+  String pin = '3383';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +33,25 @@ class _BlankPageState extends State<BlankPage> {
               ),
               Button(
                 onTap: () {
-                  ReadUserData.deleteFireUser();
+                  ReadUserData.deleteFireAccount();
                   Navigator.pop(context);
                 },
                 text: 'Delete Account',
+              ),
+              Button(
+                onTap: () {
+                  ReadUserData.deleteFireProfile();
+                  Navigator.pop(context);
+                },
+                text: 'Delete Profile',
+              ),
+              Button(
+                onTap: () {
+                  ReadUserData.deleteFireContact();
+                  Navigator.pop(context);
+                },
+                text: 'Delete Contact',
+                fontColor: niftiPink,
               ),
             ],
           ),

@@ -53,7 +53,7 @@ class UserPincode {
 
 // Object created for dynamically reading user data from Firestore
 class ReadUserData {
-  static deleteFireUser() async {
+  static deleteFireAccount() async {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     var collectionReference = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await collectionReference.doc(niftiFireUser).get();
@@ -78,6 +78,52 @@ class ReadUserData {
           .delete(); // ? Deleteing DocumentSnapshot
     }
     return 'Profile data permanently deleted';
+  }
+
+  static deleteFireContact() async {
+    // ? Instantiating Firestore references
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
+    //final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(niftiFireUser)
+        .get();
+    late dynamic data = [];
+    await collectionReference.doc(niftiFireUser).update(
+      {
+        'connections':
+            '4837', // ? Pushing the new array for appending within the desired firestore document
+      },
+    );
+    /*
+    if (documentSnapshot.exists) {
+      final List<dynamic>? codelist = documentSnapshot.data()?[
+          'connections']; // ? Copying Firestore connections data into array
+      if (codelist != null) {
+        for (int i = 0; i <= codelist.length; i++) {
+          if (codelist[i] != '3383') {
+            data[i] = codelist[i];
+          }
+          await collectionReference.doc(niftiFireUser).update(
+            {
+              'connections':
+                  data, // ? Pushing the new array for appending within the desired firestore document
+            },
+          );
+        }
+        // ? Assigning dynamic List into array so that data is easily extracted
+      } else {
+        data = [
+          ['Sorry! We cant find this connection. Please try again later :)']
+        ];
+      }
+    } else {
+      data = [
+        ['You have no connections']
+      ];
+    }*/
+    return data;
   }
 
   // ? Reading user data from Firestore as map
@@ -131,11 +177,13 @@ class ReadUserData {
             codelist; // ? Assigning dynamic List into array so that data is easily extracted
       } else {
         data = [
-          'Sorry! We cant find this connection. Please try again later :)'
+          ['Sorry! We cant find this connection. Please try again later :)']
         ];
       }
     } else {
-      data = ['You have no connections'];
+      data = [
+        ['You have no connections']
+      ];
     }
     return data;
   }
