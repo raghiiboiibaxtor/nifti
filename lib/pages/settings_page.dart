@@ -61,14 +61,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 height: 20,
               ),
               Button(
-                onTap: () {         
+                onTap: () {
                   FirebaseAuth.instance.signOut();
                   Navigator.pop(context);
                 },
                 text: 'Logout',
                 icon: Icons.logout_rounded,
                 iconColor: niftiPink,
-              )
+              ),
             ],
           ),
         ));

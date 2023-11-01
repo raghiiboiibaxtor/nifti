@@ -2,9 +2,11 @@
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 /* * ---------------- * END OF PACKAGES * ---------------- * */
 
 /* * ---------------- * BACKEND FUNCTIONS * ---------------- * */
@@ -24,6 +26,12 @@ class CreateRandom {
     return code;
   }
 }
+
+// ? CLOUD MESSAGING ☁️ ------------------------------- ☁️
+// !? Following functions access Firebase Cloud Messaging (FCM) ';';';';';'
+
+// ? CLOUD MESSAGING ☁️ ------------------------------- ☁️
+// !? Following functions access Firebase Cloud Messaging (FCM) ';';';';';'
 
 // ! FIRESTORE 🔥 ------------------------------- 🔥
 // ! Following functions access FirebaseFirestore * * * * *
@@ -45,6 +53,33 @@ class UserPincode {
 
 // Object created for dynamically reading user data from Firestore
 class ReadUserData {
+  static deleteFireUser() async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await collectionReference.doc(niftiFireUser).get();
+    //Map<String, dynamic> data = {};
+    if (docSnapshot.exists) {
+      collectionReference
+          .doc(niftiFireUser)
+          .delete(); // ? Deleteing DocumentSnapshot
+      await FirebaseAuth.instance.currentUser?.delete();
+    }
+    return 'Account & profile data permanently deleted';
+  }
+
+  static deleteFireProfile() async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await collectionReference.doc(niftiFireUser).get();
+    //Map<String, dynamic> data = {};
+    if (docSnapshot.exists) {
+      collectionReference
+          .doc(niftiFireUser)
+          .delete(); // ? Deleteing DocumentSnapshot
+    }
+    return 'Profile data permanently deleted';
+  }
+
   // ? Reading user data from Firestore as map
   static getProfileData() async {
     // ? Instantiating Firestore references
@@ -180,6 +215,7 @@ class StoreUserData {
     // ? Instantiating Firestore references
     var collectionReference = FirebaseFirestore.instance.collection('users');
     var niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    //var fcmToken = FirebaseMessaging.instance.getToken();
     String pin = await UserPincode.getStaticPincode(
         pincode); // ? Ensuring we grab the correct pincode by accessing the static pincode getter
     try {
@@ -209,11 +245,27 @@ class StoreUserData {
               ]; // ? Copying the existing data and adding the new pincode to the array
             }
           }
-          await collectionReference.doc(niftiFireUser).update({
-            'connections':
-                code, // ? Pushing the new array for appending within the desired firestore document
-          });
+          await collectionReference.doc(niftiFireUser).update(
+            {
+              'connections':
+                  code, // ? Pushing the new array for appending within the desired firestore document
+            },
+          );
         }
+        await collectionReference.doc(niftiFireUser).update(
+          {
+            'lastConnection': pincode,
+
+            // ? Pushing the new array for appending within the desired firestore document
+          },
+        );
+        /*await collectionReference.doc(niftiFireUser).update(
+          {
+            'token': fcmToken.toString(),
+            // ? Pushing the new array for appending within the desired firestore document
+          },
+        );*/
+        return pincode;
       } else {}
     } catch (e) {
       // ? Catching errors
@@ -256,7 +308,7 @@ class StoreUserData {
 }
 
 // ? Adding User Details to FireStore & Storage
- /* class StoreUserImages {
+/* class StoreUserImages {
   final _collectionReference = FirebaseFirestore.instance.collection('users');
   final _niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
 

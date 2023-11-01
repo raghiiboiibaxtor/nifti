@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:nifti_locapp/components/copy_tool.dart';
 import 'package:nifti_locapp/components/pin_code.dart';
+import 'package:nifti_locapp/components/pincode_exchange.dart';
+import 'package:nifti_locapp/pages/blank_page.dart';
 import '../functions/functions.dart';
 /* * ---------------- * END OF PACKAGES * ---------------- * */
 
@@ -67,54 +69,11 @@ class _ConnectorState extends State<Connector> {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Center(
                 child: Column(children: [
-              const SizedBox(
-                height: 70,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Stack(
-                    children: [
-                      // ? Profile picture
-                      details['imageLink'] != null
-                          ? CircleAvatar(
-                              radius: 50,
-                              backgroundImage: const AssetImage(
-                                  'images/defaultProfileImage.png'),
-                              child: CircleAvatar(
-                                radius: 45,
-                                backgroundImage: NetworkImage(
-                                    '${details['imageLink']}',
-                                    scale: 1.0),
-                              ),
-                            )
-                          : const CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('images/defaultProfileImage.png'),
-                            ),
-                    ],
-                  ),
-                  // ? Space between
-                  const SizedBox(
-                    width: 15,
-                  ),
-
-                  // ? Display user's personal code
-                  CopyTool(
-                    text: "${details['pincode']}",
-                    fontSize: 88,
-                    letterSpacing: 1,
-                  ),
-                ],
-              ),
-              // ? Space between
               const SizedBox(height: 40),
               SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                child: const PinCodeVerificationScreen(),
+                child: const BlankPage(),
               ),
             ]))));
   }
