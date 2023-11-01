@@ -29,31 +29,7 @@ class CreateRandom {
 
 // ? CLOUD MESSAGING ☁️ ------------------------------- ☁️
 // !? Following functions access Firebase Cloud Messaging (FCM) ';';';';';'
-class Notifications {
-  Future<String?> getMessageToken() async {
-    //final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-    final token = await FirebaseMessaging.instance.getToken();
-    try {
-      // String? fcmToken = await FirebaseMessaging.instance.getToken();
-      // tokenText = fcmToken.toString();
-      return token;
-    } catch (e) {
-      //text = 'null';
-    }
-    //return token;
-  }
 
-  static setToken() async {
-    final token = await FirebaseMessaging.instance.getToken();
-    String sendToken = '';
-    if (token != null) {
-      sendToken = token;
-      return sendToken;
-    } else {
-      return 'nullToken';
-    }
-  }
-}
 // ? CLOUD MESSAGING ☁️ ------------------------------- ☁️
 // !? Following functions access Firebase Cloud Messaging (FCM) ';';';';';'
 
@@ -77,6 +53,33 @@ class UserPincode {
 
 // Object created for dynamically reading user data from Firestore
 class ReadUserData {
+  static deleteFireUser() async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await collectionReference.doc(niftiFireUser).get();
+    //Map<String, dynamic> data = {};
+    if (docSnapshot.exists) {
+      collectionReference
+          .doc(niftiFireUser)
+          .delete(); // ? Deleteing DocumentSnapshot
+      await FirebaseAuth.instance.currentUser?.delete();
+    }
+    return 'Account & profile data permanently deleted';
+  }
+
+  static deleteFireProfile() async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await collectionReference.doc(niftiFireUser).get();
+    //Map<String, dynamic> data = {};
+    if (docSnapshot.exists) {
+      collectionReference
+          .doc(niftiFireUser)
+          .delete(); // ? Deleteing DocumentSnapshot
+    }
+    return 'Profile data permanently deleted';
+  }
+
   // ? Reading user data from Firestore as map
   static getProfileData() async {
     // ? Instantiating Firestore references
@@ -212,7 +215,7 @@ class StoreUserData {
     // ? Instantiating Firestore references
     var collectionReference = FirebaseFirestore.instance.collection('users');
     var niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-    var fcmToken = FirebaseMessaging.instance.getToken();
+    //var fcmToken = FirebaseMessaging.instance.getToken();
     String pin = await UserPincode.getStaticPincode(
         pincode); // ? Ensuring we grab the correct pincode by accessing the static pincode getter
     try {
@@ -256,12 +259,12 @@ class StoreUserData {
             // ? Pushing the new array for appending within the desired firestore document
           },
         );
-        await collectionReference.doc(niftiFireUser).update(
+        /*await collectionReference.doc(niftiFireUser).update(
           {
             'token': fcmToken.toString(),
             // ? Pushing the new array for appending within the desired firestore document
           },
-        );
+        );*/
         return pincode;
       } else {}
     } catch (e) {

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/button.dart';
+import 'package:nifti_locapp/functions/functions.dart';
 
 class BlankPage extends StatefulWidget {
   const BlankPage({super.key});
@@ -30,12 +31,10 @@ class _BlankPageState extends State<BlankPage> {
               ),
               Button(
                 onTap: () {
-                  FirebaseAuth.instance.signOut();
+                  ReadUserData.deleteFireUser();
                   Navigator.pop(context);
                 },
-                text: 'Logout',
-                icon: Icons.logout_rounded,
-                iconColor: niftiPink,
+                text: 'Delete Account',
               ),
             ],
           ),
