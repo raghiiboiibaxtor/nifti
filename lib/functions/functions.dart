@@ -2,9 +2,11 @@
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 /* * ---------------- * END OF PACKAGES * ---------------- * */
 
 /* * ---------------- * BACKEND FUNCTIONS * ---------------- * */
@@ -24,6 +26,36 @@ class CreateRandom {
     return code;
   }
 }
+
+// ? CLOUD MESSAGING ☁️ ------------------------------- ☁️
+// !? Following functions access Firebase Cloud Messaging (FCM) ';';';';';'
+class Notifications {
+  Future<String?> getMessageToken() async {
+    //final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+    final token = await FirebaseMessaging.instance.getToken();
+    try {
+      // String? fcmToken = await FirebaseMessaging.instance.getToken();
+      // tokenText = fcmToken.toString();
+      return token;
+    } catch (e) {
+      //text = 'null';
+    }
+    //return token;
+  }
+
+  static setToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    String sendToken = '';
+    if (token != null) {
+      sendToken = token;
+      return sendToken;
+    } else {
+      return 'nullToken';
+    }
+  }
+}
+// ? CLOUD MESSAGING ☁️ ------------------------------- ☁️
+// !? Following functions access Firebase Cloud Messaging (FCM) ';';';';';'
 
 // ! FIRESTORE 🔥 ------------------------------- 🔥
 // ! Following functions access FirebaseFirestore * * * * *
@@ -180,6 +212,7 @@ class StoreUserData {
     // ? Instantiating Firestore references
     var collectionReference = FirebaseFirestore.instance.collection('users');
     var niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var fcmToken = FirebaseMessaging.instance.getToken();
     String pin = await UserPincode.getStaticPincode(
         pincode); // ? Ensuring we grab the correct pincode by accessing the static pincode getter
     try {
@@ -209,11 +242,27 @@ class StoreUserData {
               ]; // ? Copying the existing data and adding the new pincode to the array
             }
           }
-          await collectionReference.doc(niftiFireUser).update({
-            'connections':
-                code, // ? Pushing the new array for appending within the desired firestore document
-          });
+          await collectionReference.doc(niftiFireUser).update(
+            {
+              'connections':
+                  code, // ? Pushing the new array for appending within the desired firestore document
+            },
+          );
         }
+        await collectionReference.doc(niftiFireUser).update(
+          {
+            'lastConnection': pincode,
+
+            // ? Pushing the new array for appending within the desired firestore document
+          },
+        );
+        await collectionReference.doc(niftiFireUser).update(
+          {
+            'token': fcmToken.toString(),
+            // ? Pushing the new array for appending within the desired firestore document
+          },
+        );
+        return pincode;
       } else {}
     } catch (e) {
       // ? Catching errors
@@ -256,7 +305,7 @@ class StoreUserData {
 }
 
 // ? Adding User Details to FireStore & Storage
- /* class StoreUserImages {
+/* class StoreUserImages {
   final _collectionReference = FirebaseFirestore.instance.collection('users');
   final _niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
 
