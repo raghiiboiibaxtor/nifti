@@ -15,6 +15,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: niftiOffWhite,
         resizeToAvoidBottomInset: false,
         // ? Top bar that contains Nifti Logo
         appBar: AppBar(

@@ -115,6 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: niftiOffWhite,
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 20),
       child: Column(

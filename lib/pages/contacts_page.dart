@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:nifti_locapp/functions/functions.dart';
 import 'package:nifti_locapp/components/contact_list_display.dart';
 import 'package:nifti_locapp/components/text_display.dart';
+import 'package:nifti_locapp/components/app_theme.dart';
 
 // * ---------------- * (STATEFUL WIDGET) CLASS ContactsPage (STATEFUL WIDGET) * ---------------- *
 class ContactsPage extends StatefulWidget {
@@ -69,6 +70,7 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: niftiOffWhite,
       resizeToAvoidBottomInset: false,
       body: SizedBox(
         width: 390,
