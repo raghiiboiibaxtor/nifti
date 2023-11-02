@@ -3,9 +3,10 @@ import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/cta_cancel_button.dart';
 import 'package:nifti_locapp/components/cta_confirm_button.dart';
 import 'package:nifti_locapp/components/pin_code_field.dart';
+import 'package:nifti_locapp/components/text_display.dart';
 import 'package:nifti_locapp/functions/frontend.dart';
 import 'package:nifti_locapp/components/connection_modal.dart';
-//import '../functions/frontend.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../functions/functions.dart';
 /* * ---------------- * END OF PACKAGES * ---------------- * */
 
@@ -44,11 +45,10 @@ class _ConnectorState extends State<Connector> {
   // pincode = "${_pin1.text}${_pin2.text}${_pin3.text}${_pin4.text}";
   final _formKey = GlobalKey<FormState>();
   bool hasError = false;
-   String? _pin1Error;
+  String? _pin1Error;
   String? _pin2Error;
   String? _pin3Error;
   String? _pin4Error;
-
 
   // ? Get user's data and store in Map<> details
   _getProfileData() async {
@@ -78,7 +78,7 @@ class _ConnectorState extends State<Connector> {
     return friend;
   }*/
 
-    // ? get connections data and store in Map<> friend
+  // ? get connections data and store in Map<> friend
   _getConnectionData(String staticPin) async {
     if (staticPin != '') {
       friend = await ReadUserData.getConnectionData(staticPin);
@@ -112,102 +112,130 @@ class _ConnectorState extends State<Connector> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: niftiOffWhite,
       body: SingleChildScrollView(
         child: Container(
           alignment: Alignment.topLeft,
-          padding:
-              const EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ? Page title
-              Text(
-                'CONNECT',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: niftiGrey,
+              Container(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  left: 15,
+                  right: 15,
+                ),
+                child: Text(
+                  'CONNECT',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: niftiGrey,
+                  ),
                 ),
               ),
+
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               // ? Action prompt
-              Text(
-                'Enter someone’s code to connect with them',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
-                  color: niftiGrey,
+
+              Container(
+                padding: const EdgeInsets.only(
+                  left: 15,
+                ),
+                child: Text(
+                  'Enter someone’s code to connect with them',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    color: niftiGrey,
+                  ),
                 ),
               ),
+
               // ? Space between
               const SizedBox(
-                height: 15,
+                height: 20,
               ),
               // ? Top 2 PIN fields
               Form(
-                    key: _formKey,
-                    child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PinBox(textEditingController: _pin1Controller, hasError: _pin1Error != null,),
-                  const SizedBox(
-                    width: 23,
-                  ),
-                  PinBox(textEditingController: _pin2Controller, hasError: _pin2Error != null,),
-                ],
-              ),
-              // Space between
-              const SizedBox(
-                height: 23,
-              ),
-              // ? Bottom 2 PIN fields
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PinBox(textEditingController: _pin3Controller, hasError: _pin3Error != null,),
-                  const SizedBox(
-                    width: 23,
-                  ),
-                  PinBox(textEditingController: _pin4Controller, hasError: _pin4Error != null,),
-                ],
-              ),
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        PinBox(
+                          textEditingController: _pin1Controller,
+                          hasError: _pin1Error != null,
+                        ),
+                        const SizedBox(
+                          width: 23,
+                        ),
+                        PinBox(
+                          textEditingController: _pin2Controller,
+                          hasError: _pin2Error != null,
+                        ),
+                      ],
+                    ),
+                    // Space between
+                    const SizedBox(
+                      height: 23,
+                    ),
+                    // ? Bottom 2 PIN fields
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        PinBox(
+                          textEditingController: _pin3Controller,
+                          hasError: _pin3Error != null,
+                        ),
+                        const SizedBox(
+                          width: 23,
+                        ),
+                        PinBox(
+                          textEditingController: _pin4Controller,
+                          hasError: _pin4Error != null,
+                        ),
+                      ],
+                    ),
 
-              // Space between
-              const SizedBox(
-                height: 30,
-              ),
-              // ? Action Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  CTACancelButton(
-                    text: 'Clear',
-                    onTap: () {
-                      _pin1Controller.clear();
-                      _pin2Controller.clear();
-                      _pin3Controller.clear();
-                      _pin4Controller.clear();
-                    },
-                  ),
-                  CTAConfirmButton(
-                    text: 'Find',
-                    onTap: () async {
-                      combinedCode = "${_pin1Controller.text}${_pin2Controller.text}${_pin3Controller.text}${_pin4Controller.text}";
-                      debugPrint(combinedCode);
-                      if (combinedCode.length != 4) {
-                              displayErrorMessage(context, 'Please enter all 4 digits');
-                      } 
-                      else{
-                        // ? Match user pin & display pop up modal with their info
-                        UserPincode(pincode: combinedCode);
+                    // Space between
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    // ? Action Buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CTACancelButton(
+                          text: 'Clear',
+                          onTap: () {
+                            _pin1Controller.clear();
+                            _pin2Controller.clear();
+                            _pin3Controller.clear();
+                            _pin4Controller.clear();
+                          },
+                        ),
+                        CTAConfirmButton(
+                          text: 'Find',
+                          onTap: () async {
+                            combinedCode =
+                                "${_pin1Controller.text}${_pin2Controller.text}${_pin3Controller.text}${_pin4Controller.text}";
+                            debugPrint(combinedCode);
+                            if (combinedCode.length != 4) {
+                              displayErrorMessage(
+                                  context, 'Please enter all 4 digits');
+                            } else {
+                              // ? Match user pin & display pop up modal with their info
+                              UserPincode(pincode: combinedCode);
                               staticPin = await UserPincode.getStaticPincode(
                                   combinedCode);
                               friend = await _getConnectionData(staticPin);
-                          setState(
+                              setState(
                                 () async {
                                   hasError = false;
                                   if ('${friend['firstName']}' == 'null') {
@@ -241,12 +269,185 @@ class _ConnectorState extends State<Connector> {
                                   }
                                 },
                               );
-                      }
-                    },
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ), // End of PIN Actions
+              // Space between PIN & Quick Card
+              const SizedBox(
+                height: 30,
+              ),
+              // ? Quick Card
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 10, left: 20),
+                    width: 290,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: niftiWhite,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 1.0,
+                          blurRadius: 2.0,
+                          offset: const Offset(1, -0.5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextDisplay(
+                          text: 'MY QUICK CARD',
+                          color: niftiLightGrey,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        // ? PROFILE INFO
+                        // profile image stack + check
+                        Row(
+                          children: [
+                            Stack(
+                              alignment: AlignmentDirectional.bottomCenter,
+                              children: [
+                                details['imageLink'] != ''
+                                    ? CircleAvatar(
+                                        radius: 45,
+                                        backgroundImage: const AssetImage(
+                                            'images/defaultProfileImage.png'),
+                                        child: CircleAvatar(
+                                          radius: 40,
+                                          backgroundImage: NetworkImage(
+                                              '${details['imageLink']}',
+                                              scale: 1.0),
+                                        ),
+                                      )
+                                    : const CircleAvatar(
+                                        radius: 45,
+                                        backgroundImage: AssetImage(
+                                            'images/defaultProfileImage.png'),
+                                      ),
+                                // Pronoun Stack + check
+                                details['pronouns'] != ''
+                                    ? Stack(
+                                        alignment: AlignmentDirectional.center,
+                                        children: [
+                                          // Gradient Border
+                                          Container(
+                                            width: 92,
+                                            height: 22,
+                                            decoration: BoxDecoration(
+                                              gradient: niftiGradient,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                          ),
+                                          // Pronouns
+                                          Container(
+                                            alignment:
+                                                AlignmentDirectional.center,
+                                            width: 90,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              color: niftiWhite,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: Text(
+                                              '${details['pronouns']}',
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w600,
+                                                color: niftiGrey,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : const SizedBox(),
+                              ],
+                            ),
+                            // Space between
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // ? Display Full Name
+                                TextDisplay(
+                                  text: '${details['fullName']}',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 1,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                TextDisplay(
+                                  text: '${details['industry']}',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  // ? Code Container
+                  Container(
+                    padding: const EdgeInsets.only(top: 10, left: 10),
+                    width: 100,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: niftiWhite,
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(50),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 1.0,
+                          blurRadius: 3.0,
+                          offset: const Offset(1, -0.5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextDisplay(
+                          text: 'MY CODE',
+                          color: niftiLightGrey,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                        ),
+                        // ? Pin Code Display
+                        GradientText('${details['pincode']}', colors: const [
+                          Color.fromRGBO(209, 147, 246, 1),
+                          Color.fromRGBO(115, 142, 247, 1),
+                          Color.fromRGBO(116, 215, 247, 1),
+                        ],
+                        style: const TextStyle(
+                          fontSize: 40,
+                          fontWeight:FontWeight.w900,
+                          letterSpacing: 10
+                        ),)
+                      ],
+                    ),
                   )
                 ],
-              ),
-              ],),),
+              )
             ],
           ),
         ),
@@ -256,55 +457,3 @@ class _ConnectorState extends State<Connector> {
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
 // * ---------------- * END OF (STATE) CLASS _LoginPageState (STATE) * ---------------- *
-
-/*
-
-
-Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Stack(
-                    children: [
-                      // ? Profile picture
-                      details['imageLink'] != null
-                          ? CircleAvatar(
-                              radius: 50,
-                              backgroundImage: const AssetImage(
-                                  'images/defaultProfileImage.png'),
-                              child: CircleAvatar(
-                                radius: 45,
-                                backgroundImage: NetworkImage(
-                                    '${details['imageLink']}',
-                                    scale: 1.0),
-                              ),
-                            )
-                          : const CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('images/defaultProfileImage.png'),
-                            ),
-                    ],
-                  ),
-                  // ? Space between
-                  const SizedBox(
-                    width: 15,
-                  ),
-
-                  // ? Display user's personal code
-                  CopyTool(
-                    text: "${details['pincode']}",
-                    fontSize: 88,
-                    letterSpacing: 1,
-                  ),
-                ],
-              ),
-
-              // ? Space between
-              const SizedBox(height: 40),
-              SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: const BlankPage(),
-              ),
- */

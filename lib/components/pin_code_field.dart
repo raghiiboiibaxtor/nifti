@@ -24,9 +24,9 @@ class PinBox extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 1.0,
+            spreadRadius: 0.5,
             blurRadius: 3.0,
-            offset: const Offset(1, 2),
+            offset: const Offset(0.5, 1),
           ),
         ],
       ),
