@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
+import 'package:nifti_locapp/components/app_theme.dart';
+import 'package:nifti_locapp/components/cta_cancel_button.dart';
+import 'package:nifti_locapp/components/cta_confirm_button.dart';
 import 'package:nifti_locapp/components/text_display.dart';
-import 'package:nifti_locapp/components/cta_button.dart';
 import '../functions/functions.dart';
 
 // ? CONTACT CARD MODAL
@@ -21,7 +23,7 @@ displayModalBottomSheet(
   showModalBottomSheet(
       context: context,
       barrierColor: const Color.fromARGB(179, 133, 157, 190),
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: niftiWhite,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(55))),
       builder: (BuildContext context) {
@@ -227,43 +229,15 @@ displayModalBottomSheet(
                 Stack(
                   alignment: AlignmentDirectional.center,
                   children: [
-                    // ? Button border & drop shadow
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                      ),
-                      height: 42,
-                      width: 107,
-                      decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromRGBO(203, 211, 223, 1),
-                              offset: Offset(
-                                1.0,
-                                1.0,
-                              ),
-                              blurRadius: 1.0,
-                              spreadRadius: 1.0,
-                            ), // ? BoxShadow
-                          ],
-                          color: Color.fromRGBO(255, 159, 180, 1),
-                          borderRadius: BorderRadius.all(Radius.circular(30))),
-                    ),
+                    
                     // ? Cancel Button
-                    CTAButton(
+                    CTACancelButton(
                       onTap: () {
                         // ? Closes modal
                         if (context.mounted) {
                           Navigator.pop(context);
                         }
                       },
-                      text: 'Cancel',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: const Color.fromRGBO(252, 247, 244, 1),
-                      fontColor: const Color.fromRGBO(255, 159, 180, 1),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 10),
                     ),
                   ],
                 ),
@@ -272,30 +246,8 @@ displayModalBottomSheet(
                 Stack(
                   alignment: AlignmentDirectional.center,
                   children: [
-                    // ? Button borader & drop shadow
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                      ),
-                      height: 49,
-                      width: 187,
-                      decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromRGBO(203, 211, 223, 1),
-                              offset: Offset(
-                                1.0,
-                                1.0,
-                              ),
-                              blurRadius: 1.0,
-                              spreadRadius: 1.0,
-                            ), // ? BoxShadow
-                          ],
-                          color: Color.fromRGBO(121, 212, 189, 1),
-                          borderRadius: BorderRadius.all(Radius.circular(30))),
-                    ),
 
-                    CTAButton(
+                    CTAConfirmButton(
                       onTap: () async {
                         // ?  find and add to contact list logic
                         await StoreUserData.updateConnectionsPincode(pincode);
@@ -336,11 +288,6 @@ displayModalBottomSheet(
                           );
                         }
                       },
-                      text: 'Confirm',
-                      color: const Color.fromRGBO(235, 254, 244, 1),
-                      fontColor: const Color.fromRGBO(121, 212, 189, 1),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 10),
                     ),
                   ],
                 ),
