@@ -11,9 +11,7 @@ class CTACancelButton extends StatelessWidget {
   final String text;
   final FontWeight fontWeight;
   final Color fontColor;
-  final EdgeInsetsGeometry padding;
   final double letterSpacing;
-
 
   // Required & optional variables to be passed
   const CTACancelButton({
@@ -22,7 +20,6 @@ class CTACancelButton extends StatelessWidget {
     this.text = 'Cancel',
     this.fontWeight = FontWeight.bold,
     this.fontColor = const Color.fromARGB(255, 255, 255, 255),
-    this.padding = const EdgeInsets.all(10),
     this.letterSpacing = 1,
   });
 
@@ -35,14 +32,19 @@ class CTACancelButton extends StatelessWidget {
         Container(
           height: 36,
           width: 87,
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              // spreadRadius: 1.0,
-              blurRadius: 2.0,
-              offset: const Offset(9, 0.5),
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                // spreadRadius: 1.0,
+                blurRadius: 2.0,
+                offset: const Offset(9, 0.5),
+              ),
+            ],
+            borderRadius: const BorderRadius.all(
+              Radius.circular(30),
             ),
-          ], borderRadius: const BorderRadius.all(Radius.circular(30))),
+          ),
         ),
         // Cancel Button
         CTAButton(
@@ -54,7 +56,7 @@ class CTACancelButton extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: niftiWhite,
           fontColor: const Color.fromRGBO(255, 159, 180, 1),
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 7),
         ),
       ],
     );

@@ -116,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
-      padding: const EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 20),
+      padding: const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
