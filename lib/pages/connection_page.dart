@@ -305,6 +305,6 @@ Row(
               SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                child: const PinCodeVerificationScreen(),
+                child: const BlankPage(),
               ),
  */
