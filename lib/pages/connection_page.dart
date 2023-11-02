@@ -4,7 +4,6 @@ import 'package:nifti_locapp/components/cta_cancel_button.dart';
 import 'package:nifti_locapp/components/cta_confirm_button.dart';
 import 'package:nifti_locapp/components/pin_code_field.dart';
 import 'package:nifti_locapp/components/text_display.dart';
-import 'package:nifti_locapp/functions/frontend.dart';
 import 'package:nifti_locapp/components/connection_modal.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../functions/functions.dart';
@@ -45,6 +44,7 @@ class _ConnectorState extends State<Connector> {
   // pincode = "${_pin1.text}${_pin2.text}${_pin3.text}${_pin4.text}";
   final _formKey = GlobalKey<FormState>();
   bool hasError = false;
+  String errorMessage = '';
   String? _pin1Error;
   String? _pin2Error;
   String? _pin3Error;
@@ -162,132 +162,173 @@ class _ConnectorState extends State<Connector> {
               // ? Top 2 PIN fields
               Form(
                 key: _formKey,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PinBox(
-                          textEditingController: _pin1Controller,
-                          hasError: _pin1Error != null,
-                        ),
-                        const SizedBox(
-                          width: 23,
-                        ),
-                        PinBox(
-                          textEditingController: _pin2Controller,
-                          hasError: _pin2Error != null,
-                        ),
-                      ],
-                    ),
-                    // Space between
-                    const SizedBox(
-                      height: 23,
-                    ),
-                    // ? Bottom 2 PIN fields
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PinBox(
-                          textEditingController: _pin3Controller,
-                          hasError: _pin3Error != null,
-                        ),
-                        const SizedBox(
-                          width: 23,
-                        ),
-                        PinBox(
-                          textEditingController: _pin4Controller,
-                          hasError: _pin4Error != null,
-                        ),
-                      ],
-                    ),
+                child: Column(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PinBox(
+                        textEditingController: _pin1Controller,
+                        hasError: _pin1Error != null,
+                      ),
+                      const SizedBox(
+                        width: 23,
+                      ),
+                      PinBox(
+                        textEditingController: _pin2Controller,
+                        hasError: _pin2Error != null,
+                      ),
+                    ],
+                  ),
+                  // Space between
+                  const SizedBox(
+                    height: 23,
+                  ),
+                  // ? Bottom 2 PIN fields
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PinBox(
+                        textEditingController: _pin3Controller,
+                        hasError: _pin3Error != null,
+                      ),
+                      const SizedBox(
+                        width: 23,
+                      ),
+                      PinBox(
+                        textEditingController: _pin4Controller,
+                        hasError: _pin4Error != null,
+                      ),
+                    ],
+                  ),
 
-                    // Space between
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    // ? Action Buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        CTACancelButton(
-                          text: 'Clear',
-                          onTap: () {
-                            _pin1Controller.clear();
-                            _pin2Controller.clear();
-                            _pin3Controller.clear();
-                            _pin4Controller.clear();
-                          },
-                        ),
-                        CTAConfirmButton(
-                          text: 'Find',
-                          onTap: () async {
-                            combinedCode =
-                                "${_pin1Controller.text}${_pin2Controller.text}${_pin3Controller.text}${_pin4Controller.text}";
-                            debugPrint(combinedCode);
-                            if (combinedCode.length != 4) {
-                              displayErrorMessage(
-                                  context, 'Please enter all 4 digits');
-                            } else {
-                              // ? Match user pin & display pop up modal with their info
-                              UserPincode(pincode: combinedCode);
-                              staticPin = await UserPincode.getStaticPincode(
-                                  combinedCode);
-                              friend = await _getConnectionData(staticPin);
-                              setState(
-                                () async {
-                                  hasError = false;
-                                  if ('${friend['firstName']}' == 'null') {
-                                    displayErrorMessage(context,
-                                        "Oops! That's an invalid code. Please try again 👀");
-                                    const SizedBox(
-                                      height: 50,
-                                    );
-                                  } else {
-                                    // ? Clear PIN fields when matched
-                                    _pin1Controller.clear();
-                                    _pin2Controller.clear();
-                                    _pin3Controller.clear();
-                                    _pin4Controller.clear();
-                                    // ? Modal with matching connections details
+                  // Space between
+                  const SizedBox(
+                    height: 8,
+                  ),
 
-                                    displayModalBottomSheet(
-                                      context,
-                                      '${friend['firstName']}'
-                                          ' ${friend['lastName']}',
-                                      '${friend['bio']}',
-                                      '${friend['pronouns']}',
-                                      '${friend['industry']}',
-                                      '${friend['city/town']}',
-                                      '${friend['role']}',
-                                      '${friend['company']}',
-                                      '${friend['yearsWorked']}',
-                                      '${friend['imageLink']}',
-                                      '${friend['pincode']}',
-                                    );
-                                  }
-                                },
-                              );
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                  // ? Action Buttons
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ? Error message text
+                      Row(
+                        children: [
+                          const Padding(padding: EdgeInsets.only(left: 35)),
+                          if (errorMessage.isNotEmpty)
+                            Text(
+                              errorMessage,
+                              style: TextStyle(
+                                  color: niftiPink,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          // ? If no error then display sized box to keep space
+                          else
+                            const SizedBox(
+                              height: 17,
+                            ),
+                        ],
+                      ),
+                      // Space between
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          // ? Clear PIN fields & errors
+                          CTACancelButton(
+                            text: 'Clear',
+                            onTap: () {
+                              setState(() {
+                                errorMessage = '';
+                              });
+                              _pin1Controller.clear();
+                              _pin2Controller.clear();
+                              _pin3Controller.clear();
+                              _pin4Controller.clear();
+                            },
+                          ),
+                          // ? Find user button
+                          CTAConfirmButton(
+                            text: 'Find',
+                            onTap: () async {
+                              combinedCode =
+                                  "${_pin1Controller.text}${_pin2Controller.text}${_pin3Controller.text}${_pin4Controller.text}";
+                              debugPrint(combinedCode);
+                              // ? If less than 4 digits entered == show error
+                              if (combinedCode.length != 4) {
+                                setState(() {
+                                  errorMessage = '* Please enter all 4 digits';
+                                });
+                              } else {
+                                // ? Match user pin & display pop up modal with their info
+                                UserPincode(pincode: combinedCode);
+                                staticPin = await UserPincode.getStaticPincode(
+                                    combinedCode);
+                                friend = await _getConnectionData(staticPin);
+                                setState(
+                                  () async {
+                                    // Clear error message
+                                    setState(() {
+                                      errorMessage = '';
+                                    });
+                                    hasError = false;
+                                    // ? If no match found == show error
+                                    if ('${friend['firstName']}' == 'null') {
+                                      setState(() {
+                                        errorMessage =
+                                            'Oops! That\'s an invalid code. Please try again!';
+                                      });
+                                    } else {
+                                      // ? Clear PIN fields & any error message when matched
+                                      setState(() {
+                                        errorMessage = '';
+                                      });
+                                      _pin1Controller.clear();
+                                      _pin2Controller.clear();
+                                      _pin3Controller.clear();
+                                      _pin4Controller.clear();
+                                      // ? Modal with matching connections details
+
+                                      displayModalBottomSheet(
+                                        context,
+                                        '${friend['firstName']}'
+                                            ' ${friend['lastName']}',
+                                        '${friend['bio']}',
+                                        '${friend['pronouns']}',
+                                        '${friend['industry']}',
+                                        '${friend['city/town']}',
+                                        '${friend['role']}',
+                                        '${friend['company']}',
+                                        '${friend['yearsWorked']}',
+                                        '${friend['imageLink']}',
+                                        '${friend['pincode']}',
+                                      );
+                                    }
+                                  },
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ]),
               ), // End of PIN Actions
               // Space between PIN & Quick Card
               const SizedBox(
-                height: 30,
+                height: 40,
               ),
               // ? Quick Card
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.only(top: 10, left: 20),
+                    padding: const EdgeInsets.only(top: 10, left: 15),
                     width: 290,
-                    height: 150,
+                    height: 140,
                     decoration: BoxDecoration(
                       color: niftiWhite,
                       boxShadow: [
@@ -320,18 +361,18 @@ class _ConnectorState extends State<Connector> {
                               children: [
                                 details['imageLink'] != ''
                                     ? CircleAvatar(
-                                        radius: 45,
+                                        radius: 38,
                                         backgroundImage: const AssetImage(
                                             'images/defaultProfileImage.png'),
                                         child: CircleAvatar(
-                                          radius: 40,
+                                          radius: 36,
                                           backgroundImage: NetworkImage(
                                               '${details['imageLink']}',
                                               scale: 1.0),
                                         ),
                                       )
                                     : const CircleAvatar(
-                                        radius: 45,
+                                        radius: 38,
                                         backgroundImage: AssetImage(
                                             'images/defaultProfileImage.png'),
                                       ),
@@ -342,8 +383,8 @@ class _ConnectorState extends State<Connector> {
                                         children: [
                                           // Gradient Border
                                           Container(
-                                            width: 92,
-                                            height: 22,
+                                            width: 86,
+                                            height: 18,
                                             decoration: BoxDecoration(
                                               gradient: niftiGradient,
                                               borderRadius:
@@ -354,8 +395,8 @@ class _ConnectorState extends State<Connector> {
                                           Container(
                                             alignment:
                                                 AlignmentDirectional.center,
-                                            width: 90,
-                                            height: 20,
+                                            width: 84,
+                                            height: 16,
                                             decoration: BoxDecoration(
                                               color: niftiWhite,
                                               borderRadius:
@@ -364,7 +405,7 @@ class _ConnectorState extends State<Connector> {
                                             child: Text(
                                               '${details['pronouns']}',
                                               style: TextStyle(
-                                                fontSize: 11,
+                                                fontSize: 10,
                                                 fontWeight: FontWeight.w600,
                                                 color: niftiGrey,
                                               ),
@@ -377,7 +418,7 @@ class _ConnectorState extends State<Connector> {
                             ),
                             // Space between
                             const SizedBox(
-                              width: 15,
+                              width: 10,
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -408,7 +449,7 @@ class _ConnectorState extends State<Connector> {
                   Container(
                     padding: const EdgeInsets.only(top: 10, left: 10),
                     width: 100,
-                    height: 150,
+                    height: 140,
                     decoration: BoxDecoration(
                       color: niftiWhite,
                       borderRadius: const BorderRadius.only(
@@ -432,17 +473,23 @@ class _ConnectorState extends State<Connector> {
                           fontSize: 11,
                           fontWeight: FontWeight.w800,
                         ),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         // ? Pin Code Display
-                        GradientText('${details['pincode']}', colors: const [
-                          Color.fromRGBO(209, 147, 246, 1),
-                          Color.fromRGBO(115, 142, 247, 1),
-                          Color.fromRGBO(116, 215, 247, 1),
-                        ],
-                        style: const TextStyle(
-                          fontSize: 40,
-                          fontWeight:FontWeight.w900,
-                          letterSpacing: 10
-                        ),)
+                        GradientText(
+                          '${details['pincode']}',
+                          colors: const [
+                            Color.fromRGBO(209, 147, 246, 1),
+                            Color.fromRGBO(115, 142, 247, 1),
+                            Color.fromRGBO(116, 215, 247, 1),
+                          ],
+                          style: const TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 10,
+                              height: 1.2),
+                        )
                       ],
                     ),
                   )
