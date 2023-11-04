@@ -51,6 +51,20 @@ class UserPincode {
   }
 }
 
+class ContactPincode {
+  // ? Definfing and constructing the pincode object
+  String pincode;
+  ContactPincode({required this.pincode});
+  set setContactPincode(String pincode) => pincode; // ? setting pincode
+  get getPincode => pincode; // ? getting pincode
+
+  // ? Static getter allowing pincode to be accessed through ui
+  static getContactPincode(String pincode) {
+    String contactPin = pincode;
+    return contactPin;
+  }
+}
+
 // Object created for dynamically reading user data from Firestore
 class ReadUserData {
   static deleteFireAccount() async {
@@ -80,49 +94,29 @@ class ReadUserData {
     return 'Profile data permanently deleted';
   }
 
-  static deleteFireContact() async {
+  static deleteFireContact(String contact) async {
+    late List<dynamic>? contacts;
     // ? Instantiating Firestore references
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     var collectionReference = FirebaseFirestore.instance.collection('users');
-    //final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(niftiFireUser)
-        .get();
+    final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(niftiFireUser)
+            .get();
     late dynamic data = [];
+    if (documentSnapshot.exists) {
+      contacts = await documentSnapshot.data()?[
+          'connections']; // ? Copying Firestore 'connections[]' into local array
+      contacts!.remove(contact);
+    }
+
     await collectionReference.doc(niftiFireUser).update(
       {
-        'connections':
-            '4837', // ? Pushing the new array for appending within the desired firestore document
+        'connections': contacts,
+        // ? Pushing the new array for appending within the desired firestore document
       },
     );
-    /*
-    if (documentSnapshot.exists) {
-      final List<dynamic>? codelist = documentSnapshot.data()?[
-          'connections']; // ? Copying Firestore connections data into array
-      if (codelist != null) {
-        for (int i = 0; i <= codelist.length; i++) {
-          if (codelist[i] != '3383') {
-            data[i] = codelist[i];
-          }
-          await collectionReference.doc(niftiFireUser).update(
-            {
-              'connections':
-                  data, // ? Pushing the new array for appending within the desired firestore document
-            },
-          );
-        }
-        // ? Assigning dynamic List into array so that data is easily extracted
-      } else {
-        data = [
-          ['Sorry! We cant find this connection. Please try again later :)']
-        ];
-      }
-    } else {
-      data = [
-        ['You have no connections']
-      ];
-    }*/
     return data;
   }
 
@@ -171,7 +165,7 @@ class ReadUserData {
     late dynamic data = [];
     if (documentSnapshot.exists) {
       final List<dynamic>? codelist = documentSnapshot.data()?[
-          'connections']; // ? Copying Firestore connections data into array
+          'connections']; // ? Copying Firestore Snapshot 'connections array' data into local array
       if (codelist != null) {
         data =
             codelist; // ? Assigning dynamic List into array so that data is easily extracted

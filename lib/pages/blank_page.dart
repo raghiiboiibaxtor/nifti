@@ -15,6 +15,7 @@ class BlankPage extends StatefulWidget {
 
 class _BlankPageState extends State<BlankPage> {
   String pin = '3383';
+  //late ContactPincode pin;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,9 +46,10 @@ class _BlankPageState extends State<BlankPage> {
                 },
                 text: 'Delete Profile',
               ),
+              Text(pin),
               Button(
                 onTap: () {
-                  ReadUserData.deleteFireContact();
+                  ReadUserData.deleteFireContact(pin);
                   Navigator.pop(context);
                 },
                 text: 'Delete Contact',
