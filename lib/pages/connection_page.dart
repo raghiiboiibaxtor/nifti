@@ -146,7 +146,8 @@ class _ConnectorState extends State<Connector> {
                   left: 15,
                 ),
                 child: Text(
-                  'Enter someone’s code to connect with them',
+                  //'Enter someone’s code to connect with them',
+                  'Enter each other\'s code to connect with them',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 12,
@@ -294,15 +295,9 @@ class _ConnectorState extends State<Connector> {
 
                                       displayModalBottomSheet(
                                         context,
-                                        '${friend['firstName']}'
-                                            ' ${friend['lastName']}',
-                                        '${friend['bio']}',
+                                        '${friend['fullName']}',
                                         '${friend['pronouns']}',
                                         '${friend['industry']}',
-                                        '${friend['city/town']}',
-                                        '${friend['role']}',
-                                        '${friend['company']}',
-                                        '${friend['yearsWorked']}',
                                         '${friend['imageLink']}',
                                         '${friend['pincode']}',
                                       );

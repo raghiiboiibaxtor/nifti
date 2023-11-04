@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
@@ -6,7 +7,7 @@ import 'package:nifti_locapp/components/app_theme.dart';
 
 // * ---------------- * (displayErrorMessage) * ---------------- *
 // ? Error Message Snackbar Function
-void displayErrorMessage(BuildContext context, String message) {
+displayErrorMessage(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       margin: EdgeInsets.only(
           left: 10,
@@ -122,3 +123,51 @@ pickImage() async {
   }
 }
 // * ---------------- * END OF (pickImage) * ---------------- *
+
+// * ---------------- * (displayAlertMessage) * ---------------- *
+// ? Alert Message Snackbar Function
+displayAlertMessage(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      margin: const EdgeInsets.only(left: 10, right: 10, bottom: 200),
+      showCloseIcon: true,
+      closeIconColor: niftiDarkBlue,
+      content: Row(       
+        children: [
+          Icon(
+            CupertinoIcons.person_2,
+            color: niftiDarkBlue,
+            size: 35,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: 
+              
+              Text(
+                message,
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: niftiDarkBlue),
+              ),
+            
+          ),
+        ],
+      ),
+      duration: const Duration(seconds: 5),
+      // ? Inner padding for SnackBar content.
+      padding: const EdgeInsets.all(15),
+      backgroundColor: niftiWhite,
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: niftiDarkBlue, width: 2),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(1),
+          topRight: Radius.circular(30),
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+      )));
+}
+// * ---------------- * END OF (displayAlertMessage) * ---------------- *

@@ -50,7 +50,7 @@ class _WidgetTreeState extends State<WidgetTree> {
           centerTitle: true,
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                gradient: niftiGradient,
+                gradient: niftiGradientSemiOpaque,
                 borderRadius:
                     const BorderRadius.only(bottomRight: Radius.circular(40))),
           ),
@@ -105,11 +105,23 @@ class _WidgetTreeState extends State<WidgetTree> {
                 elevation: 3,
                 shadowColor: niftiGreyShadow,
                 activeIndex: currentPage,
-                height: 75,
+                height: 80,
                 circleWidth: 53,
-                gradient: niftiGradient,
-                circleGradient: niftiGradient,
-                color: niftiOffWhite,
+
+                //gradient: niftiGradientSemiOpaque,
+                gradient: const LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                      Color.fromRGBO(209, 147, 246, .7),
+                      Color.fromRGBO(209, 147, 246, .7),
+                      Color.fromRGBO(115, 142, 247, .7),
+                      //Color.fromRGBO(115, 142, 247, 1),
+                      Color.fromRGBO(116, 215, 247, .7),
+                      Color.fromRGBO(116, 215, 247, .7)
+                    ]),
+                circleGradient: niftiGradientSemiOpaque,
+                color: niftiWhite,
                 cornerRadius:
                     const BorderRadius.only(topLeft: Radius.circular(33)),
                 // ? Selected Icons
@@ -180,7 +192,7 @@ class _WidgetTreeState extends State<WidgetTree> {
                 style: TextStyle(
                   color: niftiOffWhite,
                   fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -191,7 +203,7 @@ class _WidgetTreeState extends State<WidgetTree> {
                 style: TextStyle(
                   color: niftiOffWhite,
                   fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -202,7 +214,7 @@ class _WidgetTreeState extends State<WidgetTree> {
                 style: TextStyle(
                   color: niftiOffWhite,
                   fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),

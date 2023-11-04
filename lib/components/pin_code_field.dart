@@ -19,26 +19,22 @@ class PinBox extends StatelessWidget {
       height: 160,
       width: 150,
       decoration: BoxDecoration(
-        color: niftiWhite,
+        color: const Color.fromRGBO(193, 197, 203, .25),
         borderRadius: BorderRadius.circular(40),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 0.5,
-            blurRadius: 3.0,
-            offset: const Offset(0.5, 1),
-          ),
-        ],
       ),
       child: TextFormField(
+        cursorColor: niftiGrey,
+        cursorHeight: 75,
+        cursorWidth: 1,
         controller: textEditingController,
         autofocus: true,
         keyboardType: TextInputType.number,
-        maxLength: 1,
+        maxLength: 1,       
         decoration: InputDecoration(
           counterText: "",
           // General border
-          border: const OutlineInputBorder(
+          border: const OutlineInputBorder
+          (  
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.all(
               Radius.circular(40),
@@ -63,12 +59,13 @@ class PinBox extends StatelessWidget {
             ),),
         ),
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: TextStyle(      
             height: 1.42,
             fontFamily: 'Montserrat',
             color: niftiGrey,
             fontWeight: FontWeight.bold,
-            fontSize: 85),
+            fontSize: 85,
+            ),      
         onChanged: (value) {
           // Focus to next field if number entered
           if (value.length == 1) {
