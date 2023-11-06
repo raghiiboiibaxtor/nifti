@@ -7,6 +7,7 @@ import 'package:nifti_locapp/components/app_theme.dart';
 class TextFieldComponent extends StatelessWidget {
   // ? Component variables
   final TextEditingController controller;
+  //final String? initialValue; 
   final bool obscureText;
   final double width;
   final EdgeInsetsGeometry padding;
@@ -19,6 +20,7 @@ class TextFieldComponent extends StatelessWidget {
   const TextFieldComponent({
     super.key,
     required this.controller,
+   // this.initialValue = 'test',
     required this.obscureText,
     this.width = 350,
     required this.padding,
@@ -34,65 +36,67 @@ class TextFieldComponent extends StatelessWidget {
     return Padding(
         padding: padding,
         child: SizedBox(
-          width: width,
-          child: TextFormField(
-            controller: controller,
-            obscureText: obscureText,
-            decoration: InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              contentPadding: const EdgeInsets.only(bottom: 0),
-              labelText: labelText,
-              labelStyle: TextStyle(
-                  color: niftiGrey, fontSize: 17, fontWeight: FontWeight.w500),
-              floatingLabelStyle: TextStyle(
-                  color: niftiGrey, fontSize: 13, fontWeight: FontWeight.w500),
-              // ? Standard border
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: niftiGrey,
-                  width: 0.5,
+          width: width, 
+            child: TextFormField(
+              controller: controller,
+              obscureText: obscureText,
+              decoration: InputDecoration(
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                contentPadding: const EdgeInsets.only(bottom: 0),
+                labelText: labelText,
+                labelStyle: TextStyle(
+                    color: niftiGrey, fontSize: 17, fontWeight: FontWeight.w500),
+                floatingLabelStyle: TextStyle(
+                    color: niftiGrey, fontSize: 13, fontWeight: FontWeight.w500),
+                // ? Standard border
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: niftiGrey,
+                    width: 0.5,
+                  ),
+                ),
+                // ? Selected border style
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: niftiLightBlue,
+                    width: 1.5,
+                  ),
+                ),
+                // ? Error borders & styles
+                errorText: errorText,
+                errorBorder: hasError
+                    ? UnderlineInputBorder(
+                        borderSide: BorderSide(color: niftiPink, width: 1.5))
+                    : UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: niftiGrey,
+                          width: 0.5,
+                        ),
+                      ),
+                focusedErrorBorder: hasError
+                    ? UnderlineInputBorder(
+                        borderSide: BorderSide(color: niftiPink, width: 1.5))
+                    : UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: niftiLightBlue,
+                          width: 1.5,
+                        ),
+                      ),
+                errorStyle: TextStyle(
+                  color: niftiPink,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              // ? Selected border style
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: niftiLightBlue,
-                  width: 1.5,
-                ),
+              // ? Input text style
+              style: TextStyle(
+                fontSize: 14,
+                color: niftiGrey,
+                overflow: TextOverflow.ellipsis,
               ),
-              // ? Error borders & styles
-              errorText: errorText,
-              errorBorder: hasError
-                  ? UnderlineInputBorder(
-                      borderSide: BorderSide(color: niftiPink, width: 1.5))
-                  : UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: niftiGrey,
-                        width: 0.5,
-                      ),
-                    ),
-              focusedErrorBorder: hasError
-                  ? UnderlineInputBorder(
-                      borderSide: BorderSide(color: niftiPink, width: 1.5))
-                  : UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: niftiLightBlue,
-                        width: 1.5,
-                      ),
-                    ),
-              errorStyle: TextStyle(
-                color: niftiPink,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            // ? Input text style
-            style: TextStyle(
-              fontSize: 14,
-              color: niftiGrey,
             ),
           ),
-        ));
+        );
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
