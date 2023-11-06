@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final _industry = TextEditingController();
   final _roleTitle = TextEditingController();
   final _companyName = TextEditingController();
-  String? _yearsWorked = '';
+  String? _yearsWorked;
   final _emailController = TextEditingController();
   final _websiteController = TextEditingController();
   final _linkedinController = TextEditingController();
@@ -104,6 +104,43 @@ class _ProfilePageState extends State<ProfilePage> {
     return details;
   }
 
+  void assignControllers() async {
+    //_profileImage;
+    _fullNameController.text = '${details['fullName']}';
+    _pronouns = '${details['pronouns']}';
+    _emailController.text = '${details['email']}';
+    _cityController.text = '${details['city/town']}';
+    _bio.text = '${details['bio']}';
+    _industry.text = '${details['industry']}';
+    _roleTitle.text = '${details['role']}';
+    _companyName.text = '${details['company']}';
+    _websiteController.text = '${details['website']}';
+    _linkedinController.text = '${details['linkedin']}';
+    _instagramController.text = '${details['instagram']}';
+    _githubController.text = '${details['github']}';
+    _phoneController.text = '${details['phone']}';
+  }
+
+  // ? Dispose controllers when not using - helps memory management
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _cityController.dispose();
+    _bio.dispose();
+    _industry.dispose();
+    _roleTitle.dispose();
+    _companyName.dispose();
+    _yearsWorked;
+    _emailController.dispose();
+    _websiteController.dispose();
+    _linkedinController.dispose();
+    _instagramController.dispose();
+    _githubController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
   // ? Run functions on page load
   @override
   void initState() {
@@ -139,6 +176,14 @@ class _ProfilePageState extends State<ProfilePage> {
               TextButton.icon(
                 onPressed: () {
                   // Toggle between edit and display mode
+                  if (isEditing) {
+                    // Save action
+                    // ! On save - update firestore
+                  } else {
+                    // Assigning text controllers to display info
+                    assignControllers();
+                  }
+                  
                   flip.flipcard();
                   setState(() {
                     isEditing = !isEditing;
@@ -326,18 +371,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     // Bio + check
                     details['bio'] == ''
                         ? Column(children: [
-                              const SizedBox(
-                                height: 45,
-                              ),
-                              TextDisplay(
-                                text:
-                                    'TAP EDIT TO FINISH SETTING UP YOUR PROFILE! 🥳',
-                                fontSize: 16,
-                                color: niftiDarkBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ])
-                          
+                            const SizedBox(
+                              height: 45,
+                            ),
+                            TextDisplay(
+                              text:
+                                  'TAP EDIT TO FINISH SETTING UP YOUR PROFILE! 🥳',
+                              fontSize: 16,
+                              color: niftiDarkBlue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ])
                         : TextDisplay(
                             text: '${details['bio']}',
                             fontSize: 13,
@@ -802,6 +846,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         width: 181,
                         controller: _fullNameController,
+                        // initialValue: '${details['fullName']}',
+                        // '${details['fullName']}'
                         labelText: 'Name',
                         obscureText: false,
                         hasError: false,
