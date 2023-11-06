@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:nifti_locapp/components/copy_tool.dart";
+import "package:nifti_locapp/components/app_theme.dart";
 import "package:nifti_locapp/components/text_display.dart";
 
 //  ListDisplay == widget to display a card with contact details
@@ -8,15 +8,15 @@ import "package:nifti_locapp/components/text_display.dart";
 class ListDisplay extends StatefulWidget {
   // Component Variables
   final String name;
-  final String role;
-  final String email;
+  final String industry;
+  final String pronouns;
   final String profileImageUrl;
   // ? Required variables to be passed
   const ListDisplay({
     super.key,
     this.name = '',
-    this.role = '',
-    this.email = '',
+    this.industry = '',
+    this.pronouns = '',
     this.profileImageUrl = '',
   });
 
@@ -36,84 +36,142 @@ class _ListDisplayState extends State<ListDisplay> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 0.1,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        alignment: AlignmentDirectional.topStart,
-        width: 360,
-        height: 90,
-        child: Row(
-          children: [
-            Stack(
-              children: [
-                // ? Profile picture
-                CircleAvatar(
-                  radius: 35,
-                  backgroundImage:
-                      const AssetImage('images/defaultProfileImage.png'),
-                  child: CircleAvatar(
-                    radius: 32,
-                    backgroundImage:
-                        NetworkImage(widget.profileImageUrl, scale: 1.0),
-                  ),
-                )
-              ],
+        color: niftiWhite,
+        surfaceTintColor: niftiWhite,
+        elevation: 0,
+        margin: const EdgeInsets.only(bottom: 15),
+        shape: const CircleBorder(side: BorderSide.none),
+        child: Container(
+          padding:
+              const EdgeInsets.only(left: 15, right: 10, top: 10, bottom: 10),
+          alignment: AlignmentDirectional.topStart,
+          width: 355,
+          height: 90,
+          decoration: BoxDecoration(
+            color: niftiWhite,
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25),
+              bottomRight: Radius.circular(25),
             ),
-            // ? Space between
-            const SizedBox(
-              width: 10,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // ? Full Name
-                TextDisplay(
-                    text: widget.name,
-                    fontSize: 19,
-                    fontWeight: FontWeight.bold,
-                    color: const Color.fromRGBO(133, 157, 194, 1)),
-                // ? Role
-                SizedBox(
-                  width: 260,
-                  child: TextDisplay(
-                      text: widget.role,
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.w500,
-                      color: const Color.fromRGBO(133, 157, 194, 1)),
-                ),
-
-                // ? Space between
-                const SizedBox(
-                  height: 3,
-                ),
-                // ? Contact Info
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.mail_outline,
-                      size: 15,
-                      color: Color.fromRGBO(209, 147, 246, 1),
-                    ),
-                    // ? Space between icon & years
-                    const SizedBox(
-                      width: 7,
-                    ),
-                    // ? Email display + copy
-                    GestureDetector(
-                      child: CopyTool(
-                        text: widget.email,
-                        fontSize: 13,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.25),
+                spreadRadius: 1,
+                blurRadius: 2,
+                offset: const Offset(0.8, 0.8),
+              ),
+            ],
+          ),
+          child:
+              Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // ? PROFILE INFO
+                  // profile image stack + check
+                  Row(
+                    children: [
+                      Stack(
+                        alignment: AlignmentDirectional.bottomCenter,
+                        children: [
+                          widget.profileImageUrl != ''
+                              ? CircleAvatar(
+                                  radius: 35,
+                                  backgroundImage: const AssetImage(
+                                      'images/defaultProfileImage.png'),
+                                  child: CircleAvatar(
+                                    radius: 33,
+                                    backgroundImage: NetworkImage(
+                                        widget.profileImageUrl,
+                                        scale: 1.0),
+                                  ),
+                                )
+                              : const CircleAvatar(
+                                  radius: 33,
+                                  backgroundImage: AssetImage(
+                                      'images/defaultProfileImage.png'),
+                                ),
+                          // ? Pronouns
+                          widget.pronouns != ''
+                              ? Stack(
+                                  alignment: AlignmentDirectional.center,
+                                  children: [
+                                    // Gradient Border
+                                    Container(
+                                      width: 84,
+                                      height: 17,
+                                      decoration: BoxDecoration(
+                                        gradient: niftiGradient,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    // Pronouns
+                                    Container(
+                                      alignment: AlignmentDirectional.center,
+                                      width: 82,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        color: niftiWhite,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Text(
+                                        widget.pronouns,
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w600,
+                                          color: niftiGrey,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox(),
+                        ],
                       ),
-                      onTap: () {},
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+                      // Space between
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ? Display Full Name
+                          TextDisplay(
+                            text: widget.name,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1,
+                          ),
+                          // ? Divder & Space between
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            height: 0.3,
+                            width: 220,
+                            color: niftiLightGrey,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          // ? Contact Industry
+                          TextDisplay(
+                            text: widget.industry,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ));
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }

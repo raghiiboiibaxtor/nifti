@@ -49,9 +49,9 @@ class _ContactsPageState extends State<ContactsPage> {
       friendsList.add(
         ListDisplay(
           // ? Variables to be passed to list
-          name: '${friend['firstName']} ${friend['lastName']}',
-          role: '${friend['role']}',
-          email: '${friend['email']}',
+          name: '${friend['fullName']}',
+          industry: '${friend['industry']}',
+          pronouns: '${friend['pronouns']}',
           profileImageUrl: '${friend['imageLink']}',
         ),
       );
@@ -70,60 +70,49 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: niftiOffWhite,
-      resizeToAvoidBottomInset: false,
-      body: SizedBox(
-        width: 390,
-        child: Column(children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            alignment: Alignment.center,
-            height: 30,
-            width: 340,
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: [
-                      Color.fromRGBO(209, 147, 246, 1),
-                      Color.fromRGBO(115, 142, 247, 1),
-                      Color.fromRGBO(116, 215, 247, 1),
-                    ]),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(30),
-                )),
-            child: const Text(
-              'All Contacts',
-              style: TextStyle(
-                  color: Color.fromRGBO(252, 250, 245, 1),
+        backgroundColor: niftiOffWhite,
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.only(
+                top: 20,
+                left: 15,
+                right: 15,
+              ),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, 
+              children: [
+            // ? Page title
+            Container( 
+              child: Text(
+                'CONTACTS',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
                   fontSize: 15,
-                  fontWeight: FontWeight.bold),
+                  color: niftiGrey,
+                ),
+              ),
             ),
-          ),
-          // ? Space between
-          const SizedBox(
-            height: 20,
-          ),
-          // ? Contact List
-          if (pincodes == null)
-            // ? Text prompt
-            const TextDisplay(
-              text: 'No friends to show yet!',
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(115, 142, 247, 1),
-            )
-          else
-            // ? Display contact list
-            Column(
-              children: _friendListDisplay(),
-            )
-        ]),
-      ),
-    );
+
+            // ? Space between
+            const SizedBox(
+              height: 15,
+            ),
+            // ? Contact List
+            if (pincodes == null)
+              // ? Text prompt
+              const TextDisplay(
+                text: 'No friends to show yet!',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color.fromRGBO(115, 142, 247, 1),
+              )
+            else
+              // ? Display contact list
+              Column(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                children: _friendListDisplay(),
+              )
+          ]),
+        ));
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }

@@ -425,6 +425,15 @@ class _ConnectorState extends State<Connector> {
                                   fontWeight: FontWeight.w900,
                                   letterSpacing: 1,
                                 ),
+                                // ? Divder & Space between
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  height: 0.3,
+                                  width: 175,
+                                  color: niftiLightGrey,
+                                ),
                                 const SizedBox(
                                   height: 5,
                                 ),
