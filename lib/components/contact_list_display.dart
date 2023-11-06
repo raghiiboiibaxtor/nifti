@@ -141,9 +141,8 @@ class _ListDisplayState extends State<ListDisplay> {
                           // ? Display Full Name
                           TextDisplay(
                             text: widget.name,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700, 
                           ),
                           // ? Divder & Space between
                           const SizedBox(

@@ -73,25 +73,21 @@ class _ContactsPageState extends State<ContactsPage> {
         backgroundColor: niftiOffWhite,
         body: SingleChildScrollView(
           padding: const EdgeInsets.only(
-                top: 20,
-                left: 15,
-                right: 15,
-              ),
+            top: 20,
+            left: 15,
+            right: 15,
+          ),
           child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, 
-              children: [
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // ? Page title
-            Container( 
-              child: Text(
-                'CONTACTS',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: niftiGrey,
-                ),
+            Text(
+              'CONTACTS',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                color: niftiGrey,
               ),
             ),
-
             // ? Space between
             const SizedBox(
               height: 15,

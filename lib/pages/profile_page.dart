@@ -14,8 +14,8 @@ import 'package:nifti_locapp/components/text_form_field.dart';
 import 'package:nifti_locapp/components/text_field_character_limit.dart';
 import 'package:nifti_locapp/components/drop_menu.dart';
 import 'package:nifti_locapp/components/button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_storage/firebase_storage.dart';
 
 /*
 import 'package:flutter/cupertino.dart';
@@ -141,6 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _industry.text = '${details['industry']}';
     _roleTitle.text = '${details['role']}';
     _companyName.text = '${details['company']}';
+    _yearsWorked = '${details['yearsWorked']}';
     _websiteController.text = '${details['website']}';
     _linkedinController.text = '${details['linkedin']}';
     _instagramController.text = '${details['instagram']}';
@@ -155,6 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _emailController.dispose();
     _cityController.dispose();
     _bio.dispose();
+    _pronouns;
     _industry.dispose();
     _roleTitle.dispose();
     _companyName.dispose();
