@@ -14,6 +14,8 @@ import 'package:nifti_locapp/components/text_form_field.dart';
 import 'package:nifti_locapp/components/text_field_character_limit.dart';
 import 'package:nifti_locapp/components/drop_menu.dart';
 import 'package:nifti_locapp/components/button.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_storage/firebase_storage.dart';
 
 /*
 import 'package:flutter/cupertino.dart';
@@ -52,13 +54,13 @@ class _ProfilePageState extends State<ProfilePage> {
   // ? Text Controllers - used to access the user's input
   Uint8List? _profileImage;
   final _fullNameController = TextEditingController();
-  String? _pronouns;
+  String _pronouns = '';
   final _cityController = TextEditingController();
   final _bio = TextEditingController();
   final _industry = TextEditingController();
   final _roleTitle = TextEditingController();
   final _companyName = TextEditingController();
-  String? _yearsWorked;
+  String _yearsWorked = '';
   final _emailController = TextEditingController();
   final _websiteController = TextEditingController();
   final _linkedinController = TextEditingController();
@@ -104,6 +106,31 @@ class _ProfilePageState extends State<ProfilePage> {
     return details;
   }
 
+  // ! Method to update user info in Firebase / Firestore
+ /* Future updateUserDetails() async {
+      // ? Adds user info to Firestore
+      await UpdateUserData().addUserDetails(
+        _fullNameController.text.trim(),
+        _emailController.text.trim(),
+        _cityController.text.trim(),
+        _pronouns,
+        _profileImage!,
+        _bio.text.trim(),
+        _roleTitle.text.trim(),
+        _industry.text.trim(),
+        _companyName.text.trim(),
+        _yearsWorked,
+        _phoneController.text.trim(),
+        _websiteController.text.trim(),
+        _linkedinController.text.trim(),
+        _instagramController.text.trim(),
+        _githubController.text.trim(),
+      );
+    UpdateUserData().addUserImage(_profileImage!);
+    UpdateUserData().updateFirestoreImageLink(_profileImage!);
+  }*/
+
+  // Assigning user's current stored data into text/controllers
   void assignControllers() async {
     //_profileImage;
     _fullNameController.text = '${details['fullName']}';
@@ -114,6 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _industry.text = '${details['industry']}';
     _roleTitle.text = '${details['role']}';
     _companyName.text = '${details['company']}';
+    _yearsWorked = '${details['yearsWorked']}';
     _websiteController.text = '${details['website']}';
     _linkedinController.text = '${details['linkedin']}';
     _instagramController.text = '${details['instagram']}';
@@ -128,6 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _emailController.dispose();
     _cityController.dispose();
     _bio.dispose();
+    _pronouns;
     _industry.dispose();
     _roleTitle.dispose();
     _companyName.dispose();
@@ -174,20 +203,21 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               // ? Edit Button
               TextButton.icon(
-                onPressed: () {
-                  // Toggle between edit and display mode
+                onPressed: () {   
                   if (isEditing) {
                     // Save action
                     // ! On save - update firestore
+                   // updateUserDetails();
                   } else {
                     // Assigning text controllers to display info
                     assignControllers();
                   }
-                  
+                  // Toggle between edit and display mode
                   flip.flipcard();
                   setState(() {
                     isEditing = !isEditing;
                   });
+                  
                 },
                 icon: Icon(
                   Icons.mode_edit_outline_rounded,
@@ -846,8 +876,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         width: 181,
                         controller: _fullNameController,
-                        // initialValue: '${details['fullName']}',
-                        // '${details['fullName']}'
                         labelText: 'Name',
                         obscureText: false,
                         hasError: false,
@@ -1076,3 +1104,96 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 // * ---------------- * END OF (STATE) CLASS _ProfilePageState (STATE) * ---------------- *
+
+// !! not currently updating
+/*class UpdateUserData {
+  // ? Instantiating Firestore references
+  final _collectionReference = FirebaseFirestore.instance.collection('users');
+  final _niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+
+  // ? Add user info to Firestore
+  Future addUserDetails(
+    // ? Listing required variables to be added
+    String fullName,
+    String email,
+    String city,
+    String pronouns,
+    Uint8List profileImage,
+    String bio,
+    String role,
+    String industry,
+    String company,
+    String yearsWorked,
+    // socials
+    String phone,
+    String website,
+    String linkedin,
+    String instagram,
+    String github,
+  ) async {
+    // ? Error variable
+    String response = "Error Occured";
+    try {
+      // ? Trying to set the document
+      await _collectionReference.doc(_niftiFireUser).update({
+        // Personal Variables
+        'fullName': fullName,
+        'email': email,
+        'city/town': city,
+        'pronouns': pronouns,
+        'imageLink': profileImage,
+        'bio': bio,
+        'role': role,
+        'industry': industry,
+        'company': company,
+        'yearsWorked': yearsWorked,
+        // Socials
+        'phone': phone,
+        'website': website,
+        'linkedin': linkedin,
+        'instagram': instagram,
+        'github': github,
+      });
+      response = 'Success';
+    } catch (error) {
+      // ? Error catch
+      response = error.toString();
+    }
+    return response;
+  }
+
+
+
+// ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
+// ! Following functions target FirebaseStorage (media database) * * * * *
+
+  // ? Update Add profile image to storage
+  Future addUserImage(Uint8List file) async {
+    // ? Reference points to object in memory
+    // ignore: unused_local_variable
+    Reference ref =
+        FirebaseStorage.instance.ref().child(_niftiFireUser.toString());
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirectory =
+        referenceRoot.child(_niftiFireUser.toString());
+    // ? Create reference for image storage
+    Reference referenceImageUpload = referenceDirectory.child('profileImage');
+
+    // ? UploadTask upload data to remote storage
+    UploadTask uploadTask = referenceImageUpload.putData(file);
+    // ? TaskSnapshot represents current state of an aync task
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  // ? Update ImageUrl in firestore (change profile picture)
+  Future updateFirestoreImageLink(Uint8List file) async {
+    // ? this relies on the userImage being added to storage
+    String imageUrl = await addUserImage(file);
+    var docRef = _collectionReference.doc(_niftiFireUser);
+    docRef.update({
+      'imageLink': imageUrl,
+    });
+  }
+}*/
