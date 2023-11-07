@@ -1,4 +1,4 @@
-// ----------------------------------------------------------------------------------------------------------------------------- * PACKAGES
+// ? ----------------------------------------------------------------------------------------------------------------------------- * PACKAGES
 //import 'dart:js_interop';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +11,7 @@ import 'package:local_auth/local_auth.dart';
 
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-// ---------------------------------------------------------------------------------------------------------------------- * GLOBAL VARIABLES
+// ? ---------------------------------------------------------------------------------------------------------------------- * GLOBAL VARIABLES
 // ? Initialising global variables
 String userRef = '';
 final collectionReference = FirebaseFirestore.instance.collection('users');
@@ -71,19 +71,13 @@ class NiftiSystemSettings {
       return e;
     }
   }
-
-  static updateFireEmail(String email) {
-    FirebaseAuth.instance.currentUser!.updateEmail('hello@email.com');
-  }
 }
 
-// -------------------------------------------------------------------------------------------------------------------- * FIREBASE FUNCTIONS
 // ! ----------------------------------------------------------------------------------------------------------------------- 🔥 FIRESTORE 🔥
-
 // ? ---------------------------------------------------------------------------------------------------------- { ... } NIFTI FIRE FUNCTIONS
 // ? Encapsulating Nifti x Firebase functions as an object.
-
-class NiftiFireFunctions {
+class NiftiFirestoreFunctions {
+  //  ------------------------------------------------------------------------------------------------------- C R E A T E ( )
   // ? Add user info to Firestore
   Future createUserProfile(
     // ? Listing required variables to be added
@@ -127,6 +121,29 @@ class NiftiFireFunctions {
     return response;
   }
 
+  // ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
+  // ? Update Add profile image to storage
+  Future addUserImage(Uint8List file) async {
+    // ? Reference points to object in memory
+    // ignore: unused_local_variable
+    Reference ref =
+        FirebaseStorage.instance.ref().child(niftiFireUser.toString());
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirectory =
+        referenceRoot.child(niftiFireUser.toString());
+    // ? Create reference for image storage
+    Reference referenceImageUpload = referenceDirectory.child('profileImage');
+
+    // ? UploadTask upload data to remote storage
+    UploadTask uploadTask = referenceImageUpload.putData(file);
+    // ? TaskSnapshot represents current state of an aync task
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+  // ! ------------------------------------------ 💿🔥
+
+  //  ----------------------------------------------------------------------------------------------------------  R E A D ( )
   // ? Reading user data from Firestore as map
   static getUserProfileData() async {
     var docSnapshot = await collectionReference.doc(niftiFireUser).get();
@@ -138,7 +155,7 @@ class NiftiFireFunctions {
     return data;
   }
 
-  //  Reading connection data from Firestore using UserPincode object
+  // ? Reading connection data from Firestore using UserPincode object
   static getConnectionProfileData(String pincode) async {
     late Map<String, dynamic> data = {};
     await collectionReference
@@ -182,6 +199,7 @@ class NiftiFireFunctions {
     return data;
   }
 
+  //  ------------------------------------------------------------------------------------------------------  U P D A T E ( )
   // ? Appending Firestore document data
   static addConnection(String pincode) async {
     String pin = await GeneratePincode.getStaticPincode(
@@ -228,6 +246,23 @@ class NiftiFireFunctions {
     }
   }
 
+  static updateEmail(String email) {
+    FirebaseAuth.instance.currentUser!.updateEmail('hello@email.com');
+  }
+
+  // ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
+  // ? Update ImageUrl in firestore (change profile picture)
+  Future updateFirestoreImageLink(Uint8List file) async {
+    // ? this relies on the userImage being added to storage
+    String imageUrl = await addUserImage(file);
+    var docRef = collectionReference.doc(niftiFireUser);
+    docRef.update({
+      'imageLink': imageUrl,
+    });
+  }
+  // ! ------------------------------------------ 💿🔥
+
+  //  ------------------------------------------------------------------------------------------------------  D E L E T E ( )
   static deleteAccount() async {
     var docSnapshot = await collectionReference.doc(niftiFireUser).get();
     if (docSnapshot.exists) {
@@ -273,41 +308,5 @@ class NiftiFireFunctions {
     );
     return data;
   }
-
-  // ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
-  // ! Following functions target FirebaseStorage (media database) * * * * *
-
-  // ? Update Add profile image to storage
-  Future addUserImage(Uint8List file) async {
-    // ? Reference points to object in memory
-    // ignore: unused_local_variable
-    Reference ref =
-        FirebaseStorage.instance.ref().child(niftiFireUser.toString());
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirectory =
-        referenceRoot.child(niftiFireUser.toString());
-    // ? Create reference for image storage
-    Reference referenceImageUpload = referenceDirectory.child('profileImage');
-
-    // ? UploadTask upload data to remote storage
-    UploadTask uploadTask = referenceImageUpload.putData(file);
-    // ? TaskSnapshot represents current state of an aync task
-    TaskSnapshot snapshot = await uploadTask;
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-    return downloadUrl;
-  }
-
-  // ? Update ImageUrl in firestore (change profile picture)
-  Future updateFirestoreImageLink(Uint8List file) async {
-    // ? this relies on the userImage being added to storage
-    String imageUrl = await addUserImage(file);
-    var docRef = collectionReference.doc(niftiFireUser);
-    docRef.update({
-      'imageLink': imageUrl,
-    });
-  }
 }
-
-// ! END OF FIREBASE RELATED FUNCTIONS 🔥 ------------------------------ 🔥
-
-// * * --------------------------------- * END OF BACKEND FUNCTIONS * ---------------------- * */
+//  --------------------------------------------------------------------------------------------------------------------  END OF FUNCTIONS 🚀 

@@ -120,7 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (context.mounted) Navigator.pop(context);
       _createCode = await GeneratePincode.createNewPincode();
       // ? Adds user info to Firestore
-      await NiftiFireFunctions().createUserProfile(
+      await NiftiFirestoreFunctions().createUserProfile(
         _fullNameController.text.trim(),
         _emailController.text.trim(),
         _createCode,

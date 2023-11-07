@@ -298,7 +298,7 @@ displayModalBottomSheet(
                     CTAButton(
                       onTap: () async {
                         // ?  find and add to contact list logic
-                        await NiftiFireFunctions.addConnection(pincode);
+                        await NiftiFirestoreFunctions.addConnection(pincode);
                         // ? Closes modal
                         if (context.mounted) {
                           Navigator.pop(context);

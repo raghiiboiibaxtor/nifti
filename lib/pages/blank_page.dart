@@ -72,7 +72,7 @@ class _BlankPageState extends State<BlankPage> {
               Text(password),
               Button(
                 onTap: () {
-                  NiftiSystemSettings.updateFireEmail(email);
+                  NiftiFireFunctions.updateEmail(email);
                   Navigator.pop(context);
                 },
                 text: 'Update Account',

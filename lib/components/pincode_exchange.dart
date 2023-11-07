@@ -58,7 +58,8 @@ class _PincodeExchangeState extends State<PincodeExchange> {
   // ? get connections data and store in Map<> friend
   _getConnectionData(String staticPin) async {
     if (staticPin != '') {
-      friend = await NiftiFireFunctions.getConnectionProfileData(staticPin);
+      friend =
+          await NiftiFirestoreFunctions.getConnectionProfileData(staticPin);
       setState(() {});
       return friend;
     } else {

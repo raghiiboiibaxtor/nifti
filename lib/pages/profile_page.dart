@@ -82,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // ? Get user's data and store in Map<> details
   _getProfileData() async {
-    details = await NiftiFireFunctions.getUserProfileData();
+    details = await NiftiFirestoreFunctions.getUserProfileData();
     if (details.isNotEmpty) {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
