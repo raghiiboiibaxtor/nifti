@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:flutter/services.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
+//import 'package:flutter/cupertino.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/button.dart';
 import 'package:nifti_locapp/functions/functions.dart';
-import 'package:nifti_locapp/pages/connection_page.dart';
+//import 'package:nifti_locapp/pages/connection_page.dart';
 
 class BlankPage extends StatefulWidget {
   const BlankPage({super.key});
@@ -15,6 +17,8 @@ class BlankPage extends StatefulWidget {
 
 class _BlankPageState extends State<BlankPage> {
   String pin = '3383';
+  String email = 'email@mail.com';
+  String password = 'password';
   //late ContactPincode pin;
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,26 @@ class _BlankPageState extends State<BlankPage> {
                   Navigator.pop(context);
                 },
                 text: 'Delete Contact',
-                fontColor: niftiPink,
+              ),
+              const Text('Authenticate with FaceID'),
+              Button(
+                onTap: () {
+                  UserPincode.getFaceID();
+                  Navigator.pop(context);
+                },
+                text: 'Enable FaceID',
+                color: niftiPink,
+              ),
+              const Text('Edit Account Info'),
+              Text(email),
+              Text(password),
+              Button(
+                onTap: () {
+                  UserPincode.updateFireEmail(email);
+                  Navigator.pop(context);
+                },
+                text: 'Update Account',
+                color: niftiPink,
               ),
             ],
           ),

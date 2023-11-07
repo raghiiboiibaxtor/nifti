@@ -325,18 +325,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     // Bio + check
                     details['bio'] == ''
                         ? Column(children: [
-                              const SizedBox(
-                                height: 45,
-                              ),
-                              TextDisplay(
-                                text:
-                                    'TAP EDIT TO FINISH SETTING UP YOUR PROFILE! 🥳',
-                                fontSize: 16,
-                                color: niftiDarkBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ])
-                          
+                            const SizedBox(
+                              height: 45,
+                            ),
+                            TextDisplay(
+                              text:
+                                  'TAP EDIT TO FINISH SETTING UP YOUR PROFILE! 🥳',
+                              fontSize: 16,
+                              color: niftiDarkBlue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ])
                         : TextDisplay(
                             text: '${details['bio']}',
                             fontSize: 13,

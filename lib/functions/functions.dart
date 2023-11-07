@@ -2,10 +2,11 @@
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
+import 'package:local_auth/local_auth.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 /* * ---------------- * END OF PACKAGES * ---------------- * */
 
@@ -49,6 +50,33 @@ class UserPincode {
     String staticPin = pincode;
     return staticPin;
   }
+
+  static getFaceID() async {
+    late final LocalAuthentication auth = LocalAuthentication();
+    try {
+      final isAuthenticated = await auth.authenticate(
+        localizedReason: 'Authenticate with Face ID',
+        // useErrorDialogs: true, // Show system dialogs for authentication errors
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+        ), // Use sticky authentication (required for Face ID)
+      );
+
+      if (isAuthenticated) {
+        // Authentication was successful
+        // print('Authentication successful');
+      } else {
+        // Authentication failed
+        // print('Authentication failed');
+      }
+    } catch (e) {
+      //print('Error: $e');
+    }
+  }
+
+  static updateFireEmail(String email) async {
+    FirebaseAuth.instance.currentUser!.updateEmail('hello@email.com');
+  }
 }
 
 class ContactPincode {
@@ -65,13 +93,12 @@ class ContactPincode {
   }
 }
 
-// Object created for dynamically reading user data from Firestore
+// ? Object created for dynamically reading user data from Firestore
 class ReadUserData {
   static deleteFireAccount() async {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     var collectionReference = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await collectionReference.doc(niftiFireUser).get();
-    //Map<String, dynamic> data = {};
     if (docSnapshot.exists) {
       collectionReference
           .doc(niftiFireUser)
@@ -85,7 +112,6 @@ class ReadUserData {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     var collectionReference = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await collectionReference.doc(niftiFireUser).get();
-    //Map<String, dynamic> data = {};
     if (docSnapshot.exists) {
       collectionReference
           .doc(niftiFireUser)
