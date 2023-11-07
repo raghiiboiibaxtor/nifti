@@ -35,7 +35,7 @@ class _ConnectorState extends State<Connector> {
 
   // ? Get user's data and store in Map<> details
   _getProfileData() async {
-    details = await ReadUserData.getProfileData();
+    details = await NiftiFireFunctions.getUserProfileData();
     if (details.isNotEmpty) {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
@@ -46,7 +46,7 @@ class _ConnectorState extends State<Connector> {
 
   // ? Get connection's code data
   _getConnectionData() async {
-    friend = await ReadUserData.getConnectionData(
+    friend = await NiftiFireFunctions.getConnectionProfileData(
         pincode); // ? Grabbing connection object and assigning to friend
     setState(() {}); // ? Allowing the ui to change
     return friend;

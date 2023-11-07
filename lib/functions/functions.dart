@@ -1,3 +1,4 @@
+// ----------------------------------------------------------------------------------------------------------------------------- * PACKAGES
 //import 'dart:js_interop';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,14 +8,21 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
+
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-/* * ---------------- * END OF PACKAGES * ---------------- * */
 
-/* * ---------------- * BACKEND FUNCTIONS * ---------------- * */
+// ---------------------------------------------------------------------------------------------------------------------- * GLOBAL VARIABLES
+// ? Initialising global variables
+String userRef = '';
+final collectionReference = FirebaseFirestore.instance.collection('users');
+final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
 
-// ? Creating random code for user
-class CreateRandom {
-  static createRandom() async {
+//  ------------------------------------------------------------------------------------------------------------------------ 🚀 FUNCTIONS 🚀
+
+// ? ------------------------------------------------------------------------------------------------------------- { ... } GENERATE PINCODE
+// ? Creating random pincode for user
+class GeneratePincode {
+  static createNewPincode() async {
     late String code;
     dynamic secure = Random.secure();
     dynamic secList = List.generate(4, (_) => secure.nextInt(10));
@@ -26,22 +34,10 @@ class CreateRandom {
         .replaceAll(']', '');
     return code;
   }
-}
 
-// ? CLOUD MESSAGING ☁️ ------------------------------- ☁️
-// !? Following functions access Firebase Cloud Messaging (FCM) ';';';';';'
-
-// ? CLOUD MESSAGING ☁️ ------------------------------- ☁️
-// !? Following functions access Firebase Cloud Messaging (FCM) ';';';';';'
-
-// ! FIRESTORE 🔥 ------------------------------- 🔥
-// ! Following functions access FirebaseFirestore * * * * *
-
-// Object created for passing user information between widgets
-class UserPincode {
   // ? Definfing and constructing the pincode object
   String pincode;
-  UserPincode({required this.pincode});
+  GeneratePincode({required this.pincode});
   set setPincode(String pincode) => pincode; // ? setting pincode
   get getPincode => pincode; // ? getting pincode
 
@@ -50,107 +46,89 @@ class UserPincode {
     String staticPin = pincode;
     return staticPin;
   }
+}
 
+// ? ------------------------------------------------------------------------------------------------------------- { ... } SECURITY SETTINGS
+class NiftiSystemSettings {
   static getFaceID() async {
     late final LocalAuthentication auth = LocalAuthentication();
     try {
       final isAuthenticated = await auth.authenticate(
-        localizedReason: 'Authenticate with Face ID',
-        // useErrorDialogs: true, // Show system dialogs for authentication errors
+        localizedReason: 'Authenticate with FaceID',
         options: const AuthenticationOptions(
           stickyAuth: true,
-        ), // Use sticky authentication (required for Face ID)
+        ), // ? Use sticky authentication (required for Face ID)
       );
 
       if (isAuthenticated) {
-        // Authentication was successful
-        // print('Authentication successful');
+        // ? Authentication was successful
+        return 'Authenticated';
       } else {
-        // Authentication failed
-        // print('Authentication failed');
+        // ? Authentication failed
+        return 'Oops! Something went wrong. Please try again.';
       }
     } catch (e) {
-      //print('Error: $e');
+      return e;
     }
   }
 
-  static updateFireEmail(String email) async {
+  static updateFireEmail(String email) {
     FirebaseAuth.instance.currentUser!.updateEmail('hello@email.com');
   }
 }
 
-class ContactPincode {
-  // ? Definfing and constructing the pincode object
-  String pincode;
-  ContactPincode({required this.pincode});
-  set setContactPincode(String pincode) => pincode; // ? setting pincode
-  get getPincode => pincode; // ? getting pincode
+// -------------------------------------------------------------------------------------------------------------------- * FIREBASE FUNCTIONS
+// ! ----------------------------------------------------------------------------------------------------------------------- 🔥 FIRESTORE 🔥
 
-  // ? Static getter allowing pincode to be accessed through ui
-  static getContactPincode(String pincode) {
-    String contactPin = pincode;
-    return contactPin;
-  }
-}
+// ? ---------------------------------------------------------------------------------------------------------- { ... } NIFTI FIRE FUNCTIONS
+// ? Encapsulating Nifti x Firebase functions as an object.
 
-// ? Object created for dynamically reading user data from Firestore
-class ReadUserData {
-  static deleteFireAccount() async {
-    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-    var collectionReference = FirebaseFirestore.instance.collection('users');
-    var docSnapshot = await collectionReference.doc(niftiFireUser).get();
-    if (docSnapshot.exists) {
-      collectionReference
-          .doc(niftiFireUser)
-          .delete(); // ? Deleteing DocumentSnapshot
-      await FirebaseAuth.instance.currentUser?.delete();
+class NiftiFireFunctions {
+  // ? Add user info to Firestore
+  Future createUserProfile(
+    // ? Listing required variables to be added
+    String fullName,
+    String email,
+    String code,
+    String userID,
+  ) async {
+    // ? Error variable
+    String response = "Error Occured";
+    try {
+      // ? Trying to set the document
+      await collectionReference.doc(niftiFireUser).set({
+        // ? Personal Data
+        'fullName': fullName,
+        'email': email,
+        'city/town': '',
+        'pronouns': '',
+        'imageLink': '',
+        'bio': '',
+        'role': '',
+        'industry': '',
+        'company': '',
+        'yearsWorked': '',
+        // ? Socials
+        'phone': '',
+        'website': '',
+        'linkedin': '',
+        'instagram': '',
+        'github': '',
+        // ? Connection Variables
+        'pincode': code,
+        'userID': niftiFireUser,
+        'connections': [],
+      });
+      response = 'Success';
+    } catch (error) {
+      // ? Error catch
+      response = error.toString();
     }
-    return 'Account & profile data permanently deleted';
-  }
-
-  static deleteFireProfile() async {
-    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-    var collectionReference = FirebaseFirestore.instance.collection('users');
-    var docSnapshot = await collectionReference.doc(niftiFireUser).get();
-    if (docSnapshot.exists) {
-      collectionReference
-          .doc(niftiFireUser)
-          .delete(); // ? Deleteing DocumentSnapshot
-    }
-    return 'Profile data permanently deleted';
-  }
-
-  static deleteFireContact(String contact) async {
-    late List<dynamic>? contacts;
-    // ? Instantiating Firestore references
-    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-    var collectionReference = FirebaseFirestore.instance.collection('users');
-    final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(niftiFireUser)
-            .get();
-    late dynamic data = [];
-    if (documentSnapshot.exists) {
-      contacts = await documentSnapshot.data()?[
-          'connections']; // ? Copying Firestore 'connections[]' into local array
-      contacts!.remove(contact);
-    }
-
-    await collectionReference.doc(niftiFireUser).update(
-      {
-        'connections': contacts,
-        // ? Pushing the new array for appending within the desired firestore document
-      },
-    );
-    return data;
+    return response;
   }
 
   // ? Reading user data from Firestore as map
-  static getProfileData() async {
-    // ? Instantiating Firestore references
-    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-    var collectionReference = FirebaseFirestore.instance.collection('users');
+  static getUserProfileData() async {
     var docSnapshot = await collectionReference.doc(niftiFireUser).get();
     Map<String, dynamic> data = {};
     if (docSnapshot.exists) {
@@ -161,10 +139,8 @@ class ReadUserData {
   }
 
   //  Reading connection data from Firestore using UserPincode object
-  static getConnectionData(String pincode) async {
+  static getConnectionProfileData(String pincode) async {
     late Map<String, dynamic> data = {};
-    // ? Instantiating Firestore reference
-    var collectionReference = FirebaseFirestore.instance.collection('users');
     await collectionReference
         .where("pincode",
             isEqualTo: pincode) // ? Finding the pincode in Firestore
@@ -180,9 +156,7 @@ class ReadUserData {
   }
 
   // ? Reading connection data from Firestore using otp
-  static getPincodeList() async {
-    // ? Instantiating Firestore references
-    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+  static getAllConnections() async {
     final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await FirebaseFirestore.instance
             .collection('users')
@@ -207,84 +181,10 @@ class ReadUserData {
     }
     return data;
   }
-} // END OF ReadUserData object
-
-// Object created for dynamically adding user data to Firestore
-class StoreUserData {
-  // ? Instantiating Firestore references
-  String userRef = '';
-  final _collectionReference = FirebaseFirestore.instance.collection('users');
-  final _niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-
-  // ? Add user info to Firestore
-  Future addUserDetails(
-    // ? Listing required variables to be added
-    //String firstName,
-    //String lastName,
-    String fullName,
-    String email,
-    /*String city,
-    String pronouns,
-    Uint8List profileImage,
-    String bio,
-    String role,
-    String industry,
-    String company,
-    String yearsWorked,*/
-    // socials
-    /*String phone,
-    String website,
-    String linkedin,
-    String instagram,
-    String github,*/
-    // connect
-    String code,
-    String userID,
-  ) async {
-    // ? Error variable
-    String response = "Error Occured";
-    try {
-      // ? Trying to set the document
-      await _collectionReference.doc(_niftiFireUser).set({
-        // Personal Variables
-        'fullName': fullName,
-        //'firstName': firstName,
-        //'lastName': lastName,
-        'email': email,
-        'city/town': '',
-        'pronouns': '',
-        'imageLink': '',
-        'bio': '',
-        'role': '',
-        'industry': '',
-        'company': '',
-        'yearsWorked': '',
-        // Socials
-        'phone': '',
-        'website': '',
-        'linkedin': '',
-        'instagram': '',
-        'github': '',
-        // Connection Variables
-        'pincode': code,
-        'userID': _niftiFireUser,
-        'connections': [],
-      });
-      response = 'Success';
-    } catch (error) {
-      // ? Error catch
-      response = error.toString();
-    }
-    return response;
-  }
 
   // ? Appending Firestore document data
-  static updateConnectionsPincode(String pincode) async {
-    // ? Instantiating Firestore references
-    var collectionReference = FirebaseFirestore.instance.collection('users');
-    var niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-    //var fcmToken = FirebaseMessaging.instance.getToken();
-    String pin = await UserPincode.getStaticPincode(
+  static addConnection(String pincode) async {
+    String pin = await GeneratePincode.getStaticPincode(
         pincode); // ? Ensuring we grab the correct pincode by accessing the static pincode getter
     try {
       late dynamic code = [];
@@ -320,19 +220,6 @@ class StoreUserData {
             },
           );
         }
-        await collectionReference.doc(niftiFireUser).update(
-          {
-            'lastConnection': pincode,
-
-            // ? Pushing the new array for appending within the desired firestore document
-          },
-        );
-        /*await collectionReference.doc(niftiFireUser).update(
-          {
-            'token': fcmToken.toString(),
-            // ? Pushing the new array for appending within the desired firestore document
-          },
-        );*/
         return pincode;
       } else {}
     } catch (e) {
@@ -341,18 +228,64 @@ class StoreUserData {
     }
   }
 
-// ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
-// ! Following functions target FirebaseStorage (media database) * * * * *
+  static deleteAccount() async {
+    var docSnapshot = await collectionReference.doc(niftiFireUser).get();
+    if (docSnapshot.exists) {
+      collectionReference
+          .doc(niftiFireUser)
+          .delete(); // ? Deleteing DocumentSnapshot
+      await FirebaseAuth.instance.currentUser?.delete();
+    }
+    return 'Account & profile data permanently deleted';
+  }
+
+  static deleteProfile() async {
+    var docSnapshot = await collectionReference.doc(niftiFireUser).get();
+    if (docSnapshot.exists) {
+      collectionReference
+          .doc(niftiFireUser)
+          .delete(); // ? Deleteing DocumentSnapshot
+    }
+    return 'Profile data permanently deleted';
+  }
+
+  static deleteContact(String contact) async {
+    late List<dynamic>? contacts;
+    // ? Instantiating Firestore references
+
+    final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(niftiFireUser)
+            .get();
+    late dynamic data = [];
+    if (documentSnapshot.exists) {
+      contacts = await documentSnapshot.data()?[
+          'connections']; // ? Copying Firestore 'connections[]' into local array
+      contacts!.remove(contact);
+    }
+
+    await collectionReference.doc(niftiFireUser).update(
+      {
+        'connections': contacts,
+        // ? Pushing the new array for appending within the desired firestore document
+      },
+    );
+    return data;
+  }
+
+  // ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
+  // ! Following functions target FirebaseStorage (media database) * * * * *
 
   // ? Update Add profile image to storage
   Future addUserImage(Uint8List file) async {
     // ? Reference points to object in memory
     // ignore: unused_local_variable
     Reference ref =
-        FirebaseStorage.instance.ref().child(_niftiFireUser.toString());
+        FirebaseStorage.instance.ref().child(niftiFireUser.toString());
     Reference referenceRoot = FirebaseStorage.instance.ref();
     Reference referenceDirectory =
-        referenceRoot.child(_niftiFireUser.toString());
+        referenceRoot.child(niftiFireUser.toString());
     // ? Create reference for image storage
     Reference referenceImageUpload = referenceDirectory.child('profileImage');
 
@@ -368,101 +301,13 @@ class StoreUserData {
   Future updateFirestoreImageLink(Uint8List file) async {
     // ? this relies on the userImage being added to storage
     String imageUrl = await addUserImage(file);
-    var docRef = _collectionReference.doc(_niftiFireUser);
+    var docRef = collectionReference.doc(niftiFireUser);
     docRef.update({
       'imageLink': imageUrl,
     });
   }
 }
 
-// ? Adding User Details to FireStore & Storage
-/* class StoreUserImages {
-  final _collectionReference = FirebaseFirestore.instance.collection('users');
-  final _niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-
-  // ? Update Add profile image to storage
-  Future addBannerImage(Uint8List file) async {
-    // ? Reference points to object in memory
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirectory =
-        referenceRoot.child(_niftiFireUser.toString());
-    // ? Create reference for image storage
-    Reference referenceImageUpload = referenceDirectory.child('banner');
-    // ? UploadTask upload data to remote storage
-    UploadTask uploadTask = referenceImageUpload.putData(file);
-    // ? TaskSnapshot represents current state of an aync task
-    TaskSnapshot snapshot = await uploadTask;
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-    return downloadUrl;
-  }
-
- // ? Update Add profile image to storage
-  Future addSquare1Image(Uint8List file) async {
-    // ? Reference points to object in memory
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirectory =
-        referenceRoot.child(_niftiFireUser.toString());
-    // ? Create reference for image storage
-    Reference referenceImageUpload = referenceDirectory.child('square1');
-    // ? UploadTask upload data to remote storage
-    UploadTask uploadTask = referenceImageUpload.putData(file);
-    // ? TaskSnapshot represents current state of an aync task
-    TaskSnapshot snapshot = await uploadTask;
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-    return downloadUrl;
-  }
-
-  Future addSquare2Image(Uint8List file) async {
-    // ? Reference points to object in memory
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirectory =
-        referenceRoot.child(_niftiFireUser.toString());
-    // ? Create reference for image storage
-    Reference referenceImageUpload = referenceDirectory.child('square2');
-    // ? UploadTask upload data to remote storage
-    UploadTask uploadTask = referenceImageUpload.putData(file);
-    // ? TaskSnapshot represents current state of an aync task
-    TaskSnapshot snapshot = await uploadTask;
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-    return downloadUrl;
-  }
-
-  Future addSquare3Image(Uint8List file) async {
-    // ? Reference points to object in memory
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirectory =
-        referenceRoot.child(_niftiFireUser.toString());
-    // ? Create reference for image storage
-    Reference referenceImageUpload = referenceDirectory.child('square3');
-    // ? UploadTask upload data to remote storage
-    UploadTask uploadTask = referenceImageUpload.putData(file);
-    // ? TaskSnapshot represents current state of an aync task
-    TaskSnapshot snapshot = await uploadTask;
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-    return downloadUrl;
-  }
-
-  // ? Update ImageUrl in firestore
-  Future updateFirestoreImageLinks(
-    Uint8List banner,
-    Uint8List square1,
-    Uint8List square2,
-    Uint8List square3,
-  ) async {
-    // ? This relies on the userImage being added to storage
-    String bannerUrl = await addBannerImage(banner);
-    String square1Url = await addSquare1Image(square1);
-    String square2Url = await addSquare2Image(square2);
-    String square3Url = await addSquare3Image(square3);
-    var docRef = _collectionReference.doc(_niftiFireUser);
-    docRef.update({
-      'bannerImageLink': bannerUrl,
-      'square1ImageLink': square1Url,
-      'square2ImageLink': square2Url,
-      'square3ImageLink': square3Url,
-    });
-  }
-}*/
 // ! END OF FIREBASE RELATED FUNCTIONS 🔥 ------------------------------ 🔥
 
 // * * --------------------------------- * END OF BACKEND FUNCTIONS * ---------------------- * */

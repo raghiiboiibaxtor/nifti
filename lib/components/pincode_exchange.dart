@@ -58,7 +58,7 @@ class _PincodeExchangeState extends State<PincodeExchange> {
   // ? get connections data and store in Map<> friend
   _getConnectionData(String staticPin) async {
     if (staticPin != '') {
-      friend = await ReadUserData.getConnectionData(staticPin);
+      friend = await NiftiFireFunctions.getConnectionProfileData(staticPin);
       setState(() {});
       return friend;
     } else {
@@ -281,9 +281,10 @@ class _PincodeExchangeState extends State<PincodeExchange> {
                                   .shake); // ? Triggering error shake animation
                               setState(() => hasError = true);
                             } else {
-                              UserPincode(pincode: currentText);
-                              staticPin = await UserPincode.getStaticPincode(
-                                  currentText);
+                              GeneratePincode(pincode: currentText);
+                              staticPin =
+                                  await GeneratePincode.getStaticPincode(
+                                      currentText);
                               friend = await _getConnectionData(staticPin);
                               setState(
                                 () async {

@@ -38,14 +38,14 @@ class _BlankPageState extends State<BlankPage> {
               ),
               Button(
                 onTap: () {
-                  ReadUserData.deleteFireAccount();
+                  NiftiFireFunctions.deleteAccount();
                   Navigator.pop(context);
                 },
                 text: 'Delete Account',
               ),
               Button(
                 onTap: () {
-                  ReadUserData.deleteFireProfile();
+                  NiftiFireFunctions.deleteProfile();
                   Navigator.pop(context);
                 },
                 text: 'Delete Profile',
@@ -53,7 +53,7 @@ class _BlankPageState extends State<BlankPage> {
               Text(pin),
               Button(
                 onTap: () {
-                  ReadUserData.deleteFireContact(pin);
+                  NiftiFireFunctions.deleteContact(pin);
                   Navigator.pop(context);
                 },
                 text: 'Delete Contact',
@@ -61,7 +61,7 @@ class _BlankPageState extends State<BlankPage> {
               const Text('Authenticate with FaceID'),
               Button(
                 onTap: () {
-                  UserPincode.getFaceID();
+                  NiftiSystemSettings.getFaceID();
                   Navigator.pop(context);
                 },
                 text: 'Enable FaceID',
@@ -72,7 +72,7 @@ class _BlankPageState extends State<BlankPage> {
               Text(password),
               Button(
                 onTap: () {
-                  UserPincode.updateFireEmail(email);
+                  NiftiSystemSettings.updateFireEmail(email);
                   Navigator.pop(context);
                 },
                 text: 'Update Account',

@@ -4,16 +4,6 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-/// Default [FirebaseOptions] for use with your Firebase apps.
-///
-/// Example:
-/// ```dart
-/// import 'firebase_options.dart';
-/// // ...
-/// await Firebase.initializeApp(
-///   options: DefaultFirebaseOptions.currentPlatform,
-/// );
-/// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -67,7 +57,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '521383375097',
     projectId: 'nifti-mobile-app',
     storageBucket: 'nifti-mobile-app.appspot.com',
-    iosClientId: '521383375097-7682pr2ol4a773bicfb78djsbmeb73pc.apps.googleusercontent.com',
+    iosClientId:
+        '521383375097-7682pr2ol4a773bicfb78djsbmeb73pc.apps.googleusercontent.com',
     iosBundleId: 'com.testing.niftiLocapp',
   );
 
@@ -77,7 +68,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '521383375097',
     projectId: 'nifti-mobile-app',
     storageBucket: 'nifti-mobile-app.appspot.com',
-    iosClientId: '521383375097-cddmc1goeunk52edl6737nfe7p6ah8au.apps.googleusercontent.com',
+    iosClientId:
+        '521383375097-cddmc1goeunk52edl6737nfe7p6ah8au.apps.googleusercontent.com',
     iosBundleId: 'com.example.niftiLocapp.RunnerTests',
   );
 }

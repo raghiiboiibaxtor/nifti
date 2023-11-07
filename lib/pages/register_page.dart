@@ -109,6 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future register() async {
     // ? Calling Loading Animation
     displayLoadingCircle(context);
+    await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
     // ? Registration Check
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -117,11 +118,9 @@ class _RegisterPageState extends State<RegisterPage> {
       );
       // ? pop loading circle
       if (context.mounted) Navigator.pop(context);
-      _createCode = await CreateRandom.createRandom();
+      _createCode = await GeneratePincode.createNewPincode();
       // ? Adds user info to Firestore
-      await StoreUserData().addUserDetails(
-        /*_firstNameController.text.trim(),
-        _lastNameController.text.trim(),*/
+      await NiftiFireFunctions().createUserProfile(
         _fullNameController.text.trim(),
         _emailController.text.trim(),
         _createCode,
@@ -142,10 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
         passwordFormatError(_passwordController.text, weakPassword,
             (error) => setState(() => _passwordError = error));
       }
-      //displayErrorMessage(context, error.message!);
     }
-    //StoreUserData().addUserImage(_profileImage!);
-    //StoreUserData().updateFirestoreImageLink(_profileImage!);
   }
 
   // * * ---------------- * (BUILD WIDGET) * ---------------- *
@@ -283,27 +279,27 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             // T&Cs Prompt Text & Modal
                             InkWell(
-                              onTap: () {
-                                // Show the Terms & Conditions bottom sheet
-                                showBottomSheet();
-                              },
-                              child: Row(
-                                children: [TextDisplay(
-                                color: isError ? niftiPink : niftiGrey,
-                                text:
-                                    'I agree to Nifti\'s',
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              TextDisplay(
-                                color: isError ? niftiPink : niftiLightBlue,
-                                text:
-                                    ' Privacy Policy and Conditions',
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                              ),],
-                              )
-                            ),
+                                onTap: () {
+                                  // Show the Terms & Conditions bottom sheet
+                                  showBottomSheet();
+                                },
+                                child: Row(
+                                  children: [
+                                    TextDisplay(
+                                      color: isError ? niftiPink : niftiGrey,
+                                      text: 'I agree to Nifti\'s',
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    TextDisplay(
+                                      color:
+                                          isError ? niftiPink : niftiLightBlue,
+                                      text: ' Privacy Policy and Conditions',
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                )),
                           ],
                         ),
 

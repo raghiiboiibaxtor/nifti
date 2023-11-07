@@ -283,7 +283,7 @@ swapModalBS(
                     CTAButton(
                       onTap: () async {
                         // ?  find and add to contact list logic
-                        await StoreUserData.updateConnectionsPincode(pincode);
+                        await NiftiFireFunctions.addConnection(pincode);
                         // ? Closes modal
                         if (context.mounted) {
                           Navigator.pop(context);
