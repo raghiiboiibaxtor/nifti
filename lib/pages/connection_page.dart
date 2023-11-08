@@ -147,7 +147,7 @@ class _ConnectorState extends State<Connector> {
                 ),
                 child: Text(
                   //'Enter someone’s code to connect with them',
-                  'Enter each other\'s code to connect with them',
+                  'Enter each other\'s code to connect!',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 12,
