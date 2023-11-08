@@ -167,7 +167,7 @@ class _SettingsPageState extends State<SettingsPage> {
               // ? Danger Zone Title & Buttons
               TextDisplay(
                 text: 'Danger Zone',
-                color: niftiPink,
+                color: niftiError,
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
               ),
@@ -181,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
                 text: 'Logout',
                 icon: Icons.logout_rounded,
-                iconColor: niftiPink,
+                iconColor: niftiError,
               ),
               const SizedBox(
                 height: 20,
@@ -192,7 +192,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
                 text: 'Delete Account',
                 icon: CupertinoIcons.delete,
-                iconColor: niftiPink,
+                iconColor: niftiError,
               ),
             ],
           ),

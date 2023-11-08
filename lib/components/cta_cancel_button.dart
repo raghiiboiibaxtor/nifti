@@ -55,7 +55,7 @@ class CTACancelButton extends StatelessWidget {
           height: 35,
           fontWeight: FontWeight.w600,
           color: niftiWhite,
-          fontColor: const Color.fromRGBO(255, 159, 180, 1),
+          fontColor: niftiError,
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 7),
         ),
       ],
