@@ -38,14 +38,14 @@ class _BlankPageState extends State<BlankPage> {
               ),
               Button(
                 onTap: () {
-                  NiftiFireFunctions.deleteAccount();
+                  NiftiFirestoreFunctions.deleteAccount();
                   Navigator.pop(context);
                 },
                 text: 'Delete Account',
               ),
               Button(
                 onTap: () {
-                  NiftiFireFunctions.deleteProfile();
+                  NiftiFirestoreFunctions.deleteProfile();
                   Navigator.pop(context);
                 },
                 text: 'Delete Profile',
@@ -53,7 +53,7 @@ class _BlankPageState extends State<BlankPage> {
               Text(pin),
               Button(
                 onTap: () {
-                  NiftiFireFunctions.deleteContact(pin);
+                  NiftiFirestoreFunctions.deleteContact(pin);
                   Navigator.pop(context);
                 },
                 text: 'Delete Contact',
@@ -72,7 +72,7 @@ class _BlankPageState extends State<BlankPage> {
               Text(password),
               Button(
                 onTap: () {
-                  NiftiFireFunctions.updateEmail(email);
+                  NiftiFirestoreFunctions.updateEmail(email);
                   Navigator.pop(context);
                 },
                 text: 'Update Account',

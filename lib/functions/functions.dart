@@ -263,6 +263,9 @@ class NiftiFirestoreFunctions {
   // ! ------------------------------------------ 💿🔥
 
   //  ------------------------------------------------------------------------------------------------------  D E L E T E ( )
+  // ! => Enter password to approve account delete
+  // ! => Enter new email / password to change data (pass the parameters)
+  // ! => FaceID check, login? save login data in private class?
   static deleteAccount() async {
     var docSnapshot = await collectionReference.doc(niftiFireUser).get();
     if (docSnapshot.exists) {
@@ -309,4 +312,4 @@ class NiftiFirestoreFunctions {
     return data;
   }
 }
-//  --------------------------------------------------------------------------------------------------------------------  END OF FUNCTIONS 🚀 
+//  --------------------------------------------------------------------------------------------------------------------  END OF FUNCTIONS 🚀
