@@ -33,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
           centerTitle: true,
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                gradient: niftiGradient,
+                gradient: niftiGradientSemiOpaque,
                 borderRadius:
                     const BorderRadius.only(bottomRight: Radius.circular(40))),
           ),
