@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/button.dart';
+import 'package:nifti_locapp/components/text_display.dart';
+import 'package:nifti_locapp/components/privacy_popup.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -15,7 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: niftiOffWhite,
+        backgroundColor: niftiOffWhite,
         resizeToAvoidBottomInset: false,
         // ? Top bar that contains Nifti Logo
         appBar: AppBar(
@@ -54,12 +56,123 @@ class _SettingsPageState extends State<SettingsPage> {
         // *** Settings page UI & logic starts here
         body: Container(
           alignment: AlignmentDirectional.topStart,
-          padding: const EdgeInsets.only(left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 15, left: 15, right: 20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'SETTINGS',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: niftiGrey,
+                ),
+              ),
               // ? Logout
               const SizedBox(
+                height: 10,
+              ),
+              // ? Account Title & Buttons
+              TextDisplay(
+                text: 'Account',
+                color: niftiLightGrey,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Button(
+                onTap: () {
+                  // ! popup logic here
+                },
+                text: 'Change Email Address',
+                icon: Icons.alternate_email_rounded,
+                iconColor: niftiLightBlue,
+              ),
+              const SizedBox(
                 height: 20,
+              ),
+              Button(
+                onTap: () {
+                  // ! popup logic here
+                },
+                text: 'Update Password',
+                icon: Icons.lock_outline_rounded,
+                iconColor: niftiLightBlue,
+              ),
+              // ? Divider & space between 
+              const SizedBox(
+                height: 15,
+              ),
+              Divider(
+                thickness: 0.5,
+                color: niftiGreyShadow,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              // ? Account Title & Buttons
+              TextDisplay(
+                text: 'Privacy & Security',
+                color: niftiLightGrey,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Button(
+                onTap: () {
+                  // ! popup logic here
+                },
+                text: 'FaceID',
+                icon: Icons.alternate_email_rounded,
+                iconColor: niftiDarkBlue,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Button(
+                onTap: () {
+                  // ! popup logic here
+                },
+                text: 'Block List',
+                icon: Icons.block,
+                iconColor: niftiDarkBlue,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Button(
+                onTap: () {
+                  // ! popup logic here
+                  privacyPopup(context);
+                },
+                text: 'Privacy Policy',
+                icon: Icons.privacy_tip_outlined,
+                iconColor: niftiDarkBlue,
+              ),
+              // ? Divider & space between 
+              const SizedBox(
+                height: 15,
+              ),
+              Divider(
+                thickness: 0.5,
+                color: niftiGreyShadow,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              // ? Danger Zone Title & Buttons
+              TextDisplay(
+                text: 'Danger Zone',
+                color: niftiPink,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Button(
                 onTap: () {
@@ -68,6 +181,17 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
                 text: 'Logout',
                 icon: Icons.logout_rounded,
+                iconColor: niftiPink,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Button(
+                onTap: () {
+                  // ! pop up logic here
+                },
+                text: 'Delete Account',
+                icon: CupertinoIcons.delete,
                 iconColor: niftiPink,
               ),
             ],

@@ -5,7 +5,7 @@ LinearGradient niftiGradient = const LinearGradient(
     begin: Alignment.bottomLeft,
     end: Alignment.topRight,
     colors: [
-      Color.fromRGBO(209, 147, 246, 1),
+      Color.fromRGBO(255, 159, 180, 1),
       Color.fromRGBO(115, 142, 247, 1),
       Color.fromRGBO(116, 215, 247, 1)
     ]);
@@ -14,7 +14,7 @@ LinearGradient niftiGradientSemiOpaque = const LinearGradient(
     begin: Alignment.bottomLeft,
     end: Alignment.topRight,
     colors: [
-      Color.fromRGBO(209, 147, 246, .70),
+      Color.fromRGBO(255, 159, 180, .70),
       Color.fromRGBO(115, 142, 247, .70),
       Color.fromRGBO(116, 215, 247, .70)
     ]);
@@ -23,12 +23,12 @@ LinearGradient niftiGradientOpaque = const LinearGradient(
     begin: Alignment.bottomLeft,
     end: Alignment.topRight,
     colors: [
-      Color.fromRGBO(209, 147, 246, .30),
+      Color.fromRGBO(255, 159, 180, .30),
       Color.fromRGBO(115, 142, 247, .30),
       Color.fromRGBO(116, 215, 247, .30)
     ]);
 
-Color niftiPink = const Color.fromRGBO(209, 147, 246, 1);
+Color niftiPink = const Color.fromRGBO(255, 159, 180, 1);
 Color niftiDarkBlue = const Color.fromRGBO(115, 142, 247, 1);
 Color niftiLightBlue = const Color.fromRGBO(116, 215, 247, 1);
 Color niftiWhite = const Color.fromRGBO(255, 255, 255, 1);

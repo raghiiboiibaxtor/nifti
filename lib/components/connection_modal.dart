@@ -11,13 +11,8 @@ displayModalBottomSheet(
     // ? Passing required variables for modal display
     context,
     String fullName,
-    //String bio,
     String pronouns,
     String industry,
-    //String city,
-    // String role,
-    // String company,
-    // String yearsWorked,
     String profileImageUrl,
     String pincode) {
   // ? Build Context
