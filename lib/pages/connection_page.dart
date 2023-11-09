@@ -52,7 +52,7 @@ class _ConnectorState extends State<Connector> {
 
   // ? Get user's data and store in Map<> details
   _getProfileData() async {
-    details = await ReadUserData.getProfileData();
+    details = await NiftiFirestoreFunctions.getUserProfileData();
     if (details.isNotEmpty) {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
@@ -81,7 +81,8 @@ class _ConnectorState extends State<Connector> {
   // ? get connections data and store in Map<> friend
   _getConnectionData(String staticPin) async {
     if (staticPin != '') {
-      friend = await ReadUserData.getConnectionData(staticPin);
+      friend =
+          await NiftiFirestoreFunctions.getConnectionProfileData(staticPin);
       //setState(() {});
       return friend;
     } else {
@@ -265,9 +266,10 @@ class _ConnectorState extends State<Connector> {
                                 });
                               } else {
                                 // ? Match user pin & display pop up modal with their info
-                                UserPincode(pincode: combinedCode);
-                                staticPin = await UserPincode.getStaticPincode(
-                                    combinedCode);
+                                GeneratePincode(pincode: combinedCode);
+                                staticPin =
+                                    await GeneratePincode.getStaticPincode(
+                                        combinedCode);
                                 friend = await _getConnectionData(staticPin);
                                 setState(
                                   () async {

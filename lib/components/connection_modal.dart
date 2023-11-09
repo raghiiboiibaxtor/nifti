@@ -173,7 +173,7 @@ displayModalBottomSheet(
                         text: 'Connect',
                         onTap: () async {
                           // ?  find and add to contact list logic
-                          await StoreUserData.updateConnectionsPincode(pincode);
+                          await NiftiFirestoreFunctions.addConnection(pincode);
                           // ? Closes modal
                           if (context.mounted) {
                             Navigator.pop(context);
