@@ -352,7 +352,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                             (error) => setState(() =>
                                                 _confirmPasswordError = error));
 
-                                    bool arePasswordsMatching = passwordsMatch(
+                                    bool arePasswordsMatching = fieldsMatch(
                                         _passwordController.text,
                                         _confirmPasswordController.text,
                                         passwordsNotMatchingErrorMessage,

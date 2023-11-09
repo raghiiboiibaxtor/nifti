@@ -20,10 +20,9 @@ class TextFieldComponent extends StatelessWidget {
   const TextFieldComponent({
     super.key,
     required this.controller,
-   // this.initialValue = 'test',
     required this.obscureText,
     this.width = 350,
-    required this.padding,
+    this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
     this.labelText = 'Hint Text',
     this.errorText = '',
     this.validator,

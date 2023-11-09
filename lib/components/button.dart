@@ -19,6 +19,7 @@ class Button extends StatelessWidget {
   final double iconSize;
   final double width;
   final double height;
+  final bool showArrowIcon;
 
   // Required & optional variables to be passed
   const Button({
@@ -34,9 +35,11 @@ class Button extends StatelessWidget {
     this.iconSize = 20,
     this.width = 360,
     this.height = 45,
+    this.showArrowIcon = false,
   });
 
   // * ---------------- * (BUILD WIDGET) * ---------------- *
+  
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -46,26 +49,49 @@ class Button extends StatelessWidget {
         children: [
           // Base shape
           Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1.0,
-                  blurRadius: 2.0,
-                  offset: const Offset(0, 0.5),
+              height: height,
+              width: width,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1.0,
+                    blurRadius: 2.0,
+                    offset: const Offset(0, 0.5),
+                  ),
+                ],
+                color: niftiWhite,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(1),
+                  topRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
                 ),
-              ],
-              color: niftiWhite,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(1),
-                topRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
               ),
-            ),
-          ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  // ? Arrow Icon
+                  if (showArrowIcon == false)
+                    // Empty Space
+                    const SizedBox()
+                  else
+                    // ? Display arrow icon
+                    Row(
+                      children: [
+                        Icon(
+                          CupertinoIcons.forward,
+                          semanticLabel: 'Open Page',
+                          color: niftiGrey,
+                          size: 20,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                ],
+              )),
 
           // Icon Shape
           Container(
@@ -111,5 +137,3 @@ class Button extends StatelessWidget {
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
 // * ---------------- * END OF (STATELESS WIDGET) CLASS ButtonComponent (STATELESS WIDGET) * ---------------- *
-
-
