@@ -112,400 +112,406 @@ class _ConnectorState extends State<Connector> {
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: niftiOffWhite,
-      body: SingleChildScrollView(
-        child: Container(
-          alignment: Alignment.topLeft,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // ? Page title
-              Container(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  left: 15,
-                  right: 15,
-                ),
-                child: Text(
-                  'CONNECT',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: niftiGrey,
-                  ),
-                ),
-              ),
-
-              const SizedBox(
-                height: 5,
-              ),
-              // ? Action prompt
-
-              Container(
-                padding: const EdgeInsets.only(
-                  left: 15,
-                ),
-                child: Text(
-                  //'Enter someone’s code to connect with them',
-                  'Enter each other\'s code to connect!',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                    color: niftiGrey,
-                  ),
-                ),
-              ),
-
-              // ? Space between
-              const SizedBox(
-                height: 20,
-              ),
-              // ? Top 2 PIN fields
-              Form(
-                key: _formKey,
-                child: Column(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      PinBox(
-                        textEditingController: _pin1Controller,
-                        hasError: _pin1Error != null,
+    return GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          backgroundColor: niftiOffWhite,
+          body: SingleChildScrollView(
+            child: Container(
+              alignment: Alignment.topLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // ? Page title
+                  Container(
+                    padding: const EdgeInsets.only(
+                      top: 20,
+                      left: 15,
+                      right: 15,
+                    ),
+                    child: Text(
+                      'CONNECT',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: niftiGrey,
                       ),
-                      const SizedBox(
-                        width: 23,
-                      ),
-                      PinBox(
-                        textEditingController: _pin2Controller,
-                        hasError: _pin2Error != null,
-                      ),
-                    ],
+                    ),
                   ),
-                  // Space between
+
                   const SizedBox(
-                    height: 23,
+                    height: 5,
                   ),
-                  // ? Bottom 2 PIN fields
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      PinBox(
-                        textEditingController: _pin3Controller,
-                        hasError: _pin3Error != null,
+                  // ? Action prompt
+
+                  Container(
+                    padding: const EdgeInsets.only(
+                      left: 15,
+                    ),
+                    child: Text(
+                      //'Enter someone’s code to connect with them',
+                      'Enter each other\'s code to connect!',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: niftiGrey,
                       ),
-                      const SizedBox(
-                        width: 23,
-                      ),
-                      PinBox(
-                        textEditingController: _pin4Controller,
-                        hasError: _pin4Error != null,
-                      ),
-                    ],
+                    ),
                   ),
 
-                  // Space between
+                  // ? Space between
                   const SizedBox(
-                    height: 8,
+                    height: 20,
                   ),
-
-                  // ? Action Buttons
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // ? Error message text
+                  // ? Top 2 PIN fields
+                  Form(
+                    key: _formKey,
+                    child: Column(children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Padding(padding: EdgeInsets.only(left: 35)),
-                          if (errorMessage.isNotEmpty)
-                            Text(
-                              errorMessage,
-                              style: TextStyle(
-                                  color: niftiPink,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          // ? If no error then display sized box to keep space
-                          else
-                            const SizedBox(
-                              height: 17,
-                            ),
+                          PinBox(
+                            textEditingController: _pin1Controller,
+                            hasError: _pin1Error != null,
+                          ),
+                          const SizedBox(
+                            width: 23,
+                          ),
+                          PinBox(
+                            textEditingController: _pin2Controller,
+                            hasError: _pin2Error != null,
+                          ),
                         ],
                       ),
                       // Space between
                       const SizedBox(
-                        height: 10,
+                        height: 23,
                       ),
+                      // ? Bottom 2 PIN fields
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          // ? Clear PIN fields & errors
-                          CTACancelButton(
-                            text: 'Clear',
-                            onTap: () {
-                              setState(() {
-                                errorMessage = '';
-                              });
-                              _pin1Controller.clear();
-                              _pin2Controller.clear();
-                              _pin3Controller.clear();
-                              _pin4Controller.clear();
-                            },
+                          PinBox(
+                            textEditingController: _pin3Controller,
+                            hasError: _pin3Error != null,
                           ),
-                          // ? Find user button
-                          CTAConfirmButton(
-                            text: 'Find',
-                            onTap: () async {
-                              combinedCode =
-                                  "${_pin1Controller.text}${_pin2Controller.text}${_pin3Controller.text}${_pin4Controller.text}";
-                              debugPrint(combinedCode);
-                              // ? If less than 4 digits entered == show error
-                              if (combinedCode.length != 4) {
-                                setState(() {
-                                  errorMessage = '* Please enter all 4 digits';
-                                });
-                              } else {
-                                // ? Match user pin & display pop up modal with their info
-                                GeneratePincode(pincode: combinedCode);
-                                staticPin =
-                                    await GeneratePincode.getStaticPincode(
-                                        combinedCode);
-                                friend = await _getConnectionData(staticPin);
-                                setState(
-                                  () async {
-                                    // Clear error message
-                                    setState(() {
-                                      errorMessage = '';
-                                    });
-                                    hasError = false;
-                                    // ? If no match found == show error
-                                    if ('${friend['firstName']}' == 'null') {
-                                      setState(() {
-                                        errorMessage =
-                                            'Oops! That\'s an invalid code. Please try again!';
-                                      });
-                                    } else {
-                                      // ? Clear PIN fields & any error message when matched
-                                      setState(() {
-                                        errorMessage = '';
-                                      });
-                                      _pin1Controller.clear();
-                                      _pin2Controller.clear();
-                                      _pin3Controller.clear();
-                                      _pin4Controller.clear();
-                                      // ? Modal with matching connections details
-
-                                      displayModalBottomSheet(
-                                        context,
-                                        '${friend['fullName']}',
-                                        '${friend['pronouns']}',
-                                        '${friend['industry']}',
-                                        '${friend['imageLink']}',
-                                        '${friend['pincode']}',
-                                      );
-                                    }
-                                  },
-                                );
-                              }
-                            },
+                          const SizedBox(
+                            width: 23,
+                          ),
+                          PinBox(
+                            textEditingController: _pin4Controller,
+                            hasError: _pin4Error != null,
                           ),
                         ],
                       ),
-                    ],
+
+                      // Space between
+                      const SizedBox(
+                        height: 8,
+                      ),
+
+                      // ? Action Buttons
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ? Error message text
+                          Row(
+                            children: [
+                              const Padding(padding: EdgeInsets.only(left: 35)),
+                              if (errorMessage.isNotEmpty)
+                                Text(
+                                  errorMessage,
+                                  style: TextStyle(
+                                      color: niftiPink,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              // ? If no error then display sized box to keep space
+                              else
+                                const SizedBox(
+                                  height: 17,
+                                ),
+                            ],
+                          ),
+                          // Space between
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              // ? Clear PIN fields & errors
+                              CTACancelButton(
+                                text: 'Clear',
+                                onTap: () {
+                                  setState(() {
+                                    errorMessage = '';
+                                  });
+                                  _pin1Controller.clear();
+                                  _pin2Controller.clear();
+                                  _pin3Controller.clear();
+                                  _pin4Controller.clear();
+                                },
+                              ),
+                              // ? Find user button
+                              CTAConfirmButton(
+                                text: 'Find',
+                                onTap: () async {
+                                  combinedCode =
+                                      "${_pin1Controller.text}${_pin2Controller.text}${_pin3Controller.text}${_pin4Controller.text}";
+                                  debugPrint(combinedCode);
+                                  // ? If less than 4 digits entered == show error
+                                  if (combinedCode.length != 4) {
+                                    setState(() {
+                                      errorMessage =
+                                          '* Please enter all 4 digits';
+                                    });
+                                  } else {
+                                    // ? Match user pin & display pop up modal with their info
+                                    GeneratePincode(pincode: combinedCode);
+                                    staticPin =
+                                        await GeneratePincode.getStaticPincode(
+                                            combinedCode);
+                                    friend =
+                                        await _getConnectionData(staticPin);
+                                    setState(
+                                      () async {
+                                        // Clear error message
+                                        setState(() {
+                                          errorMessage = '';
+                                        });
+                                        hasError = false;
+                                        // ? If no match found == show error
+                                        if ('${friend['firstName']}' ==
+                                            'null') {
+                                          setState(() {
+                                            errorMessage =
+                                                'Oops! That\'s an invalid code. Please try again!';
+                                          });
+                                        } else {
+                                          // ? Clear PIN fields & any error message when matched
+                                          setState(() {
+                                            errorMessage = '';
+                                          });
+                                          _pin1Controller.clear();
+                                          _pin2Controller.clear();
+                                          _pin3Controller.clear();
+                                          _pin4Controller.clear();
+                                          // ? Modal with matching connections details
+
+                                          displayModalBottomSheet(
+                                            context,
+                                            '${friend['fullName']}',
+                                            '${friend['pronouns']}',
+                                            '${friend['industry']}',
+                                            '${friend['imageLink']}',
+                                            '${friend['pincode']}',
+                                          );
+                                        }
+                                      },
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ]),
+                  ), // End of PIN Actions
+                  // Space between PIN & Quick Card
+                  const SizedBox(
+                    height: 40,
                   ),
-                ]),
-              ), // End of PIN Actions
-              // Space between PIN & Quick Card
-              const SizedBox(
-                height: 40,
-              ),
-              // ? Quick Card
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(top: 10, left: 15),
-                    width: 290,
-                    height: 140,
-                    decoration: BoxDecoration(
-                      color: niftiWhite,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 1.0,
-                          blurRadius: 2.0,
-                          offset: const Offset(1, -0.5),
+                  // ? Quick Card
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(top: 10, left: 15),
+                        width: 290,
+                        height: 140,
+                        decoration: BoxDecoration(
+                          color: niftiWhite,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 1.0,
+                              blurRadius: 2.0,
+                              offset: const Offset(1, -0.5),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextDisplay(
-                          text: 'MY QUICK CARD',
-                          color: niftiLightGrey,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        // ? PROFILE INFO
-                        // profile image stack + check
-                        Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Stack(
-                              alignment: AlignmentDirectional.bottomCenter,
+                            TextDisplay(
+                              text: 'MY QUICK CARD',
+                              color: niftiLightGrey,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            // ? PROFILE INFO
+                            // profile image stack + check
+                            Row(
                               children: [
-                                details['imageLink'] != ''
-                                    ? CircleAvatar(
-                                        radius: 38,
-                                        backgroundImage: const AssetImage(
-                                            'images/defaultProfileImage.png'),
-                                        child: CircleAvatar(
-                                          radius: 36,
-                                          backgroundImage: NetworkImage(
-                                              '${details['imageLink']}',
-                                              scale: 1.0),
-                                        ),
-                                      )
-                                    : const CircleAvatar(
-                                        radius: 38,
-                                        backgroundImage: AssetImage(
-                                            'images/defaultProfileImage.png'),
-                                      ),
-                                // Pronoun Stack + check
-                                details['pronouns'] != ''
-                                    ? Stack(
-                                        alignment: AlignmentDirectional.center,
-                                        children: [
-                                          // Gradient Border
-                                          Container(
-                                            width: 86,
-                                            height: 18,
-                                            decoration: BoxDecoration(
-                                              gradient: niftiGradient,
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
+                                Stack(
+                                  alignment: AlignmentDirectional.bottomCenter,
+                                  children: [
+                                    details['imageLink'] != ''
+                                        ? CircleAvatar(
+                                            radius: 38,
+                                            backgroundImage: const AssetImage(
+                                                'images/defaultProfileImage.png'),
+                                            child: CircleAvatar(
+                                              radius: 36,
+                                              backgroundImage: NetworkImage(
+                                                  '${details['imageLink']}',
+                                                  scale: 1.0),
                                             ),
+                                          )
+                                        : const CircleAvatar(
+                                            radius: 38,
+                                            backgroundImage: AssetImage(
+                                                'images/defaultProfileImage.png'),
                                           ),
-                                          // Pronouns
-                                          Container(
+                                    // Pronoun Stack + check
+                                    details['pronouns'] != ''
+                                        ? Stack(
                                             alignment:
                                                 AlignmentDirectional.center,
-                                            width: 84,
-                                            height: 16,
-                                            decoration: BoxDecoration(
-                                              color: niftiWhite,
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                            ),
-                                            child: Text(
-                                              '${details['pronouns']}',
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w600,
-                                                color: niftiGrey,
+                                            children: [
+                                              // Gradient Border
+                                              Container(
+                                                width: 86,
+                                                height: 18,
+                                                decoration: BoxDecoration(
+                                                  gradient: niftiGradient,
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    : const SizedBox(),
-                              ],
-                            ),
-                            // Space between
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // ? Display Full Name
-                                TextDisplay(
-                                  text: '${details['fullName']}',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 1,
+                                              // Pronouns
+                                              Container(
+                                                alignment:
+                                                    AlignmentDirectional.center,
+                                                width: 84,
+                                                height: 16,
+                                                decoration: BoxDecoration(
+                                                  color: niftiWhite,
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                child: Text(
+                                                  '${details['pronouns']}',
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: niftiGrey,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox(),
+                                  ],
                                 ),
-                                // ? Divder & Space between
+                                // Space between
                                 const SizedBox(
-                                  height: 5,
+                                  width: 10,
                                 ),
-                                Container(
-                                  height: 0.3,
-                                  width: 175,
-                                  color: niftiLightGrey,
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                TextDisplay(
-                                  text: '${details['industry']}',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // ? Display Full Name
+                                    TextDisplay(
+                                      text: '${details['fullName']}',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w900,
+                                      letterSpacing: 1,
+                                    ),
+                                    // ? Divder & Space between
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Container(
+                                      height: 0.3,
+                                      width: 175,
+                                      color: niftiLightGrey,
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    TextDisplay(
+                                      text: '${details['industry']}',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                  // ? Code Container
-                  Container(
-                    padding: const EdgeInsets.only(top: 10, left: 10),
-                    width: 100,
-                    height: 140,
-                    decoration: BoxDecoration(
-                      color: niftiWhite,
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(50),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 1.0,
-                          blurRadius: 3.0,
-                          offset: const Offset(1, -0.5),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextDisplay(
-                          text: 'MY CODE',
-                          color: niftiLightGrey,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        // ? Pin Code Display
-                        GradientText(
-                          '${details['pincode']}',
-                          colors: const [
-                            Color.fromRGBO(209, 147, 246, 1),
-                            Color.fromRGBO(115, 142, 247, 1),
-                            Color.fromRGBO(116, 215, 247, 1),
+                      // ? Code Container
+                      Container(
+                        padding: const EdgeInsets.only(top: 10, left: 10),
+                        width: 100,
+                        height: 140,
+                        decoration: BoxDecoration(
+                          color: niftiWhite,
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(50),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 1.0,
+                              blurRadius: 3.0,
+                              offset: const Offset(1, -0.5),
+                            ),
                           ],
-                          style: const TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 10,
-                              height: 1.2),
-                        )
-                      ],
-                    ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextDisplay(
+                              text: 'MY CODE',
+                              color: niftiLightGrey,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            // ? Pin Code Display
+                            GradientText(
+                              '${details['pincode']}',
+                              colors: const [
+                                Color.fromRGBO(209, 147, 246, 1),
+                                Color.fromRGBO(115, 142, 247, 1),
+                                Color.fromRGBO(116, 215, 247, 1),
+                              ],
+                              style: const TextStyle(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 10,
+                                  height: 1.2),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }

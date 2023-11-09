@@ -144,7 +144,9 @@ class _RegisterPageState extends State<RegisterPage> {
   // * * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
             //padding:const EdgeInsets.only(bottom: 50),
@@ -385,7 +387,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ])),
           ]),
-        )));
+        ))));
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
