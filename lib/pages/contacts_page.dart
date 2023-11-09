@@ -25,14 +25,15 @@ class _ContactsPageState extends State<ContactsPage> {
 
   // ? get connection data that matches array of pincodes and store in Map<> friends
   _getAllConnectionsData() async {
-    pincodes = await ReadUserData
-        .getPincodeList(); // ? Assigning pincodes with map of Firestore > document > connections []
+    pincodes = await NiftiFirestoreFunctions
+        .getAllConnections(); // ? Assigning pincodes with map of Firestore > document > connections []
     if (pincodes != null) {
       friends = [];
       for (int i = 0; i <= pincodes.length; i++) {
         code = pincodes[i]; // ? Extracting the user pincode
-        Map<String, Object?> friendData = await ReadUserData.getConnectionData(
-            code); // ? grabbing the object associated with user pincode
+        Map<String, Object?> friendData =
+            await NiftiFirestoreFunctions.getConnectionProfileData(
+                code); // ? grabbing the object associated with user pincode
         friends.add(friendData); // ? Copying obj into friends
         setState(() {}); // ? Changing ui
       }

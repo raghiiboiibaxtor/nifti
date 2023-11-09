@@ -106,6 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future register() async {
     // ? Calling Loading Animation
     displayLoadingCircle(context);
+    await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
     // ? Registration Check
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -114,11 +115,9 @@ class _RegisterPageState extends State<RegisterPage> {
       );
       // ? pop loading circle
       if (context.mounted) Navigator.pop(context);
-      _createCode = await CreateRandom.createRandom();
+      _createCode = await GeneratePincode.createNewPincode();
       // ? Adds user info to Firestore
-      await StoreUserData().addUserDetails(
-        /*_firstNameController.text.trim(),
-        _lastNameController.text.trim(),*/
+      await NiftiFirestoreFunctions().createUserProfile(
         _fullNameController.text.trim(),
         _emailController.text.trim(),
         _createCode,
@@ -139,10 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
         passwordFormatError(_passwordController.text, weakPassword,
             (error) => setState(() => _passwordError = error));
       }
-      //displayErrorMessage(context, error.message!);
     }
-    //StoreUserData().addUserImage(_profileImage!);
-    //StoreUserData().updateFirestoreImageLink(_profileImage!);
   }
 
   // * * ---------------- * (BUILD WIDGET) * ---------------- *

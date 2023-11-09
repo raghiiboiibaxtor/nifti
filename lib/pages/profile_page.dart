@@ -17,19 +17,6 @@ import 'package:nifti_locapp/components/button.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_storage/firebase_storage.dart';
 
-/*
-import 'package:flutter/cupertino.dart';
-import "package:flutter/material.dart";
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nifti_locapp/components/app_theme.dart';
-import 'package:nifti_locapp/functions/functions.dart';
-import 'package:nifti_locapp/components/text_display.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
-import 'package:social_media_buttons/social_media_buttons.dart';
-import 'package:flutter_flip_card/flutter_flip_card.dart';
-
- */
-
 // ? ProfilePage == display user's details + edit to choose banner images
 
 // * ---------------- * (STATEFUL WIDGET) CLASS ProfilePage (STATEFUL WIDGET) * ---------------- *
@@ -97,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // ? Get user's data and store in Map<> details
   _getProfileData() async {
-    details = await ReadUserData.getProfileData();
+    details = await NiftiFirestoreFunctions.getUserProfileData();
     if (details.isNotEmpty) {
       for (int i = 0; i < details.length; i++) {
         setState(() {});

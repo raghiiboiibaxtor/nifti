@@ -38,23 +38,19 @@ class _LoginPageState extends State<LoginPage> {
   Future login() async {
     // ? Loading Animation
     displayLoadingCircle(context);
+    await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
     // ? Sign in check
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
       // ? pop loading circle
       if (context.mounted) Navigator.pop(context);
-    } /*on FirebaseAuthException catch (error) {
-      // ? pop loading circle
-      Navigator.pop(context);
-      // ? Display error message
-      displayErrorMessage(context, error.message!);
-    }*/
-    catch (error) {
+    } catch (error) {
       if (error is FirebaseAuthException) {
-        // Handle specific error codes and display custom messages
+        // ? Handle specific error codes and display custom messages
         if (error.code == 'user-not-found') {
           if (context.mounted) Navigator.pop(context);
           displayErrorMessage(context,
