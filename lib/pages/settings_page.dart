@@ -8,6 +8,7 @@ import 'package:nifti_locapp/components/button_with_switch.dart';
 import 'package:nifti_locapp/components/text_display.dart';
 import 'package:nifti_locapp/components/privacy_popup.dart';
 import 'package:nifti_locapp/pages/change_email_page.dart';
+import 'package:nifti_locapp/pages/change_password_page.dart';
 
 // ? SettingsPage == display user's settings options
 
@@ -48,7 +49,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: niftiGrey,
                 ),
               ),
-              // ? Logout
               const SizedBox(
                 height: 10,
               ),
@@ -62,8 +62,8 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 10,
               ),
+              // ? Change Email Button
               Button(
-                // ? Settings page redirection
                 onTap: () => Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
                     return const ChangeEmail();
@@ -77,10 +77,13 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 20,
               ),
+              // ? Change Password Button
               Button(
-                onTap: () {
-                  // ! popup logic here
-                },
+                onTap: () => Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const ChangePassword();
+                  },
+                )),
                 text: 'Update Password',
                 icon: Icons.lock_outline_rounded,
                 iconColor: niftiLightBlue,
@@ -107,6 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 10,
               ),
+              // ? Toggle FaceID Button
               ButtonSwitch(
                 text: 'FaceID',
                 icon: Icons.lock_person_outlined,
@@ -116,6 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 20,
               ),
+              // ? View Block List Button
               Button(
                 onTap: () {
                   // ! popup logic here
@@ -128,6 +133,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 20,
               ),
+              // ? View Privacy Policy Button
               Button(
                 onTap: () {
                   // ! popup logic here
@@ -158,6 +164,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 10,
               ),
+              // ? Logout Button
               Button(
                 onTap: () {
                   FirebaseAuth.instance.signOut();
@@ -170,6 +177,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 20,
               ),
+              // ? Delete Account Button
               Button(
                 onTap: () {
                   // ! pop up logic here

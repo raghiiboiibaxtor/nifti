@@ -48,6 +48,7 @@ const String invalidEmailFormat = 'Invalid email format';
 const String emailInUse = 'This email is already in use';
 const String emailsNotMatchingErrorMessage = 'Emails do not match';
 const String weakPassword = 'Password must be 6+ characters';
+const String incorrectPassword = 'Incorrect password';
 
 // ? Check if fields are empty
 bool validateAndHandleError(
@@ -66,6 +67,19 @@ bool validateAndHandleError(
 bool fieldsMatch(String fieldValue, String fieldValue2, String? errorMessage,
     Function(String?) setError) {
   if (fieldValue != fieldValue2) {
+    // Setting error message
+    setError(errorMessage);
+    return false;
+  }
+  // Clear the error message if the field is valid
+  setError(null);
+  return true;
+}
+
+// ? Check & match existing fields
+bool matchCurrentValue(String fieldValue, String currentValue, String? errorMessage,
+    Function(String?) setError) {
+  if (fieldValue != currentValue) {
     // Setting error message
     setError(errorMessage);
     return false;

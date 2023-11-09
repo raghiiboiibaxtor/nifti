@@ -7,34 +7,37 @@ import 'package:nifti_locapp/components/cta_cancel_button.dart';
 import 'package:nifti_locapp/components/cta_confirm_button.dart';
 import 'package:nifti_locapp/functions/frontend.dart';
 
-// ? ChangeEmail == User access to update account email
+// ? ChangePassword == User access to update account email
 
-// * ---------------- * (STATEFUL WIDGET) CLASS ChangeEmail (STATEFUL WIDGET) * ---------------- *
-class ChangeEmail extends StatefulWidget {
-  const ChangeEmail({super.key});
+// * ---------------- * (STATEFUL WIDGET) CLASS ChangePassword (STATEFUL WIDGET) * ---------------- *
+class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
 
   @override
-  State<ChangeEmail> createState() => _ChangeEmailState();
+  State<ChangePassword> createState() => _ChangePasswordState();
 }
-// * ---------------- * END OF (STATE) CLASS ChangeEmail (STATE) * ---------------- *
+// * ---------------- * END OF (STATE) CLASS ChangePassword (STATE) * ---------------- *
 
-// * ---------------- * (STATE) CLASS _ChangeEmailState (STATE) * ---------------- *
-class _ChangeEmailState extends State<ChangeEmail> {
+// * ---------------- * (STATE) CLASS _ChangePasswordState (STATE) * ---------------- *
+class _ChangePasswordState extends State<ChangePassword> {
   // ? Text Controllers - used to access the user's input
-  final _emailController = TextEditingController();
-  final _confirmEmailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   // ? Validation Variables
   final _formKey = GlobalKey<FormState>();
-  String? _emailError;
-  String? _confirmEmailError;
+  String? _currentPasswordError;
+  String? _passwordError;
+  String? _confirmPasswordError;
   bool isError = false;
 
   // ? Dispose controllers when not using - helps memory management
   @override
   void dispose() {
-    _emailController.dispose();
-    _confirmEmailController.dispose();
+    _passwordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -63,7 +66,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                   SizedBox(
                     height: 300,
                     width: 400,
-                    child: Image.asset('images/email.png'),
+                    child: Image.asset('images/password.png'),
                   ),
                   // Space between
                   const SizedBox(
@@ -71,7 +74,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                   ),
                   // ? Title
                   Text(
-                    'Update Email',
+                    'Update Password',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -84,7 +87,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                   ),
                   // ? Description
                   const TextDisplay(
-                    text: 'This will replace your current login email',
+                    text: 'This will replace your current password',
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
                   ),
@@ -96,25 +99,38 @@ class _ChangeEmailState extends State<ChangeEmail> {
                     key: _formKey,
                     child: Column(
                       children: [
-                  // ? Email Field
+
+                  // ? Current Password Field
                   TextFieldComponent(
-                    controller: _emailController,
-                    labelText: 'New Email',
-                    obscureText: false,
-                    hasError: _emailError == null,
-                    errorText: _emailError,
+                    controller: _passwordController,
+                    labelText: 'Current Password',
+                    obscureText: true,
+                    hasError: _currentPasswordError == null,
+                    errorText: _currentPasswordError,
                   ),
                   // Space between
                   const SizedBox(
-                    height: 40,
+                    height: 30,
                   ),
-                  // ? Confirm Email Field
+                  // ? New Password Field
                   TextFieldComponent(
-                    controller: _confirmEmailController,
-                    labelText: 'Confirm Email',
-                    obscureText: false,
-                    hasError: _confirmEmailError != null,
-                    errorText: _confirmEmailError,
+                    controller: _newPasswordController,
+                    labelText: 'New Password',
+                    obscureText: true,
+                    hasError: _passwordError == null,
+                    errorText: _passwordError,
+                  ),
+                  // Space between
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  // ? Confirm Password Field
+                  TextFieldComponent(
+                    controller: _confirmPasswordController,
+                    labelText: 'Confirm Password',
+                    obscureText: true,
+                    hasError: _confirmPasswordError != null,
+                    errorText: _confirmPasswordError,
                   ),
                   // Space between
                   const SizedBox(
@@ -140,32 +156,48 @@ class _ChangeEmailState extends State<ChangeEmail> {
                           onTap: () {
                             // ? Validate the form using the _formKey
                             if (_formKey.currentState!.validate()) {
-                              // Email
-                              bool isEmailValid = validateAndHandleError(
-                                  _emailController.text,
-                                  emptyEmailErrorMessage,
+                              // Current Password
+                              bool isCurrentPasswordValid = validateAndHandleError(
+                                  _passwordController.text,
+                                  emptyPasswordErrorMessage,
                                   (error) =>
-                                      setState(() => _emailError = error));
+                                      setState(() => _currentPasswordError = error));
 
-                              // Confirm Email
-                              bool isConfirmEmailValid = validateAndHandleError(
-                                  _confirmEmailController.text,
+                              // New Password
+                              bool isNewPasswordValid = validateAndHandleError(
+                                  _newPasswordController.text,
+                                  emptyPasswordErrorMessage,
+                                  (error) =>
+                                      setState(() => _passwordError = error));
+
+                              // Confirm password
+                              bool isConfirmPasswordlValid = validateAndHandleError(
+                                  _confirmPasswordController.text,
                                   emptyConfirmPasswordErrorMessage,
                                   (error) => setState(
-                                      () => _confirmEmailError = error));
+                                      () => _confirmPasswordError = error));
 
-                              // Match Emails
-                              bool areEmailsMatching = fieldsMatch(
-                                  _emailController.text,
-                                  _confirmEmailController.text,
-                                  emailsNotMatchingErrorMessage,
+                              // Match Current Passwords
+                              // ! Need to match to auth password = adjust code and add bool name in to if statement
+                             /* bool isCurrentPasswordMatching = matchCurrentValue(
+                                  _passwordController.text,
+                                  _passwordController.text,
+                                  incorrectPassword,
                                   (error) => setState(
-                                      () => _confirmEmailError = error));
+                                      () => _currentPasswordError = error));*/
+
+                              // Match Passwords
+                              bool arePasswordsMatching = fieldsMatch(
+                                  _newPasswordController.text,
+                                  _confirmPasswordController.text,
+                                  passwordsNotMatchingErrorMessage,
+                                  (error) => setState(
+                                      () => _confirmPasswordError = error));
 
                               // If all fields are valid == proceed with registration
-                              if (isEmailValid &&
-                                  isConfirmEmailValid &&
-                                  areEmailsMatching) {
+                              if (isCurrentPasswordValid && isNewPasswordValid &&
+                                  isConfirmPasswordlValid &&
+                                  arePasswordsMatching) {
                                 // ! update firebase auth stuff here
                                 Navigator.pop(context);
                               }
@@ -181,4 +213,4 @@ class _ChangeEmailState extends State<ChangeEmail> {
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
-// * ---------------- * END OF (STATE) CLASS _ChangeEmailState (STATE) * ---------------- *
+// * ---------------- * END OF (STATE) CLASS _ChangePasswordState (STATE) * ---------------- *
