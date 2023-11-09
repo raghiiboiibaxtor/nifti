@@ -2,56 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
+import 'package:nifti_locapp/components/back_app_bar.dart';
 import 'package:nifti_locapp/components/button.dart';
+import 'package:nifti_locapp/components/button_with_switch.dart';
 import 'package:nifti_locapp/components/text_display.dart';
 import 'package:nifti_locapp/components/privacy_popup.dart';
+import 'package:nifti_locapp/pages/change_email_page.dart';
 
+// ? SettingsPage == display user's settings options
+
+// * ---------------- * (STATEFUL WIDGET) CLASS SettingsPage (STATEFUL WIDGET) * ---------------- *
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
+// * ---------------- * END OF (STATE) CLASS SettingdPage (STATE) * ---------------- *
 
+// * ---------------- * (STATE) CLASS _SettingsPageState (STATE) * ---------------- *
 class _SettingsPageState extends State<SettingsPage> {
+  // * * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: niftiOffWhite,
         resizeToAvoidBottomInset: false,
         // ? Top bar that contains Nifti Logo
-        appBar: AppBar(
-          shape: const RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.only(bottomRight: Radius.circular(40))),
-          // ? Appbar Theme
-          iconTheme: CupertinoIconThemeData(color: niftiOffWhite, size: 23),
-          elevation: 2,
-          shadowColor: niftiGreyShadow,
-          surfaceTintColor: niftiOffWhite,
-          toolbarHeight: 40,
-          centerTitle: true,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-                gradient: niftiGradientSemiOpaque,
-                borderRadius:
-                    const BorderRadius.only(bottomRight: Radius.circular(40))),
-          ),
-          // ? Go Back
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              CupertinoIcons.back,
-              semanticLabel: 'Back',
-            ),
-          ),
-          // ? Nifti Logo
-          title: SizedBox(
-            width: 70,
-            child: Image.asset('images/nifti_logo_white.png'),
-          ),
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(40), // Adjust the height as needed
+          child: BackAppBar(),
         ),
         // *** Settings page UI & logic starts here
         body: Container(
@@ -83,12 +63,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 height: 10,
               ),
               Button(
-                onTap: () {
-                  // ! popup logic here
-                },
+                // ? Settings page redirection
+                onTap: () => Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const ChangeEmail();
+                  },
+                )),
                 text: 'Change Email Address',
                 icon: Icons.alternate_email_rounded,
                 iconColor: niftiLightBlue,
+                showArrowIcon: true,
               ),
               const SizedBox(
                 height: 20,
@@ -100,8 +84,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 text: 'Update Password',
                 icon: Icons.lock_outline_rounded,
                 iconColor: niftiLightBlue,
+                showArrowIcon: true,
               ),
-              // ? Divider & space between 
+              // ? Divider & space between
               const SizedBox(
                 height: 15,
               ),
@@ -122,13 +107,11 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 10,
               ),
-              Button(
-                onTap: () {
-                  // ! popup logic here
-                },
+              ButtonSwitch(
                 text: 'FaceID',
-                icon: Icons.alternate_email_rounded,
+                icon: Icons.lock_person_outlined,
                 iconColor: niftiDarkBlue,
+                showSwitch: true,
               ),
               const SizedBox(
                 height: 20,
@@ -140,6 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 text: 'Block List',
                 icon: Icons.block,
                 iconColor: niftiDarkBlue,
+                showArrowIcon: true,
               ),
               const SizedBox(
                 height: 20,
@@ -153,7 +137,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icons.privacy_tip_outlined,
                 iconColor: niftiDarkBlue,
               ),
-              // ? Divider & space between 
+              // ? Divider & space between
               const SizedBox(
                 height: 15,
               ),
@@ -193,9 +177,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 text: 'Delete Account',
                 icon: CupertinoIcons.delete,
                 iconColor: niftiError,
+                showArrowIcon: true,
               ),
             ],
           ),
         ));
   }
+  // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
+// * ---------------- * END OF (STATE) CLASS _SettingsPageState (STATE) * ---------------- *

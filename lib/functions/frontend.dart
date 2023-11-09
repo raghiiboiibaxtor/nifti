@@ -46,6 +46,7 @@ const String emptyConfirmPasswordErrorMessage = 'Please confirm your password';
 const String passwordsNotMatchingErrorMessage = 'Passwords do not match';
 const String invalidEmailFormat = 'Invalid email format';
 const String emailInUse = 'This email is already in use';
+const String emailsNotMatchingErrorMessage = 'Emails do not match';
 const String weakPassword = 'Password must be 6+ characters';
 
 // ? Check if fields are empty
@@ -62,7 +63,7 @@ bool validateAndHandleError(
 }
 
 // ? Match required fields
-bool passwordsMatch(String fieldValue, String fieldValue2, String? errorMessage,
+bool fieldsMatch(String fieldValue, String fieldValue2, String? errorMessage,
     Function(String?) setError) {
   if (fieldValue != fieldValue2) {
     // Setting error message
