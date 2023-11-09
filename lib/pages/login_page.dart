@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
   Future login() async {
     // ? Loading Animation
     displayLoadingCircle(context);
-    await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+    //await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
     // ? Sign in check
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(

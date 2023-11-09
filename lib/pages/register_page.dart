@@ -106,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future register() async {
     // ? Calling Loading Animation
     displayLoadingCircle(context);
-    await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+    //await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
     // ? Registration Check
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
