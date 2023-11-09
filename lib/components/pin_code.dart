@@ -1,5 +1,6 @@
-import 'dart:async';
+/*import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../functions/functions.dart';
 import '../functions/frontend.dart';
@@ -13,9 +14,9 @@ import 'package:nifti_locapp/components/connection_modal.dart';
 class PinCodeVerificationScreen extends StatefulWidget {
   // ? Required variables to be passed
   const PinCodeVerificationScreen({
-    Key? key,
+    super.key,
     this.userPin, // ? Constructing obj and required variables
-  }) : super(key: key);
+  });
   // ? Component Variables
   final String? userPin;
   @override
@@ -164,28 +165,14 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
                 child: Text(
                   hasError ? "* Please fill up all the cells properly" : "",
-                  style: const TextStyle(
-                    color: Color.fromRGBO(116, 215, 247, 1),
+                  style: TextStyle(
+                    color: niftiPink,
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-              // ? Space between
-              const SizedBox(height: 10),
-              // ? Entry prompt
-              const Text("Add Connection",
-                  style: TextStyle(
-                      letterSpacing: 0.8,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                      color: Color.fromRGBO(134, 151, 175, 1))),
-              const Text('Tell them your code & enter theirs!',
-                  style: TextStyle(
-                      letterSpacing: 0.8,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color.fromRGBO(134, 151, 175, 1))),
+
               const SizedBox(
                 height: 25,
               ),
@@ -340,3 +327,5 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
 // * ---------------- * END OF (STATE) CLASS _PinCodeVerificationScreenState (STATE) * ---------------- *
+
+*/

@@ -51,10 +51,10 @@ class Button extends StatelessWidget {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
+                  color: Colors.grey.withOpacity(0.2),
                   spreadRadius: 1.0,
-                  blurRadius: 3.0,
-                  offset: const Offset(0, 1),
+                  blurRadius: 2.0,
+                  offset: const Offset(0, 0.5),
                 ),
               ],
               color: niftiWhite,
@@ -74,10 +74,10 @@ class Button extends StatelessWidget {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 0.5,
-                  blurRadius: 3.0,
-                  offset: const Offset(0, 1),
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 0.2,
+                  blurRadius: 1.0,
+                  offset: const Offset(0, .5),
                 ),
               ],
               color: niftiWhite,

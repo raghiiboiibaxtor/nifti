@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nifti_locapp/components/app_theme.dart';
 import 'cta_button.dart';
 
 // ? ButtonComponent == custom button widget
@@ -36,13 +37,13 @@ class CTAConfirmButton extends StatelessWidget {
           height: 45,
           width: 222,
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(121, 212, 189, 1),
+            color: niftiDarkBlue,
             boxShadow: [          
             BoxShadow(
               color: Colors.grey.withOpacity(0.3),
-              // spreadRadius: 1.0,
-              blurRadius: 2.0,
-              offset: const Offset(0, 1),
+              spreadRadius: 1,
+              blurRadius: 2.23,
+              offset: const Offset(1, 2),
             ),
           ], borderRadius: const BorderRadius.all(Radius.circular(30))),
         ),
@@ -54,8 +55,8 @@ class CTAConfirmButton extends StatelessWidget {
           width: 218,
           height: 41,
           fontWeight: fontWeight,
-          color: const Color.fromRGBO(235, 254, 244, 1),
-          fontColor: const Color.fromRGBO(121, 212, 189, 1),
+          color: const Color.fromARGB(255, 238, 241, 254),
+          fontColor: niftiDarkBlue,
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
           letterSpacing: 1,
         ),
