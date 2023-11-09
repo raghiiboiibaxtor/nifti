@@ -27,7 +27,7 @@ class PinBox extends StatelessWidget {
         cursorHeight: 75,
         cursorWidth: 1,
         controller: textEditingController,
-        autofocus: true,
+        autofocus: false,
         keyboardType: TextInputType.number,
         maxLength: 1,       
         decoration: InputDecoration(

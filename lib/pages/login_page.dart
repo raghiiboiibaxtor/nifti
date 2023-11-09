@@ -75,7 +75,9 @@ class _LoginPageState extends State<LoginPage> {
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
       resizeToAvoidBottomInset: false,
       body: DecoratedBox(
         decoration: const BoxDecoration(
@@ -144,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-    );
+    ));
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }

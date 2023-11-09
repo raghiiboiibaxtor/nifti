@@ -167,7 +167,9 @@ class _ProfilePageState extends State<ProfilePage> {
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Container(
       color: niftiOffWhite,
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 20),
@@ -240,7 +242,7 @@ class _ProfilePageState extends State<ProfilePage> {
           )
         ],
       ),
-    );
+    ));
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 
