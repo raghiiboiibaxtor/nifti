@@ -41,13 +41,13 @@ class _ProfilePageState extends State<ProfilePage> {
   // ? Text Controllers - used to access the user's input
   Uint8List? _profileImage;
   final _fullNameController = TextEditingController();
-  String _pronouns = '';
+  String? _pronouns;
   final _cityController = TextEditingController();
   final _bio = TextEditingController();
   final _industry = TextEditingController();
   final _roleTitle = TextEditingController();
   final _companyName = TextEditingController();
-  String _yearsWorked = '';
+  String? _yearsWorked;
   final _emailController = TextEditingController();
   final _websiteController = TextEditingController();
   final _linkedinController = TextEditingController();
@@ -94,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // ! Method to update user info in Firebase / Firestore
- /* Future updateUserDetails() async {
+  /* Future updateUserDetails() async {
       // ? Adds user info to Firestore
       await UpdateUserData().addUserDetails(
         _fullNameController.text.trim(),
@@ -170,79 +170,79 @@ class _ProfilePageState extends State<ProfilePage> {
     return GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Container(
-      color: niftiOffWhite,
-      alignment: Alignment.topLeft,
-      padding: const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+          color: niftiOffWhite,
+          alignment: Alignment.topLeft,
+          padding:
+              const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Page title
-              Text(
-                'PROFILE',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: niftiGrey,
-                ),
+              Row(
+                children: [
+                  // Page title
+                  Text(
+                    'PROFILE',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: niftiGrey,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 208,
+                  ),
+                  // ? Edit Button
+                  TextButton.icon(
+                    onPressed: () {
+                      if (isEditing) {
+                        // Save action
+                        // ! On save - update firestore
+                        // updateUserDetails();
+                      } else {
+                        // Assigning text controllers to display info
+                        assignControllers();
+                      }
+                      // Toggle between edit and display mode
+                      flip.flipcard();
+                      setState(() {
+                        isEditing = !isEditing;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.mode_edit_outline_rounded,
+                      weight: 20,
+                      size: 12,
+                      color: niftiGrey,
+                    ),
+                    label: Text(
+                      isEditing ? 'Save' : 'Edit',
+                      style: TextStyle(color: niftiGrey),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(
-                width: 208,
-              ),
-              // ? Edit Button
-              TextButton.icon(
-                onPressed: () {   
-                  if (isEditing) {
-                    // Save action
-                    // ! On save - update firestore
-                   // updateUserDetails();
-                  } else {
-                    // Assigning text controllers to display info
-                    assignControllers();
-                  }
-                  // Toggle between edit and display mode
-                  flip.flipcard();
-                  setState(() {
-                    isEditing = !isEditing;
-                  });
-                  
-                },
-                icon: Icon(
-                  Icons.mode_edit_outline_rounded,
-                  weight: 20,
-                  size: 12,
-                  color: niftiGrey,
-                ),
-                label: Text(
-                  isEditing ? 'Save' : 'Edit',
-                  style: TextStyle(color: niftiGrey),
-                ),
-              ),
+              Column(
+                children: [
+                  FlipCard(
+                    rotateSide: RotateSide.bottom,
+                    axis: FlipAxis.vertical,
+                    controller: flip,
+                    frontWidget: Center(
+                      child: SizedBox(
+                        child: _profileDisplayView(),
+                      ),
+                    ),
+                    backWidget: Center(
+                      child: SizedBox(
+                        child: _buildEditView(),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
-          Column(
-            children: [
-              FlipCard(
-                rotateSide: RotateSide.bottom,
-                axis: FlipAxis.vertical,
-                controller: flip,
-                frontWidget: Center(
-                  child: SizedBox(
-                    child: _profileDisplayView(),
-                  ),
-                ),
-                backWidget: Center(
-                  child: SizedBox(
-                    child: _buildEditView(),
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    ));
+        ));
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 
@@ -814,13 +814,35 @@ class _ProfilePageState extends State<ProfilePage> {
                       _profileImage != null
                           ? CircleAvatar(
                               radius: 53,
-                              backgroundImage: MemoryImage(_profileImage!),
+                              backgroundImage: const AssetImage(
+                                  'images/defaultProfileImage.png'),
+                              child: CircleAvatar(
+                                radius: 51,
+                                backgroundImage: MemoryImage(_profileImage!),
+                              ),
                             )
                           : const CircleAvatar(
                               radius: 53,
                               backgroundImage:
                                   AssetImage('images/defaultProfileImage.png'),
                             ),
+                      /*details['imageLink'] != ''
+                      ? CircleAvatar(
+                          radius: 53,
+                          backgroundImage: const AssetImage(
+                              'images/defaultProfileImage.png'),
+                          child: CircleAvatar(
+                            radius: 51,
+                            backgroundImage: NetworkImage(
+                                '${details['imageLink']}',
+                                scale: 1.0),
+                          ),
+                        )
+                      : const CircleAvatar(
+                          radius: 53,
+                          backgroundImage:
+                              AssetImage('images/defaultProfileImage.png'),
+                        ),*/
                       Positioned(
                         bottom: -9,
                         left: 67,
@@ -873,7 +895,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       // ? Pronoun dropdown selector
                       DropdownMenuComponent(
                         width: 181,
-                        value: pronouns,
+                        value: _pronouns,
                         labelText: 'Pronouns',
                         itemsList: pronouns,
                         onChanged: (value) {
@@ -947,7 +969,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   // ? Years Worked Dropdown
                   DropdownMenuComponent(
                     width: 130,
-                    value: pronouns,
+                    value: _yearsWorked,
                     labelText: 'Years Worked',
                     itemsList: years,
                     onChanged: (value) {
