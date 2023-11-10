@@ -9,6 +9,7 @@ import 'package:nifti_locapp/components/text_display.dart';
 import 'package:nifti_locapp/components/privacy_popup.dart';
 import 'package:nifti_locapp/pages/change_email_page.dart';
 import 'package:nifti_locapp/pages/change_password_page.dart';
+import 'package:nifti_locapp/pages/coming_soon_page.dart';
 
 // ? SettingsPage == display user's settings options
 
@@ -122,9 +123,11 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               // ? View Block List Button
               Button(
-                onTap: () {
-                  // ! popup logic here
-                },
+                onTap: () => Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const ComingSoon();
+                  },
+                )),
                 text: 'Block List',
                 icon: Icons.block,
                 iconColor: niftiDarkBlue,

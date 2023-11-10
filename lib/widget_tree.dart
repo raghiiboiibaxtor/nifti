@@ -6,6 +6,7 @@ import 'package:nifti_locapp/pages/contacts_page.dart';
 import 'package:nifti_locapp/pages/profile_page.dart';
 import 'package:nifti_locapp/pages/settings_page.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
+import 'package:nifti_locapp/pages/coming_soon_page.dart';
 
 // ? WidgetTree == App navigation through bottom nav bar + app bar
 
@@ -56,9 +57,11 @@ class _WidgetTreeState extends State<WidgetTree> {
           ),
           // ? Notifications
           leading: IconButton(
-            onPressed: () {
-              // ! Notification pop-up logic
-            },
+            onPressed:  () => Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const ComingSoon();
+                  },
+                )),
             icon: const Icon(
               CupertinoIcons.bell,
               semanticLabel: 'Notifications',
