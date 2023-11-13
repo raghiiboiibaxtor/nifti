@@ -13,9 +13,9 @@ import 'package:local_auth/local_auth.dart';
 
 // ? ---------------------------------------------------------------------------------------------------------------------- * GLOBAL VARIABLES
 // ? Initialising global variables
-String userRef = '';
-final collectionReference = FirebaseFirestore.instance.collection('users');
-final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+//String userRef = '';
+//final collectionReference = FirebaseFirestore.instance.collection('users');
+//final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
 
 //  ------------------------------------------------------------------------------------------------------------------------ 🚀 FUNCTIONS 🚀
 
@@ -86,6 +86,8 @@ class NiftiFirestoreFunctions {
     String code,
     String userID,
   ) async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
     // ? Error variable
     String response = "Error Occured";
     try {
@@ -124,6 +126,7 @@ class NiftiFirestoreFunctions {
   // ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
   // ? Update Add profile image to storage
   Future addUserImage(Uint8List file) async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     // ? Reference points to object in memory
     // ignore: unused_local_variable
     Reference ref =
@@ -146,6 +149,8 @@ class NiftiFirestoreFunctions {
   //  ----------------------------------------------------------------------------------------------------------  R E A D ( )
   // ? Reading user data from Firestore as map
   static getUserProfileData() async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await collectionReference.doc(niftiFireUser).get();
     Map<String, dynamic> data = {};
     if (docSnapshot.exists) {
@@ -157,6 +162,7 @@ class NiftiFirestoreFunctions {
 
   // ? Reading connection data from Firestore using UserPincode object
   static getConnectionProfileData(String pincode) async {
+    var collectionReference = FirebaseFirestore.instance.collection('users');
     late Map<String, dynamic> data = {};
     await collectionReference
         .where("pincode",
@@ -174,6 +180,7 @@ class NiftiFirestoreFunctions {
 
   // ? Reading connection data from Firestore using otp
   static getAllConnections() async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await FirebaseFirestore.instance
             .collection('users')
@@ -202,6 +209,8 @@ class NiftiFirestoreFunctions {
   //  ------------------------------------------------------------------------------------------------------  U P D A T E ( )
   // ? Appending Firestore document data
   static addConnection(String pincode) async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
     String pin = await GeneratePincode.getStaticPincode(
         pincode); // ? Ensuring we grab the correct pincode by accessing the static pincode getter
     try {
@@ -253,6 +262,8 @@ class NiftiFirestoreFunctions {
   // ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
   // ? Update ImageUrl in firestore (change profile picture)
   Future updateFirestoreImageLink(Uint8List file) async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
     // ? this relies on the userImage being added to storage
     String imageUrl = await addUserImage(file);
     var docRef = collectionReference.doc(niftiFireUser);
@@ -267,6 +278,8 @@ class NiftiFirestoreFunctions {
   // ! => Enter new email / password to change data (pass the parameters)
   // ! => FaceID check, login? save login data in private class?
   static deleteAccount() async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await collectionReference.doc(niftiFireUser).get();
     if (docSnapshot.exists) {
       collectionReference
@@ -278,6 +291,8 @@ class NiftiFirestoreFunctions {
   }
 
   static deleteProfile() async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await collectionReference.doc(niftiFireUser).get();
     if (docSnapshot.exists) {
       collectionReference
@@ -288,9 +303,10 @@ class NiftiFirestoreFunctions {
   }
 
   static deleteContact(String contact) async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
     late List<dynamic>? contacts;
     // ? Instantiating Firestore references
-
     final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await FirebaseFirestore.instance
             .collection('users')

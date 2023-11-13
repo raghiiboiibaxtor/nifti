@@ -21,7 +21,7 @@ class IconTextFieldComponent extends StatelessWidget {
     super.key,
     required this.controller,
     required this.obscureText,
-    this.width = 350,
+    this.width = 340,
     required this.padding,
     this.labelText = 'Hint Text',
     this.errorText = '',
