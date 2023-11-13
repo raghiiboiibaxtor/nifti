@@ -1,21 +1,12 @@
-import 'dart:typed_data';
 import "package:flutter/material.dart";
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nifti_locapp/components/icon_text_form_field.dart';
 import 'package:nifti_locapp/functions/functions.dart';
-import 'package:nifti_locapp/functions/frontend.dart';
-import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/text_display.dart';
+import 'package:nifti_locapp/pages/edit_profile_page.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:social_media_buttons/social_media_buttons.dart';
-import 'package:nifti_locapp/components/text_form_field.dart';
-import 'package:nifti_locapp/components/text_field_character_limit.dart';
-import 'package:nifti_locapp/components/drop_menu.dart';
-import 'package:nifti_locapp/components/button.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
 
 // ? ProfilePage == display user's details + edit to choose banner images
 
@@ -34,54 +25,6 @@ class _ProfilePageState extends State<ProfilePage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   late Map<String, Object?> details = {};
 
-  // ? Card Flip
-  bool isEditing = false;
-  final flip = FlipCardController();
-
-  // ? Text Controllers - used to access the user's input
-  Uint8List? _profileImage;
-  final _fullNameController = TextEditingController();
-  String? _pronouns;
-  final _cityController = TextEditingController();
-  final _bio = TextEditingController();
-  final _industry = TextEditingController();
-  final _roleTitle = TextEditingController();
-  final _companyName = TextEditingController();
-  String? _yearsWorked;
-  final _emailController = TextEditingController();
-  final _websiteController = TextEditingController();
-  final _linkedinController = TextEditingController();
-  final _instagramController = TextEditingController();
-  final _githubController = TextEditingController();
-  final _phoneController = TextEditingController();
-
-  // ? Pronoun dropdown list
-  final List<String> pronouns = [
-    'They / Them',
-    'He / Him',
-    'She / Her',
-    'He / They',
-    'She / They',
-    'Prefer not to say'
-  ];
-  // ? Years in company dropdown list
-  final List<String> years = [
-    '< 1 year',
-    '1+ year',
-    '2+ years',
-    '3+ years',
-    '4+ years',
-    '5+ years',
-  ];
-
-  // ? Profile image selection function
-  void selectProfileImage() async {
-    Uint8List image = await pickImage();
-    setState(() {
-      _profileImage = image;
-    });
-  }
-
   // ? Get user's data and store in Map<> details
   _getProfileData() async {
     details = await NiftiFirestoreFunctions.getUserProfileData();
@@ -91,70 +34,6 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     }
     return details;
-  }
-
-  // ! Method to update user info in Firebase / Firestore
-  /* Future updateUserDetails() async {
-      // ? Adds user info to Firestore
-      await UpdateUserData().addUserDetails(
-        _fullNameController.text.trim(),
-        _emailController.text.trim(),
-        _cityController.text.trim(),
-        _pronouns,
-        _profileImage!,
-        _bio.text.trim(),
-        _roleTitle.text.trim(),
-        _industry.text.trim(),
-        _companyName.text.trim(),
-        _yearsWorked,
-        _phoneController.text.trim(),
-        _websiteController.text.trim(),
-        _linkedinController.text.trim(),
-        _instagramController.text.trim(),
-        _githubController.text.trim(),
-      );
-    UpdateUserData().addUserImage(_profileImage!);
-    UpdateUserData().updateFirestoreImageLink(_profileImage!);
-  }*/
-
-  // Assigning user's current stored data into text/controllers
-  void assignControllers() async {
-    //_profileImage;
-    _fullNameController.text = '${details['fullName']}';
-    _pronouns = '${details['pronouns']}';
-    _emailController.text = '${details['email']}';
-    _cityController.text = '${details['city/town']}';
-    _bio.text = '${details['bio']}';
-    _industry.text = '${details['industry']}';
-    _roleTitle.text = '${details['role']}';
-    _companyName.text = '${details['company']}';
-    _yearsWorked = '${details['yearsWorked']}';
-    _websiteController.text = '${details['website']}';
-    _linkedinController.text = '${details['linkedin']}';
-    _instagramController.text = '${details['instagram']}';
-    _githubController.text = '${details['github']}';
-    _phoneController.text = '${details['phone']}';
-  }
-
-  // ? Dispose controllers when not using - helps memory management
-  @override
-  void dispose() {
-    _fullNameController.dispose();
-    _emailController.dispose();
-    _cityController.dispose();
-    _bio.dispose();
-    _pronouns;
-    _industry.dispose();
-    _roleTitle.dispose();
-    _companyName.dispose();
-    _yearsWorked;
-    _emailController.dispose();
-    _websiteController.dispose();
-    _linkedinController.dispose();
-    _instagramController.dispose();
-    _githubController.dispose();
-    _phoneController.dispose();
-    super.dispose();
   }
 
   // ? Run functions on page load
@@ -168,81 +47,59 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Container(
-          color: niftiOffWhite,
-          alignment: Alignment.topLeft,
-          padding:
-              const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  // Page title
-                  Text(
-                    'PROFILE',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: niftiGrey,
-                    ),
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Container(
+        color: niftiOffWhite,
+        alignment: Alignment.topLeft,
+        padding: const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                // Page title
+                Text(
+                  'PROFILE',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: niftiGrey,
                   ),
-                  const SizedBox(
-                    width: 208,
-                  ),
-                  // ? Edit Button
-                  TextButton.icon(
-                    onPressed: () {
-                      if (isEditing) {
-                        // Save action
-                        // ! On save - update firestore
-                        // updateUserDetails();
-                      } else {
-                        // Assigning text controllers to display info
-                        assignControllers();
-                      }
-                      // Toggle between edit and display mode
-                      flip.flipcard();
-                      setState(() {
-                        isEditing = !isEditing;
-                      });
+                ),
+                const SizedBox(
+                  width: 208,
+                ),
+                // ? Edit Button
+                TextButton.icon(
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const EditProfilePage();
                     },
-                    icon: Icon(
-                      Icons.mode_edit_outline_rounded,
-                      weight: 20,
-                      size: 12,
-                      color: niftiGrey,
-                    ),
-                    label: Text(
-                      isEditing ? 'Save' : 'Edit',
-                      style: TextStyle(color: niftiGrey),
-                    ),
+                  )),
+                  icon: Icon(
+                    Icons.mode_edit_outline_rounded,
+                    weight: 20,
+                    size: 12,
+                    color: niftiGrey,
                   ),
-                ],
-              ),
-              Column(
-                children: [
-                  FlipCard(
-                    rotateSide: RotateSide.bottom,
-                    axis: FlipAxis.vertical,
-                    controller: flip,
-                    frontWidget: Center(
-                      child: SizedBox(
-                        child: _profileDisplayView(),
-                      ),
-                    ),
-                    backWidget: Center(
-                      child: SizedBox(
-                        child: _buildEditView(),
-                      ),
-                    ),
+                  label: Text(
+                    'Edit',
+                    style: TextStyle(color: niftiGrey),
                   ),
-                ],
-              )
-            ],
-          ),
-        ));
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  child: _profileDisplayView(),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 
@@ -762,449 +619,5 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
   // * ---------------- * END OF (PROFILE DISPLAY) * ---------------- *
-
-  // * ---------------- * (EDIT DISPLAY) * ---------------- *
-  Widget _buildEditView() {
-    return Stack(
-      alignment: AlignmentDirectional.center,
-      children: [
-        // Gradient "border container"
-        Container(
-          height: 590,
-          decoration: BoxDecoration(
-            gradient: niftiGradient,
-            boxShadow: [
-              BoxShadow(
-                color: niftiGreyShadow,
-                spreadRadius: 1.0,
-                blurRadius: 3.0,
-                offset: const Offset(0, 1),
-              ),
-            ],
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(50),
-              topRight: Radius.circular(1),
-              bottomLeft: Radius.circular(50),
-              bottomRight: Radius.circular(50),
-            ),
-          ),
-        ),
-        // Profile Container
-        Container(
-          width: 357,
-          height: 587,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(49),
-              topRight: Radius.circular(1),
-              bottomLeft: Radius.circular(50),
-              bottomRight: Radius.circular(50),
-            ),
-            color: Colors.white,
-          ),
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  // ? Profile Picture Selection
-                  Stack(
-                    children: [
-                      _profileImage != null
-                          ? CircleAvatar(
-                              radius: 53,
-                              backgroundImage: const AssetImage(
-                                  'images/defaultProfileImage.png'),
-                              child: CircleAvatar(
-                                radius: 51,
-                                backgroundImage: MemoryImage(_profileImage!),
-                              ),
-                            )
-                          : const CircleAvatar(
-                              radius: 53,
-                              backgroundImage:
-                                  AssetImage('images/defaultProfileImage.png'),
-                            ),
-                      /*details['imageLink'] != ''
-                      ? CircleAvatar(
-                          radius: 53,
-                          backgroundImage: const AssetImage(
-                              'images/defaultProfileImage.png'),
-                          child: CircleAvatar(
-                            radius: 51,
-                            backgroundImage: NetworkImage(
-                                '${details['imageLink']}',
-                                scale: 1.0),
-                          ),
-                        )
-                      : const CircleAvatar(
-                          radius: 53,
-                          backgroundImage:
-                              AssetImage('images/defaultProfileImage.png'),
-                        ),*/
-                      Positioned(
-                        bottom: -9,
-                        left: 67,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: 23,
-                              height: 23,
-                              decoration: BoxDecoration(
-                                gradient: niftiGradient,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 0.5,
-                                    blurRadius: 2.0,
-                                    offset: const Offset(0.5, 1),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            IconButton(
-                              color: niftiWhite,
-                              onPressed: selectProfileImage,
-                              icon: const Icon(
-                                CupertinoIcons.add_circled_solid,
-                                size: 30,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  // ? Space between next widget
-                  const SizedBox(width: 10),
-                  Column(
-                    children: [
-                      // ? Name Textfield
-                      TextFieldComponent(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        width: 181,
-                        controller: _fullNameController,
-                        labelText: 'Name',
-                        obscureText: false,
-                        hasError: false,
-                      ),
-
-                      // ? Pronoun dropdown selector
-                      DropdownMenuComponent(
-                        width: 181,
-                        value: _pronouns,
-                        labelText: 'Pronouns',
-                        itemsList: pronouns,
-                        onChanged: (value) {
-                          setState(() {
-                            _pronouns = value as String;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              // Space
-              const SizedBox(height: 15),
-              // ? Bio Textfield
-              TextFieldLimitComponent(
-                maxLength: 80,
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                width: 325,
-                controller: _bio,
-                labelText: 'Bio',
-                obscureText: false,
-                hasError: false,
-              ),
-              Row(
-                children: [
-                  // ? Industry Textfield
-                  TextFieldComponent(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    width: 135,
-                    controller: _industry,
-                    labelText: 'Industry',
-                    obscureText: false,
-                    hasError: false,
-                  ),
-                  const SizedBox(width: 7),
-                  // ? City/Town Textfield
-                  TextFieldComponent(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    width: 135,
-                    controller: _cityController,
-                    labelText: 'City / Town',
-                    obscureText: false,
-                    hasError: false,
-                  ),
-                ],
-              ),
-              // ? Role / Degree Textfield
-              TextFieldComponent(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                width: 325,
-                controller: _roleTitle,
-                labelText: 'Current Role or Degree',
-                obscureText: false,
-                hasError: false,
-              ),
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // ? Company Textfield
-                  TextFieldComponent(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    width: 140,
-                    controller: _companyName,
-                    labelText: 'Company / Institute',
-                    obscureText: false,
-                    hasError: false,
-                  ),
-                  const SizedBox(width: 20),
-                  // ? Years Worked Dropdown
-                  DropdownMenuComponent(
-                    width: 130,
-                    value: _yearsWorked,
-                    labelText: 'Years Worked',
-                    itemsList: years,
-                    onChanged: (value) {
-                      setState(() {
-                        _yearsWorked = value as String;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              // ? Email Textfield
-              TextFieldComponent(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                width: 325,
-                controller: _emailController,
-                labelText: 'Email',
-                obscureText: false,
-                hasError: false,
-              ),
-              // Row to center link button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Link Modal Button
-                  Button(
-                    onTap: () {
-                      showBottomSheet();
-                    },
-                    width: 300,
-                    height: 40,
-                    text: 'Add Social Links',
-                    icon: CupertinoIcons.link,
-                    iconColor: niftiLightBlue,
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-  // * ---------------- * END OF (EDIT DISPLAY) * ---------------- *
-
-  void showBottomSheet() {
-    showModalBottomSheet<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return SingleChildScrollView(
-            child: Container(
-              height: 500,
-              width: 450,
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Title
-                  const TextDisplay(
-                    text: 'Social Links',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  // Space
-                  const SizedBox(height: 5),
-                  // Prompt
-                  const TextDisplay(
-                    text: 'Add any links below and tap out when you\'re done!',
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  // ? Space & Divider
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Divider(
-                    thickness: 1,
-                    color: niftiDarkBlue,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  // Website
-                  IconTextFieldComponent(
-                    controller: _websiteController,
-                    obscureText: false,
-                    padding: const EdgeInsets.all(0),
-                    labelText: 'Website',
-                    hasError: false,
-                    child: const Icon(
-                      CupertinoIcons.globe,
-                      size: 20,
-                    ),
-                  ),
-                  // Linkedin
-                  IconTextFieldComponent(
-                      controller: _linkedinController,
-                      obscureText: false,
-                      padding: const EdgeInsets.all(0),
-                      labelText: 'LinkedIn',
-                      hasError: false,
-                      child: const Icon(
-                        SocialMediaIcons.linkedin,
-                        size: 20,
-                      )),
-                  // Insta
-                  IconTextFieldComponent(
-                      controller: _instagramController,
-                      obscureText: false,
-                      padding: const EdgeInsets.all(0),
-                      labelText: 'Instagram',
-                      hasError: false,
-                      child: const Icon(
-                        SocialMediaIcons.instagram,
-                        size: 20,
-                      )),
-                  // Github
-                  IconTextFieldComponent(
-                      controller: _githubController,
-                      obscureText: false,
-                      padding: const EdgeInsets.all(0),
-                      labelText: 'Github',
-                      hasError: false,
-                      child: const Icon(
-                        SocialMediaIcons.github_circled,
-                        size: 20,
-                      )),
-                  // Phone
-                  IconTextFieldComponent(
-                      controller: _phoneController,
-                      obscureText: false,
-                      padding: const EdgeInsets.all(0),
-                      labelText: 'Phone',
-                      hasError: false,
-                      child: const Icon(
-                        CupertinoIcons.phone,
-                        size: 20,
-                      )),
-                ],
-              ),
-            ),
-          );
-        });
-  }
 }
 // * ---------------- * END OF (STATE) CLASS _ProfilePageState (STATE) * ---------------- *
-
-// !! not currently updating
-/*class UpdateUserData {
-  // ? Instantiating Firestore references
-  final _collectionReference = FirebaseFirestore.instance.collection('users');
-  final _niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-
-  // ? Add user info to Firestore
-  Future addUserDetails(
-    // ? Listing required variables to be added
-    String fullName,
-    String email,
-    String city,
-    String pronouns,
-    Uint8List profileImage,
-    String bio,
-    String role,
-    String industry,
-    String company,
-    String yearsWorked,
-    // socials
-    String phone,
-    String website,
-    String linkedin,
-    String instagram,
-    String github,
-  ) async {
-    // ? Error variable
-    String response = "Error Occured";
-    try {
-      // ? Trying to set the document
-      await _collectionReference.doc(_niftiFireUser).update({
-        // Personal Variables
-        'fullName': fullName,
-        'email': email,
-        'city/town': city,
-        'pronouns': pronouns,
-        'imageLink': profileImage,
-        'bio': bio,
-        'role': role,
-        'industry': industry,
-        'company': company,
-        'yearsWorked': yearsWorked,
-        // Socials
-        'phone': phone,
-        'website': website,
-        'linkedin': linkedin,
-        'instagram': instagram,
-        'github': github,
-      });
-      response = 'Success';
-    } catch (error) {
-      // ? Error catch
-      response = error.toString();
-    }
-    return response;
-  }
-
-
-
-// ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
-// ! Following functions target FirebaseStorage (media database) * * * * *
-
-  // ? Update Add profile image to storage
-  Future addUserImage(Uint8List file) async {
-    // ? Reference points to object in memory
-    // ignore: unused_local_variable
-    Reference ref =
-        FirebaseStorage.instance.ref().child(_niftiFireUser.toString());
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirectory =
-        referenceRoot.child(_niftiFireUser.toString());
-    // ? Create reference for image storage
-    Reference referenceImageUpload = referenceDirectory.child('profileImage');
-
-    // ? UploadTask upload data to remote storage
-    UploadTask uploadTask = referenceImageUpload.putData(file);
-    // ? TaskSnapshot represents current state of an aync task
-    TaskSnapshot snapshot = await uploadTask;
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-    return downloadUrl;
-  }
-
-  // ? Update ImageUrl in firestore (change profile picture)
-  Future updateFirestoreImageLink(Uint8List file) async {
-    // ? this relies on the userImage being added to storage
-    String imageUrl = await addUserImage(file);
-    var docRef = _collectionReference.doc(_niftiFireUser);
-    docRef.update({
-      'imageLink': imageUrl,
-    });
-  }
-}*/

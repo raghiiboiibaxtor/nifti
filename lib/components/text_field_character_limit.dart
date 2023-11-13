@@ -9,7 +9,6 @@ class TextFieldLimitComponent extends StatelessWidget {
   final TextEditingController controller;
   final bool obscureText;
   final double width;
-  final EdgeInsetsGeometry padding;
   final String labelText;
   final String? errorText;
   final Function(String)? validator;
@@ -22,8 +21,7 @@ class TextFieldLimitComponent extends StatelessWidget {
     super.key,
     required this.controller,
     required this.obscureText,
-    this.width = 350,
-    required this.padding,
+    this.width = 360,
     this.labelText = 'Hint Text',
     this.errorText = '',
     this.validator,
@@ -34,9 +32,7 @@ class TextFieldLimitComponent extends StatelessWidget {
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: padding,
-        child: SizedBox(
+    return SizedBox(
           width: width,
           child: TextFormField(
             keyboardType: TextInputType.multiline,
@@ -99,7 +95,7 @@ class TextFieldLimitComponent extends StatelessWidget {
             ),
             
           ),
-        ));
+        );
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }

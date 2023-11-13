@@ -10,7 +10,6 @@ class TextFieldComponent extends StatelessWidget {
   //final String? initialValue; 
   final bool obscureText;
   final double width;
-  final EdgeInsetsGeometry padding;
   final String labelText;
   final String? errorText;
   final Function(String)? validator;
@@ -21,8 +20,7 @@ class TextFieldComponent extends StatelessWidget {
     super.key,
     required this.controller,
     required this.obscureText,
-    this.width = 350,
-    this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
+    this.width = 360,
     this.labelText = 'Hint Text',
     this.errorText = '',
     this.validator,
@@ -32,9 +30,7 @@ class TextFieldComponent extends StatelessWidget {
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: padding,
-        child: SizedBox(
+    return SizedBox(
           width: width, 
             child: TextFormField(
               controller: controller,
@@ -94,7 +90,6 @@ class TextFieldComponent extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-          ),
         );
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *

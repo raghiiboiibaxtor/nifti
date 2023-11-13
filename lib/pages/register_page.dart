@@ -145,249 +145,252 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
-            //padding:const EdgeInsets.only(bottom: 50),
-            child: Container(
-          width: 400,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('images/background_gradient.png'),
-                fit: BoxFit.cover),
-          ),
-          child: Column(children: [
-            const Padding(padding: EdgeInsets.only(top: 40)),
-            // ? Nifti Logo
-            const SizedBox(
-              height: 160,
-              child: Image(image: AssetImage('images/nifti_logo_white.png')),
+          child: Container(
+            width: 400,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/background_gradient.png'),
+                  fit: BoxFit.cover),
             ),
-            // White container
-            Container(
-                height: 650,
-                width: 400,
-                padding: const EdgeInsets.only(
-                    top: 20, bottom: 20, left: 10, right: 10),
-                decoration: BoxDecoration(
-                    color: niftiOffWhite,
-                    borderRadius:
-                        const BorderRadius.only(topRight: Radius.circular(50))),
-                child: Stack(children: [
-                  Row(
+            child: Column(
+              children: [
+                const Padding(padding: EdgeInsets.only(top: 40)),
+                // ? Nifti Logo
+                const SizedBox(
+                  height: 160,
+                  child:
+                      Image(image: AssetImage('images/nifti_logo_white.png')),
+                ),
+                // White container
+                Container(
+                  height: 650,
+                  width: 400,
+                  padding: const EdgeInsets.only(
+                      top: 20, bottom: 20, left: 15, right: 15),
+                  decoration: BoxDecoration(
+                      color: niftiOffWhite,
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(50))),
+                  child: Stack(
                     children: [
-                      const SizedBox(
-                        width: 9,
-                      ),
-                      GradientText(
-                        'CREATE ACCOUNT',
-                        colors: const [
-                          Color.fromRGBO(209, 147, 246, 1),
-                          Color.fromRGBO(115, 142, 247, 1),
-                          Color.fromRGBO(116, 215, 247, 1)
+                      Row(
+                        children: [
+                          GradientText(
+                            'CREATE ACCOUNT',
+                            colors: const [
+                              Color.fromRGBO(209, 147, 246, 1),
+                              Color.fromRGBO(115, 142, 247, 1),
+                              Color.fromRGBO(116, 215, 247, 1)
+                            ],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 1,
+                              fontSize: 16,
+                            ),
+                          ),
                         ],
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 1,
-                          fontSize: 16,
+                      ),
+
+                      // Text Fields
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            // ? Name Textfield
+                            TextFieldComponent(
+                              controller: _fullNameController,
+                              labelText: 'Name',
+                              obscureText: false,
+                              hasError: _nameError != null,
+                              errorText: _nameError,
+                            ),
+
+                            // ? Space between next widget
+                            const SizedBox(height: 20),
+
+                            // ? Email Textfield
+                            TextFieldComponent(
+                              controller: _emailController,
+                              labelText: 'Email',
+                              obscureText: false,
+                              hasError: _emailError != null,
+                              errorText: _emailError,
+                            ),
+                            // ? Space between next widget
+                            const SizedBox(height: 20),
+
+                            // ? Password Textfield
+                            TextFieldComponent(
+                              controller: _passwordController,
+                              labelText: 'Password',
+                              obscureText: true,
+                              hasError: _passwordError != null,
+                              errorText: _passwordError,
+                            ),
+
+                            // ? Space between next widget
+                            const SizedBox(height: 20),
+
+                            // ? Confirm Password Textfield
+                            TextFieldComponent(
+                              controller: _confirmPasswordController,
+                              labelText: 'Confirm Password',
+                              obscureText: true,
+                              hasError: _confirmPasswordError != null,
+                              errorText: _confirmPasswordError,
+                            ),
+                            // ? Space between next widget
+                            const SizedBox(height: 15),
+                            // ? Checkbox + T&Cs
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Checkbox(
+                                  value: isChecked,
+                                  onChanged: (newBool) {
+                                    setState(() {
+                                      isChecked = newBool;
+                                      isError = false;
+                                    });
+                                  },
+                                  side: BorderSide(
+                                    width: 0.8,
+                                    // Change checkbox color based on error status
+                                    color: isError ? niftiPink : niftiGrey,
+                                  ),
+                                  activeColor: niftiLightBlue,
+                                ),
+                                // T&Cs Prompt Text & Modal
+                                InkWell(
+                                  onTap: () {
+                                    // Show the Terms & Conditions bottom sheet
+                                    privacyPopup(context);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      TextDisplay(
+                                        color: isError ? niftiPink : niftiGrey,
+                                        text: 'I agree to Nifti\'s',
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      TextDisplay(
+                                        color: isError
+                                            ? niftiPink
+                                            : niftiLightBlue,
+                                        text: ' Privacy Policy and Conditions',
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            // Space
+                            const SizedBox(height: 20),
+
+                            // ? Clear & Confirm Buttons
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                // ? Cancel
+                                CTACancelButton(
+                                  onTap: widget.onTap,
+                                ),
+
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                // ? Confirm
+                                CTAConfirmButton(
+                                  text: 'CONFIRM',
+                                  onTap: () {
+                                    // ? Validate the form using the _formKey
+                                    if (_formKey.currentState!.validate()) {
+                                      // Name
+                                      bool isNameValid = validateAndHandleError(
+                                          _fullNameController.text,
+                                          emptyNameErrorMessage,
+                                          (error) => setState(
+                                              () => _nameError = error));
+                                      // Email
+                                      bool isEmailValid =
+                                          validateAndHandleError(
+                                              _emailController.text,
+                                              emptyEmailErrorMessage,
+                                              (error) => setState(
+                                                  () => _emailError = error));
+
+                                      // Password
+                                      bool isPasswordValid =
+                                          validateAndHandleError(
+                                              _passwordController.text,
+                                              emptyPasswordErrorMessage,
+                                              (error) => setState(() =>
+                                                  _passwordError = error));
+
+                                      // Confirm Password
+                                      bool isConfirmPasswordValid =
+                                          validateAndHandleError(
+                                              _confirmPasswordController.text,
+                                              emptyConfirmPasswordErrorMessage,
+                                              (error) => setState(() =>
+                                                  _confirmPasswordError =
+                                                      error));
+
+                                      bool arePasswordsMatching = fieldsMatch(
+                                          _passwordController.text,
+                                          _confirmPasswordController.text,
+                                          passwordsNotMatchingErrorMessage,
+                                          (error) => setState(() =>
+                                              _confirmPasswordError = error));
+
+                                      // Check if the "Terms & Conditions" checkbox is checked
+                                      if (isChecked == false) {
+                                        // Display an error message or take appropriate action
+                                        setState(() {
+                                          isError = true;
+                                        });
+                                        const Text(
+                                            'Please agree to the Terms & Conditions');
+                                        return; // Exit the registration process
+                                      }
+
+                                      // If all fields are valid == proceed with registration
+                                      if (isNameValid &&
+                                          isEmailValid &&
+                                          isPasswordValid &&
+                                          isConfirmPasswordValid &&
+                                          arePasswordsMatching) {
+                                        register();
+                                      }
+                                    }
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
                     ],
                   ),
-
-                  // Text Fields
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 50,
-                        ),
-                        // ? Name Textfield
-                        TextFieldComponent(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          width: 350,
-                          controller: _fullNameController,
-                          labelText: 'Name',
-                          obscureText: false,
-                          hasError: _nameError != null,
-                          errorText: _nameError,
-                        ),
-
-                        // ? Space between next widget
-                        const SizedBox(height: 20),
-
-                        // ? Email Textfield
-                        TextFieldComponent(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          width: 350,
-                          controller: _emailController,
-                          labelText: 'Email',
-                          obscureText: false,
-                          hasError: _emailError != null,
-                          errorText: _emailError,
-                        ),
-                        // ? Space between next widget
-                        const SizedBox(height: 20),
-
-                        // ? Password Textfield
-                        TextFieldComponent(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          width: 350,
-                          controller: _passwordController,
-                          labelText: 'Password',
-                          obscureText: true,
-                          hasError: _passwordError != null,
-                          errorText: _passwordError,
-                        ),
-
-                        // ? Space between next widget
-                        const SizedBox(height: 20),
-
-                        // ? Confirm Password Textfield
-                        TextFieldComponent(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          width: 350,
-                          controller: _confirmPasswordController,
-                          labelText: 'Confirm Password',
-                          obscureText: true,
-                          hasError: _confirmPasswordError != null,
-                          errorText: _confirmPasswordError,
-                        ),
-                        // ? Space between next widget
-                        const SizedBox(height: 15),
-                        // ? Checkbox + T&Cs
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: isChecked,
-                              onChanged: (newBool) {
-                                setState(() {
-                                  isChecked = newBool;
-                                  isError = false;
-                                });
-                              },
-                              side: BorderSide(
-                                width: 0.8,
-                                // Change checkbox color based on error status
-                                color: isError ? niftiPink : niftiGrey,
-                              ),
-                              activeColor: niftiLightBlue,
-                            ),
-                            // T&Cs Prompt Text & Modal
-                            InkWell(
-                                onTap: () {
-                                  // Show the Terms & Conditions bottom sheet
-                                  privacyPopup(context);
-                                },
-                                child: Row(
-                                  children: [
-                                    TextDisplay(
-                                      color: isError ? niftiPink : niftiGrey,
-                                      text: 'I agree to Nifti\'s',
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    TextDisplay(
-                                      color:
-                                          isError ? niftiPink : niftiLightBlue,
-                                      text: ' Privacy Policy and Conditions',
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ],
-                                )),
-                          ],
-                        ),
-
-                        // Space
-                        const SizedBox(height: 20),
-
-                        // ? Clear & Confirm Buttons
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            // ? Cancel
-                            CTACancelButton(
-                              onTap: widget.onTap,
-                            ),
-
-                            const SizedBox(
-                              width: 25,
-                            ),
-                            // ? Confirm
-                            CTAConfirmButton(
-                                text: 'CONFIRM',
-                                onTap: () {
-                                  // ? Validate the form using the _formKey
-                                  if (_formKey.currentState!.validate()) {
-                                    // Name
-                                    bool isNameValid = validateAndHandleError(
-                                        _fullNameController.text,
-                                        emptyNameErrorMessage,
-                                        (error) =>
-                                            setState(() => _nameError = error));
-                                    // Email
-                                    bool isEmailValid = validateAndHandleError(
-                                        _emailController.text,
-                                        emptyEmailErrorMessage,
-                                        (error) => setState(
-                                            () => _emailError = error));
-
-                                    // Password
-                                    bool isPasswordValid =
-                                        validateAndHandleError(
-                                            _passwordController.text,
-                                            emptyPasswordErrorMessage,
-                                            (error) => setState(
-                                                () => _passwordError = error));
-
-                                    // Confirm Password
-                                    bool isConfirmPasswordValid =
-                                        validateAndHandleError(
-                                            _confirmPasswordController.text,
-                                            emptyConfirmPasswordErrorMessage,
-                                            (error) => setState(() =>
-                                                _confirmPasswordError = error));
-
-                                    bool arePasswordsMatching = fieldsMatch(
-                                        _passwordController.text,
-                                        _confirmPasswordController.text,
-                                        passwordsNotMatchingErrorMessage,
-                                        (error) => setState(() =>
-                                            _confirmPasswordError = error));
-
-                                    // Check if the "Terms & Conditions" checkbox is checked
-                                    if (isChecked == false) {
-                                      // Display an error message or take appropriate action
-                                      setState(() {
-                                        isError = true;
-                                      });
-                                      const Text(
-                                          'Please agree to the Terms & Conditions');
-                                      return; // Exit the registration process
-                                    }
-
-                                    // If all fields are valid == proceed with registration
-                                    if (isNameValid &&
-                                        isEmailValid &&
-                                        isPasswordValid &&
-                                        isConfirmPasswordValid &&
-                                        arePasswordsMatching) {
-                                      register();
-                                    }
-                                  }
-                                })
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ])),
-          ]),
-        ))));
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
