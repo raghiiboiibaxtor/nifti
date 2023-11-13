@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/back_app_bar.dart';
 import 'package:nifti_locapp/components/button.dart';
 import 'package:nifti_locapp/components/button_with_switch.dart';
+import 'package:nifti_locapp/components/logout_modal.dart';
 import 'package:nifti_locapp/components/text_display.dart';
 import 'package:nifti_locapp/components/privacy_popup.dart';
 import 'package:nifti_locapp/pages/change_email_page.dart';
@@ -170,8 +170,8 @@ class _SettingsPageState extends State<SettingsPage> {
               // ? Logout Button
               Button(
                 onTap: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pop(context);
+                  // Popup modal
+                  confirmLogoutModal(context);           
                 },
                 text: 'Logout',
                 icon: Icons.logout_rounded,
@@ -197,3 +197,4 @@ class _SettingsPageState extends State<SettingsPage> {
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
 // * ---------------- * END OF (STATE) CLASS _SettingsPageState (STATE) * ---------------- *
+
