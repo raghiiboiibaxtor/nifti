@@ -239,7 +239,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       text: 'About Me',
                       color: niftiLightGrey,
                       fontSize: 11,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w800,
                     ),
                     const SizedBox(
                       height: 5,
@@ -342,7 +342,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             text: 'Current Role / Study',
                             color: niftiLightGrey,
                             fontSize: 11,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w800,
                           )
                         : const SizedBox(),
                     const SizedBox(
@@ -441,7 +441,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       text: 'Get In Touch',
                       color: niftiLightGrey,
                       fontSize: 11,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w800,
                     ),
 
                     // Display email + copy function

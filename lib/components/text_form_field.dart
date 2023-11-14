@@ -42,7 +42,7 @@ class TextFieldComponent extends StatelessWidget {
                 labelStyle: TextStyle(
                     color: niftiGrey, fontSize: 17, fontWeight: FontWeight.w500),
                 floatingLabelStyle: TextStyle(
-                    color: niftiGrey, fontSize: 13, fontWeight: FontWeight.w500),
+                    color: niftiGrey, fontSize: 13, fontWeight: FontWeight.w700),
                 // ? Standard border
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(

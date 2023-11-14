@@ -190,6 +190,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           // ? Profile Picture Selection
                           Stack(
                             children: [
+                              details['imageLink'] != ''
+                                  ? CircleAvatar(
+                                      radius: 53,
+                                      backgroundImage: const AssetImage(
+                                          'images/defaultProfileImage.png'),
+                                      child: CircleAvatar(
+                                        radius: 51,
+                                        backgroundImage: NetworkImage(
+                                            '${details['imageLink']}',
+                                            scale: 1.0),
+                                      ),
+                                    )
+                                  : const CircleAvatar(
+                                      radius: 53,
+                                      backgroundImage: AssetImage(
+                                          'images/defaultProfileImage.png'),
+                                    ),
                               _profileImage != null
                                   ? CircleAvatar(
                                       radius: 53,
@@ -201,28 +218,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                             MemoryImage(_profileImage!),
                                       ),
                                     )
-                                  : const CircleAvatar(
-                                      radius: 53,
-                                      backgroundImage: AssetImage(
-                                          'images/defaultProfileImage.png'),
-                                    ),
-                              /*details['imageLink'] != ''
-                      ? CircleAvatar(
-                          radius: 53,
-                          backgroundImage: const AssetImage(
-                              'images/defaultProfileImage.png'),
-                          child: CircleAvatar(
-                            radius: 51,
-                            backgroundImage: NetworkImage(
-                                '${details['imageLink']}',
-                                scale: 1.0),
-                          ),
-                        )
-                      : const CircleAvatar(
-                          radius: 53,
-                          backgroundImage:
-                              AssetImage('images/defaultProfileImage.png'),
-                        ),*/
+                                  : const SizedBox(),
                               Positioned(
                                 bottom: -9,
                                 left: 67,
@@ -295,7 +291,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           text: 'About Me',
                           color: niftiLightGrey,
                           fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w800,
                         ),
                         const SizedBox(
                           height: 5,
@@ -368,7 +364,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           text: 'Current Role / Study',
                           color: niftiLightGrey,
                           fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w800,
                         ),
                         const SizedBox(
                           height: 5,
@@ -447,7 +443,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           text: 'Get In Touch',
                           color: niftiLightGrey,
                           fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w800,
                         ),
                         const SizedBox(
                           height: 5,
@@ -542,7 +538,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20,)
+                        const SizedBox(
+                          height: 20,
+                        )
                       ])),
             )));
   }

@@ -19,7 +19,7 @@ class DropdownMenuComponent extends StatelessWidget {
       required this.width,
       required this.itemsList,
       required this.labelText,
-      required this.onChanged});
+      required this.onChanged,});
 
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
@@ -75,36 +75,3 @@ class DropdownMenuComponent extends StatelessWidget {
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
 // * ---------------- * END OF (STATELESS WIDGET) CLASS DropdownMenuComponent (STATELESS WIDGET) * ---------------- *
-
-/*
-return Container(
-      padding: const EdgeInsets.only(left: 20),
-      width: width,
-      child: DropdownButtonFormField<String>(
-          menuMaxHeight: 200,
-          borderRadius: BorderRadius.circular(20),
-          isExpanded: true,
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-            border: GradientOutlineInputBorder(
-              gradient: const LinearGradient(colors: [
-                Color.fromRGBO(209, 147, 246, 1),
-                Color.fromRGBO(115, 142, 247, 1),
-                Color.fromRGBO(116, 215, 247, 1)
-              ]),
-              width: 2,
-              borderRadius: BorderRadius.circular(25),
-            ),
-          ),
-          icon: const Icon(Icons.arrow_drop_down),
-          hint: hintText,
-          items: itemsList
-              .map((String item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item),
-                  ))
-              .toList(),
-          onChanged: (value) => onChanged(value)),
-    );
-*/
