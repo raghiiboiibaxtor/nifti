@@ -268,17 +268,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               ),
 
                               // ? Pronoun dropdown selector
-                              DropdownMenuComponent(
-                                width: 224,
-                                value: _pronouns,
-                                labelText: 'Pronouns',
-                                itemsList: pronouns,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _pronouns = value as String;
-                                  });
-                                },
-                              ),
+                              // ? if _pronouns has value from firestore then display the user's selection
+                              _pronouns != ''
+                                  ? DropdownMenuComponent(
+                                      savedValue: _pronouns,
+                                      width: 224,
+                                      value: _pronouns,
+                                      labelText: 'Pronouns',
+                                      itemsList: pronouns,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _pronouns = value as String;
+                                        });
+                                      },
+                                    )
+                                  :
+                                  // ? Else display empty default value
+                                  DropdownMenuComponent(
+                                      width: 224,
+                                      value: _pronouns,
+                                      labelText: 'Pronouns',
+                                      itemsList: pronouns,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _pronouns = value as String;
+                                        });
+                                      },
+                                    ),
                             ],
                           ),
                         ]),
@@ -416,17 +432,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       ),
                                       const SizedBox(width: 20),
                                       // ? Years Worked Dropdown
-                                      DropdownMenuComponent(
-                                        width: 155,
-                                        value: _yearsWorked,
-                                        labelText: 'Years Worked',
-                                        itemsList: years,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _yearsWorked = value as String;
-                                          });
-                                        },
-                                      ),
+                                      // ? if _yearsWorked has value from firestore then display the user's selection
+                                      _yearsWorked != ''
+                                          ? DropdownMenuComponent(
+                                              savedValue: _yearsWorked,
+                                              width: 155,
+                                              value: _yearsWorked,
+                                              labelText: 'Years Worked',
+                                              itemsList: years,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _yearsWorked = value as String;
+                                                });
+                                              },
+                                            )
+                                          :
+                                          // ? Else display empty default value
+                                          DropdownMenuComponent(
+                                              width: 155,
+                                              value: _yearsWorked,
+                                              labelText: 'YearsWorked',
+                                              itemsList: years,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _yearsWorked = value as String;
+                                                });
+                                              },
+                                            ),
                                     ],
                                   ),
                                 ],
