@@ -11,6 +11,7 @@ class DropdownMenuComponent extends StatelessWidget {
   final List<String> itemsList;
   final String? labelText;
   final Function(dynamic value) onChanged;
+  final String? savedValue;
 
   // ? Required variables to be passed
   const DropdownMenuComponent(
@@ -19,7 +20,8 @@ class DropdownMenuComponent extends StatelessWidget {
       required this.width,
       required this.itemsList,
       required this.labelText,
-      required this.onChanged,});
+      required this.onChanged,
+      this.savedValue});
 
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
@@ -28,6 +30,7 @@ class DropdownMenuComponent extends StatelessWidget {
       //padding: const EdgeInsets.only(left: 20),
       width: width,
       child: DropdownButtonFormField<String>(
+          value: savedValue,
           menuMaxHeight: 200,
           iconEnabledColor: niftiGrey,
           style: TextStyle(color: niftiGrey, fontSize: 13),
