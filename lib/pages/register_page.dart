@@ -125,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
       );
     } on FirebaseAuthException catch (error) {
       // ? pop loading circle & display error message
-      Navigator.pop(context);
+      if (context.mounted) Navigator.pop(context);
       if (error.code == 'invalid-email') {
         emailFormatError(_emailController.text, invalidEmailFormat,
             (error) => setState(() => _emailError = error));

@@ -10,6 +10,7 @@ import 'package:nifti_locapp/components/privacy_popup.dart';
 import 'package:nifti_locapp/pages/change_email_page.dart';
 import 'package:nifti_locapp/pages/change_password_page.dart';
 import 'package:nifti_locapp/pages/coming_soon_page.dart';
+import 'package:nifti_locapp/pages/delete_account_page.dart';
 
 // ? SettingsPage == display user's settings options
 
@@ -139,7 +140,7 @@ class _SettingsPageState extends State<SettingsPage> {
               // ? View Privacy Policy Button
               Button(
                 onTap: () {
-                  // ! popup logic here
+                  // ? Popup Modal
                   privacyPopup(context);
                 },
                 text: 'Privacy Policy',
@@ -170,7 +171,7 @@ class _SettingsPageState extends State<SettingsPage> {
               // ? Logout Button
               Button(
                 onTap: () {
-                  // Popup modal
+                  // ? Popup modal
                   confirmLogoutModal(context);           
                 },
                 text: 'Logout',
@@ -182,9 +183,11 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               // ? Delete Account Button
               Button(
-                onTap: () {
-                  // ! pop up logic here
-                },
+                  onTap: () => Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const DeleteAccount();
+                  },
+                )),        
                 text: 'Delete Account',
                 icon: CupertinoIcons.delete,
                 iconColor: niftiError,
