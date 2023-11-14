@@ -283,7 +283,7 @@ class _ConnectorState extends State<Connector> {
                                         });
                                         hasError = false;
                                         // ? If no match found == show error
-                                        if ('${friend['firstName']}' ==
+                                        if ('${friend['fullName']}' ==
                                             'null') {
                                           setState(() {
                                             errorMessage =
