@@ -10,7 +10,38 @@ import 'package:nifti_locapp/components/profile_card.dart';
 
 // * ---------------- * (STATEFUL WIDGET) CLASS ContactProfile (STATEFUL WIDGET) * ---------------- *
 class ContactProfile extends StatefulWidget {
-  const ContactProfile({super.key});
+  // Variables
+  final String imageLink;
+  final String pronouns;
+  final String fullName;
+  final String bio;
+  final String industry;
+  final String city;
+  final String role;
+  final String company;
+  final String yearsWorked;
+  final String email;
+  final String website;
+  final String github;
+  final String linkedin;
+  final String instagram;
+  final String phone;
+  const ContactProfile({super.key,
+  this.imageLink = '',
+    this.pronouns = '',
+    this.fullName = '',
+    this.bio = '',
+    this.industry = '',
+    this.city = '',
+    this.role = '',
+    this.company = '',
+    this.yearsWorked = '',
+    this.email = '',
+    this.website = '',
+    this.github = '',
+    this.linkedin = '',
+    this.instagram = '',
+    this.phone = '',});
 
   @override
   State<ContactProfile> createState() => _ContactProfileState();
@@ -56,7 +87,7 @@ class _ContactProfileState extends State<ContactProfile> {
         // *** Contact Profile page UI & logic starts here
         body: Container(
           alignment: AlignmentDirectional.topStart,
-          padding: const EdgeInsets.only(top: 15, left: 15, right: 20),
+          padding: const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -72,7 +103,7 @@ class _ContactProfileState extends State<ContactProfile> {
                   ),
                 ),
                 const SizedBox(
-                  width: 208,
+                  width: 200,
                 ),
                 // ? Options Button
                 TextButton.icon(
@@ -86,7 +117,7 @@ class _ContactProfileState extends State<ContactProfile> {
                     color: niftiGrey,
                   ),
                   label: Text(
-                    'Options',
+                    'More',
                     style: TextStyle(color: niftiGrey),
                   ),
                 ),
@@ -96,21 +127,22 @@ class _ContactProfileState extends State<ContactProfile> {
               children: [
                 SizedBox(
                   child: ProfileCard(
-                    imageLink: '${contactDetails['imageLink']}',
-                    pronouns: '${contactDetails['pronouns']}',
-                    fullName: '${contactDetails['fullName']}',
-                    bio: '${contactDetails['bio']}',
-                    industry: '${contactDetails['industry']}',
-                    city: '${contactDetails['city/town']}',
-                    role: '${contactDetails['role']}',
-                    company: '${contactDetails['company']}',
-                    yearsWorked: '${contactDetails['yearsWorked']}',
-                    email: '${contactDetails['email']}',
-                    website: '${contactDetails['website']}',
-                    github: '${contactDetails['github']}',
-                    linkedin: '${contactDetails['linkedin']}',
-                    instagram: '${contactDetails['instagram']}',
-                    phone: '${contactDetails['phone']}',
+                    // ? Passing variables to profile card
+                    imageLink: widget.imageLink,
+                    pronouns: widget.pronouns,
+                    fullName: widget.fullName,
+                    bio: widget.bio,
+                    industry: widget.industry,
+                    city: widget.city,
+                    role: widget.role,
+                    company: widget.company,
+                    yearsWorked: widget.yearsWorked,
+                    email: widget.email,
+                    website: widget.website,
+                    github: widget.github,
+                    linkedin: widget.linkedin,
+                    instagram: widget.instagram,
+                    phone: widget.phone,
                   ),
                 ),
               ],
