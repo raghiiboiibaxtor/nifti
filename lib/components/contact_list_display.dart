@@ -11,6 +11,7 @@ class ListDisplay extends StatefulWidget {
   final String industry;
   final String pronouns;
   final String profileImageUrl;
+  final Function()? onTap;
   // ? Required variables to be passed
   const ListDisplay({
     super.key,
@@ -18,6 +19,7 @@ class ListDisplay extends StatefulWidget {
     this.industry = '',
     this.pronouns = '',
     this.profileImageUrl = '',
+    required this.onTap,
   });
 
   @override
@@ -35,15 +37,12 @@ class _ListDisplayState extends State<ListDisplay> {
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
-    return Card(
-        color: niftiWhite,
-        surfaceTintColor: niftiWhite,
-        elevation: 0,
-        margin: const EdgeInsets.only(bottom: 15),
-        shape: const CircleBorder(side: BorderSide.none),
-        child: Container(
+    return GestureDetector(
+          onTap: widget.onTap,
+            child: Container(
           padding:
               const EdgeInsets.only(left: 15, right: 10, top: 10, bottom: 10),
+              margin: const EdgeInsets.only(bottom: 15),
           alignment: AlignmentDirectional.topStart,
           width: 355,
           height: 90,
@@ -170,7 +169,8 @@ class _ListDisplayState extends State<ListDisplay> {
               ),
             ],
           ),
-        ));
+        )
+        );
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
