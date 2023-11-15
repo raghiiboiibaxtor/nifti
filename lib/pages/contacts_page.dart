@@ -109,7 +109,7 @@ class _ContactsPageState extends State<ContactsPage> {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // ? Page title
             Text(
-              'CONTACT PROFILE',
+              'CONTACTS',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
