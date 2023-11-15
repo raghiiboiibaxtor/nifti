@@ -1,123 +1,54 @@
 import "package:flutter/material.dart";
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nifti_locapp/components/profile_card.dart';
-import 'package:nifti_locapp/functions/functions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
-import 'package:nifti_locapp/pages/edit_profile_page.dart';
+import 'package:nifti_locapp/components/text_display.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:social_media_buttons/social_media_buttons.dart';
 
-// ? ProfilePage == display user's details + edit to choose banner images
+class ProfileCard extends StatefulWidget {
+  // Component Variables
+  final String imageLink;
+  final String pronouns;
+  final String fullName;
+  final String bio;
+  final String industry;
+  final String city;
+  final String role;
+  final String company;
+  final String yearsWorked;
+  final String email;
+  final String website;
+  final String github;
+  final String linkedin;
+  final String instagram;
+  final String phone;
 
-// * ---------------- * (STATEFUL WIDGET) CLASS ProfilePage (STATEFUL WIDGET) * ---------------- *
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfileCard({
+    super.key,
+    this.imageLink = '',
+    this.pronouns = '',
+    this.fullName = '',
+    this.bio = '',
+    this.industry = '',
+    this.city = '',
+    this.role = '',
+    this.company = '',
+    this.yearsWorked = '',
+    this.email = '',
+    this.website = '',
+    this.github = '',
+    this.linkedin = '',
+    this.instagram = '',
+    this.phone = '',
+  });
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfileCard> createState() => _ProfileCardState();
 }
-// * ---------------- * END OF (STATE) CLASS ProfilePage (STATE) * ---------------- *
 
-// * ---------------- * (STATE) CLASS _ProfilePageState (STATE) * ---------------- *
-class _ProfilePageState extends State<ProfilePage> {
-  // ? Grabbing user
-  final currentUser = FirebaseAuth.instance.currentUser!;
-  late Map<String, Object?> details = {};
-
-  // ? Get user's data and store in Map<> details
-  _getProfileData() async {
-    details = await NiftiFirestoreFunctions.getUserProfileData();
-    if (details.isNotEmpty) {
-      for (int i = 0; i < details.length; i++) {
-        setState(() {});
-      }
-    }
-    return details;
-  }
-
-  // ? Run functions on page load
-  @override
-  void initState() {
-    super.initState();
-    _getProfileData();
-  }
-
-  // * ---------------- * (BUILD WIDGET) * ---------------- *
+class _ProfileCardState extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Container(
-        color: niftiOffWhite,
-        alignment: Alignment.topLeft,
-        padding: const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                // Page title
-                Text(
-                  'PROFILE',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: niftiGrey,
-                  ),
-                ),
-                const SizedBox(
-                  width: 208,
-                ),
-                // ? Edit Button
-                TextButton.icon(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return const EditProfilePage();
-                    },
-                  )),
-                  icon: Icon(
-                    Icons.mode_edit_outline_rounded,
-                    weight: 20,
-                    size: 12,
-                    color: niftiGrey,
-                  ),
-                  label: Text(
-                    'Edit',
-                    style: TextStyle(color: niftiGrey),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  child: ProfileCard(
-                    imageLink: '${details['imageLink']}',
-                    pronouns: '${details['pronouns']}',
-                    fullName: '${details['fullName']}',
-                    bio: '${details['bio']}',
-                    industry: '${details['industry']}',
-                    city: '${details['city/town']}',
-                    role: '${details['role']}',
-                    company: '${details['company']}',
-                    yearsWorked: '${details['yearsWorked']}',
-                    email: '${details['email']}',
-                    website: '${details['website']}',
-                    github: '${details['github']}',
-                    linkedin: '${details['linkedin']}',
-                    instagram: '${details['instagram']}',
-                    phone: '${details['phone']}',
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-  // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
-
-  // * ---------------- * (PROFILE DISPLAY) * ---------------- *
-  /*Widget _profileDisplayView() {
     return Stack(
       alignment: AlignmentDirectional.center,
       children: [
@@ -163,16 +94,15 @@ class _ProfilePageState extends State<ProfilePage> {
               Stack(
                 alignment: AlignmentDirectional.bottomCenter,
                 children: [
-                  details['imageLink'] != ''
+                  widget.imageLink != ''
                       ? CircleAvatar(
                           radius: 75,
                           backgroundImage: const AssetImage(
                               'images/defaultProfileImage.png'),
                           child: CircleAvatar(
                             radius: 72,
-                            backgroundImage: NetworkImage(
-                                '${details['imageLink']}',
-                                scale: 1.0),
+                            backgroundImage:
+                                NetworkImage(widget.imageLink, scale: 1.0),
                           ),
                         )
                       : const CircleAvatar(
@@ -181,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               AssetImage('images/defaultProfileImage.png'),
                         ),
                   // Pronoun Stack + check
-                  details['pronouns'] != ''
+                  widget.pronouns != ''
                       ? Stack(
                           alignment: AlignmentDirectional.center,
                           children: [
@@ -204,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                '${details['pronouns']}',
+                                widget.pronouns,
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -223,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               // ? Display Full Name
               TextDisplay(
-                text: '${details['fullName']}',
+                text: widget.fullName,
                 fontSize: 34,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1,
@@ -258,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 5,
                     ),
                     // Bio + check
-                    details['bio'] == ''
+                    widget.bio == ''
                         ? Column(children: [
                             const SizedBox(
                               height: 45,
@@ -272,7 +202,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ])
                         : TextDisplay(
-                            text: '${details['bio']}',
+                            text: widget.bio,
                             fontSize: 13,
                           ),
 
@@ -284,7 +214,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Industry
-                        details['industry'] != ''
+                        widget.industry != ''
                             ? Row(
                                 children: [
                                   Icon(
@@ -296,7 +226,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     width: 8,
                                   ),
                                   TextDisplay(
-                                    text: '${details['industry']}',
+                                    text: widget.industry,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -304,7 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               )
                             : const SizedBox(),
                         // City / Town
-                        details['city/town'] != ''
+                        widget.city != ''
                             ? Row(
                                 children: [
                                   Icon(
@@ -316,7 +246,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     width: 8,
                                   ),
                                   TextDisplay(
-                                    text: '${details['city/town']}',
+                                    text: widget.city,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -332,7 +262,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(
                 height: 10,
               ),
-              details['role'] != ''
+              widget.role != ''
                   ? Divider(
                       thickness: 1,
                       indent: 20,
@@ -350,7 +280,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    details['role'] != ''
+                    widget.role != ''
                         ? TextDisplay(
                             text: 'Current Role / Study',
                             color: niftiLightGrey,
@@ -361,7 +291,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(
                       height: 5,
                     ),
-                    details['role'] != ''
+                    widget.role != ''
                         ? Row(
                             children: [
                               Icon(
@@ -373,7 +303,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: 8,
                               ),
                               TextDisplay(
-                                text: '${details['role']}',
+                                text: widget.role,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -388,7 +318,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Industry
-                        details['company'] != ''
+                        widget.company != ''
                             ? Row(
                                 children: [
                                   Icon(
@@ -400,14 +330,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     width: 8,
                                   ),
                                   TextDisplay(
-                                    text: '${details['company']}',
+                                    text: widget.company,
                                     fontSize: 13,
                                   ),
                                 ],
                               )
                             : const SizedBox(),
                         // City / Town
-                        details['yearsWorked'] != ''
+                        widget.yearsWorked != ''
                             ? Row(
                                 children: [
                                   Icon(
@@ -419,7 +349,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     width: 8,
                                   ),
                                   TextDisplay(
-                                    text: '${details['yearsWorked']}',
+                                    text: widget.yearsWorked,
                                     fontSize: 13,
                                   ),
                                 ],
@@ -458,7 +388,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
 
                     // Display email + copy function
-                    details['email'] != ''
+                    widget.email != ''
                         ? Stack(
                             alignment: Alignment.centerLeft,
                             children: [
@@ -524,7 +454,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       // ! Copy / Open Mail App Function
                                     },
                                     child: GradientText(
-                                      '${details['email']}',
+                                      widget.email,
                                       colors: const [
                                         Color.fromRGBO(209, 147, 246, 1),
                                         Color.fromRGBO(115, 142, 247, 1),
@@ -547,7 +477,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         // ? Website, Social, & Contact Links
                         // Website Link
-                        details['website'] != ''
+                        widget.website != ''
                             ? Container(
                                 padding: const EdgeInsets.only(right: 23),
                                 child: IconButton(
@@ -566,7 +496,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               )
                             : Container(),
                         // Github Link
-                        details['github'] != ''
+                        widget.github != ''
                             ? Container(
                                 padding: const EdgeInsets.only(right: 23),
                                 child: SocialMediaButton.github(
@@ -579,7 +509,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               )
                             : Container(),
                         // Linkedin Link
-                        details['linkedin'] != ''
+                        widget.linkedin != ''
                             ? Container(
                                 padding: const EdgeInsets.only(right: 23),
                                 child: SocialMediaButton.linkedin(
@@ -592,7 +522,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               )
                             : Container(),
                         // Instagram Link
-                        details['instagram'] != ''
+                        widget.instagram != ''
                             ? Container(
                                 padding: const EdgeInsets.only(right: 23),
                                 child: SocialMediaButton.instagram(
@@ -605,7 +535,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               )
                             : Container(),
                         // Phone number
-                        details['phone'] != ''
+                        widget.phone != ''
                             ? IconButton(
                                 onPressed: () {
                                   // ! open link function
@@ -630,7 +560,6 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ],
     );
-  }*/
+  }
   // * ---------------- * END OF (PROFILE DISPLAY) * ---------------- *
 }
-// * ---------------- * END OF (STATE) CLASS _ProfilePageState (STATE) * ---------------- *
