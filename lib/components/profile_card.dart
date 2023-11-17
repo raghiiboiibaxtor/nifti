@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/text_display.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:social_media_buttons/social_media_buttons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileCard extends StatefulWidget {
   // Component Variables
@@ -47,6 +49,11 @@ class ProfileCard extends StatefulWidget {
 }
 
 class _ProfileCardState extends State<ProfileCard> {
+  // Function to open links
+  onLaunch(url) async {
+    await launchUrl(Uri.parse(url));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -387,7 +394,7 @@ class _ProfileCardState extends State<ProfileCard> {
                       fontWeight: FontWeight.w800,
                     ),
 
-                    // Display email + copy function
+                    // ? Display email + copy function
                     widget.email != ''
                         ? Stack(
                             alignment: Alignment.centerLeft,
@@ -443,46 +450,58 @@ class _ProfileCardState extends State<ProfileCard> {
                                   const SizedBox(
                                     width: 40,
                                   ),
-                                  TextButton(
-                                    style: ButtonStyle(
-                                      overlayColor:
-                                          // removing spash visuals
-                                          MaterialStateProperty.all(
-                                              Colors.transparent),
-                                    ),
-                                    onPressed: () {
-                                      // ! Copy / Open Mail App Function
-                                    },
-                                    child: GradientText(
-                                      widget.email,
-                                      colors: const [
-                                        Color.fromRGBO(209, 147, 246, 1),
-                                        Color.fromRGBO(115, 142, 247, 1),
-                                        Color.fromRGBO(116, 215, 247, 1),
-                                      ],
-                                      style: const TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
+                                  Tooltip(
+                                      message: 'Copy ${widget.email}',
+                                      preferBelow: false,
+                                      showDuration: const Duration(seconds: 5),
+                                      decoration: ShapeDecoration(
+                                          color: niftiGrey,
+                                          shape: const ToolTipCustomShape()),
+                                      child: TextButton(
+                                        style: ButtonStyle(
+                                          overlayColor:
+                                              // removing spash visuals
+                                              MaterialStateProperty.all(
+                                                  Colors.transparent),
+                                        ),
+                                        onPressed: () {
+                                          // ? Open
+                                          onLaunch(
+                                              'mailto:${widget.email}?subject=&body=');
+                                          // ? Copy
+                                          Clipboard.setData(ClipboardData(
+                                              text: widget.email));
+                                        },
+                                        child: GradientText(
+                                          widget.email,
+                                          colors: const [
+                                            Color.fromRGBO(209, 147, 246, 1),
+                                            Color.fromRGBO(115, 142, 247, 1),
+                                            Color.fromRGBO(116, 215, 247, 1),
+                                          ],
+                                          style: const TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )),
                                 ],
                               ),
                             ],
                           )
                         : // If no email, then don't show UI
                         Container(),
-                    // Contact Links
+                    // ? Website, Social, & Contact Links
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // ? Website, Social, & Contact Links
-                        // Website Link
+                        // ? Website Link
                         widget.website != ''
                             ? Container(
                                 padding: const EdgeInsets.only(right: 23),
                                 child: IconButton(
+                                  // Open Link
                                   onPressed: () {
-                                    // ! open link function
+                                    onLaunch(widget.website);
                                   },
                                   icon: const Icon(CupertinoIcons.globe),
                                   color: niftiGrey,
@@ -495,50 +514,54 @@ class _ProfileCardState extends State<ProfileCard> {
                                 ),
                               )
                             : Container(),
-                        // Github Link
+                        // ? Github Link
                         widget.github != ''
                             ? Container(
                                 padding: const EdgeInsets.only(right: 23),
                                 child: SocialMediaButton.github(
+                                  // Open Link
                                   onTap: () {
-                                    // ! open link function
+                                    onLaunch(widget.github);
                                   },
                                   size: 25,
                                   color: niftiGrey,
                                 ),
                               )
                             : Container(),
-                        // Linkedin Link
+                        // ? Linkedin Link
                         widget.linkedin != ''
                             ? Container(
                                 padding: const EdgeInsets.only(right: 23),
                                 child: SocialMediaButton.linkedin(
+                                  // Open Link
                                   onTap: () {
-                                    // ! open link function
+                                    onLaunch(widget.linkedin);
                                   },
                                   size: 25,
                                   color: niftiGrey,
                                 ),
                               )
                             : Container(),
-                        // Instagram Link
+                        // ? Instagram Link
                         widget.instagram != ''
                             ? Container(
                                 padding: const EdgeInsets.only(right: 23),
                                 child: SocialMediaButton.instagram(
-                                  onTap: () {
-                                    // ! open link function
+                                  // Open link
+                                  onTap: () async {
+                                    onLaunch(widget.instagram);
                                   },
                                   size: 25,
                                   color: niftiGrey,
                                 ),
                               )
                             : Container(),
-                        // Phone number
+                        // ? Phone number
                         widget.phone != ''
                             ? IconButton(
+                                // Open messaging
                                 onPressed: () {
-                                  // ! open link function
+                                  onLaunch('sms:${widget.phone}');
                                 },
                                 icon: const Icon(CupertinoIcons.phone),
                                 color: niftiGrey,
@@ -562,4 +585,36 @@ class _ProfileCardState extends State<ProfileCard> {
     );
   }
   // * ---------------- * END OF (PROFILE DISPLAY) * ---------------- *
+}
+
+// ? Custom tooltip appearance
+class ToolTipCustomShape extends ShapeBorder {
+  final bool usePadding;
+  const ToolTipCustomShape({this.usePadding = true});
+
+  @override
+  EdgeInsetsGeometry get dimensions =>
+      EdgeInsets.only(bottom: usePadding ? 20 : 0);
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) => Path();
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+    rect =
+        Rect.fromPoints(rect.topLeft, rect.bottomRight - const Offset(0, 20));
+    return Path()
+      ..addRRect(
+          RRect.fromRectAndRadius(rect, Radius.circular(rect.height / 2)))
+      ..moveTo(rect.bottomCenter.dx - 10, rect.bottomCenter.dy)
+      ..relativeLineTo(10, 20)
+      ..relativeLineTo(10, -20)
+      ..close();
+  }
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {}
+
+  @override
+  ShapeBorder scale(double t) => this;
 }
