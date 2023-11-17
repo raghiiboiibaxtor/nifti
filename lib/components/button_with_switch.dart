@@ -94,6 +94,8 @@ class _ButtonSwitchState extends State<ButtonSwitch> {
                         },
                       ),
                       onChanged: (bool value) {
+                        // ! FaceID Logic here
+
                         // Change appearance on toggle
                         setState(() {
                           activated = value;

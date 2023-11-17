@@ -166,7 +166,9 @@ class _ChangeEmailState extends State<ChangeEmail> {
                               if (isEmailValid &&
                                   isConfirmEmailValid &&
                                   areEmailsMatching) {
-                                // ! update firebase auth stuff here
+                                // ! Update firestore function
+                                
+                                // Pop loading context
                                 Navigator.pop(context);
                               }
                             }

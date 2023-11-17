@@ -166,8 +166,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             // ? Save Button
                             TextButton.icon(
                               onPressed: () {
-                                Navigator.pop(context);
                                 // ! Update firestore function
+                                
+                                // Pop loading context
+                                Navigator.pop(context);
                               },
                               icon: Icon(
                                 Icons.mode_edit_outline_rounded,

@@ -198,7 +198,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                               if (isCurrentPasswordValid && isNewPasswordValid &&
                                   isConfirmPasswordlValid &&
                                   arePasswordsMatching) {
-                                // ! update firebase auth stuff here
+                                // ! Update firestore function
+                                
+                                // Pop loading context
                                 Navigator.pop(context);
                               }
                             }
