@@ -74,6 +74,7 @@ class _ContactProfileState extends State<ContactProfile> {
     return contactDetails;
   }
 
+
   // ? Run functions on page load
   @override
   void initState() {
@@ -264,6 +265,7 @@ class _ContactProfileState extends State<ContactProfile> {
                             Navigator.pop(context);
                             // Logs out
                             // ! DELETE CONTACT LOGIC HERE
+                            // ! == NiftiFirestoreFunctions.deleteContact( pass something here... );
                             // Pops page
                             Navigator.pop(context);
                           },

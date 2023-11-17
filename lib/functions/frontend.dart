@@ -45,6 +45,7 @@ const String emptyPasswordErrorMessage = 'Please enter a password';
 const String emptyConfirmPasswordErrorMessage = 'Please confirm your password';
 const String passwordsNotMatchingErrorMessage = 'Passwords do not match';
 const String invalidEmailFormat = 'Invalid email format';
+const String emailNotFound = 'Email not found. Please check your input';
 const String emailInUse = 'This email is already in use';
 const String emailsNotMatchingErrorMessage = 'Emails do not match';
 const String weakPassword = 'Password must be 6+ characters';
@@ -97,8 +98,24 @@ bool emailFormatError(
   return false;
 }
 
+// ? Check email format (based on Firebase Auth Error code)
+bool emailNotFoundError(
+    String fieldValue, String? errorMessage, Function(String?) setError) {
+  // Setting error message
+  setError(errorMessage);
+  return false;
+}
+
 // ? Check password format (based on Firebase Auth Error code)
 bool passwordFormatError(
+    String fieldValue, String? errorMessage, Function(String?) setError) {
+  // Setting error message
+  setError(errorMessage);
+  return false;
+}
+
+// ? Check password format (based on Firebase Auth Error code)
+bool passwordError(
     String fieldValue, String? errorMessage, Function(String?) setError) {
   // Setting error message
   setError(errorMessage);
