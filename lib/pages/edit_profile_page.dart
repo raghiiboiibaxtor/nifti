@@ -6,11 +6,14 @@ import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/back_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nifti_locapp/components/drop_menu.dart';
+import 'package:nifti_locapp/components/profile_card.dart';
 import 'package:nifti_locapp/components/text_display.dart';
 import 'package:nifti_locapp/components/text_field_character_limit.dart';
 import 'package:nifti_locapp/components/text_form_field.dart';
 import 'package:nifti_locapp/functions/functions.dart';
 import 'package:nifti_locapp/functions/frontend.dart';
+import 'package:nifti_locapp/pages/profile_page.dart';
+import 'package:nifti_locapp/widget_tree.dart';
 
 // ? EditProfilePage == User access to update their profile details
 
@@ -129,8 +132,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
     });
     try {
       await collectionReference.doc(niftiFireUser).update(updatedDetails);
+      return updatedDetails;
     } catch (e) {
-      //
+      return e;
     }
   }
 
@@ -201,11 +205,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ),
                             // ? Save Button
                             TextButton.icon(
-                              onPressed: () {
+                              onPressed: () async {
                                 // ! Update firestore function
-                                editProfile();
-                                // Pop loading context
-                                Navigator.pop(context);
+                                await editProfile();
+                                _getProfileData()
+                                    .then((value) => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const WidgetTree()),
+                                        ));
                               },
                               icon: Icon(
                                 Icons.mode_edit_outline_rounded,

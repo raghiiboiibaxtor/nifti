@@ -209,43 +209,14 @@ class NiftiFirestoreFunctions {
   //  ------------------------------------------------------------------------------------------------------  U P D A T E ( )
   // ? Appending Firestore document data
 
-  Future updateProfileData(Map<String, Object?> details) async {
+  static updateProfileData(Map<String, Object?> details) async {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
     try {
-      // Get a reference to the document
-      DocumentReference documentReference =
-          FirebaseFirestore.instance.collection('users').doc(niftiFireUser);
-      late Map<String, Object?> details = {};
-
-      // Update the document data
-      await documentReference.update(details);
-    } catch (error) {
-      //;
+      await collectionReference.doc(niftiFireUser).update(details);
+    } catch (e) {
+      return e;
     }
-/*
-    collectionReference.doc(niftiFireUser).update({
-      // ? Personal Data
-      'fullName': '',
-      'email': '',
-      'city/town': '',
-      'pronouns': '',
-      'imageLink': '',
-      'bio': 'HELLO',
-      'role': '',
-      'industry': '',
-      'company': '',
-      'yearsWorked': '',
-      // ? Socials
-      'phone': '',
-      'website': '',
-      'linkedin': '',
-      'instagram': '',
-      'github': '',
-    }).then(
-        // ignore: avoid_print
-        (value) => print("DocumentSnapshot successfully updated!"),
-        // ignore: avoid_print
-        onError: (e) => print("Error updating document $e"));*/
   }
 
   static addConnection(String pincode) async {
