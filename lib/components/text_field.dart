@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nifti_locapp/components/app_theme.dart';
 
 // ? TextFieldComponent == custom text field widget
 
@@ -31,14 +32,18 @@ class TextFieldComponent extends StatelessWidget {
             obscureText: obscureText,
             decoration: InputDecoration(
               hintText: hintText,
+              hintStyle: TextStyle(fontSize: 15,
+              color: niftiGrey,),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(
                 left: 20.0,
                 right: 20.0,
               ),
             ),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 15,
+              color: niftiGrey,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ));
