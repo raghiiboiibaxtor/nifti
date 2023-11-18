@@ -115,19 +115,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
     late Map<String, Object?> updatedDetails;
     updatedDetails = ({
       'fullName': _fullNameController.text,
-      /*
-        _pronouns = '${details['pronouns']}',
-        _emailController.text = '${details['email']}',
-        _cityController.text = '${details['city/town']}',
-        _bio.text = '${details['bio']}',
-        _industry.text = '${details['industry']}',
-        _roleTitle.text = '${details['role']}',
-        _companyName.text = '${details['company']}',
-        _yearsWorked = '${details['yearsWorked']}',
-        _websiteController.text = '${details['website']}',
-        _linkedinController.text = '${details['linkedin']}',
-        _instagramController.text = '${details['instagram']}',
-        _githubController.text = '${details['github']}',*/
+      'pronouns': _pronouns,
+      'email': _emailController.text,
+      'city/town': _cityController.text,
+      'bio': _bio.text,
+      'industry': _industry.text,
+      'role': _roleTitle.text,
+      'company': _companyName.text,
+      'yearsWorked': _yearsWorked,
+      'website': _websiteController.text,
+      'linkedin': _linkedinController.text,
+      'instagram': _instagramController.text,
+      'github': _githubController.text,
       'phone': _phoneController.text,
     });
     try {
@@ -164,6 +163,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
     _getProfileData();
+    editProfile();
   }
 
   // * * ---------------- * (BUILD WIDGET) * ---------------- *
