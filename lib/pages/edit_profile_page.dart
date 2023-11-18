@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
@@ -77,12 +78,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // ? Get user's data and store in Map<> details and text controllers
   _getProfileData() async {
     details = await NiftiFirestoreFunctions.getUserProfileData();
-    late Map<String, Object?> updatedDetails;
+    //late Map<String, Object?> updatedDetails;
     if (details.isNotEmpty) {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
       }
       // Assign text controllers
+      //
+      /*
       _fullNameController.text = '${details['fullName']}';
       _pronouns = '${details['pronouns']}';
       _emailController.text = '${details['email']}';
@@ -98,13 +101,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _githubController.text = '${details['github']}';
       _phoneController.text = '${details['phone']}';
     }
-    updatedDetails = details;
-    return updatedDetails;
+    updatedDetails = details;*/
+      return details;
+    }
   }
 
-  Future saveEditProfile(Map<String, Object?> updatedDetails) async {
+  Future editProfile() async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
+    late Map<String, Object?> updatedDetails;
+    updatedDetails = ({
+      'fullName': _fullNameController.text,
+      /*
+        _pronouns = '${details['pronouns']}',
+        _emailController.text = '${details['email']}',
+        _cityController.text = '${details['city/town']}',
+        _bio.text = '${details['bio']}',
+        _industry.text = '${details['industry']}',
+        _roleTitle.text = '${details['role']}',
+        _companyName.text = '${details['company']}',
+        _yearsWorked = '${details['yearsWorked']}',
+        _websiteController.text = '${details['website']}',
+        _linkedinController.text = '${details['linkedin']}',
+        _instagramController.text = '${details['instagram']}',
+        _githubController.text = '${details['github']}',*/
+      'phone': _phoneController.text,
+    });
     try {
-      await userProfile.updateProfileData(updatedDetails);
+      await collectionReference.doc(niftiFireUser).update(updatedDetails);
     } catch (e) {
       //
     }
@@ -136,7 +160,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
     _getProfileData();
-    saveEditProfile();
   }
 
   // * * ---------------- * (BUILD WIDGET) * ---------------- *
@@ -180,7 +203,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             TextButton.icon(
                               onPressed: () {
                                 // ! Update firestore function
-                                saveEditProfile();
+                                editProfile();
                                 // Pop loading context
                                 Navigator.pop(context);
                               },
@@ -596,3 +619,4 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
 // * ---------------- * END OF (STATE) CLASS _EditProfilePageState (STATE) * ---------------- *
+
