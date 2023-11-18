@@ -24,6 +24,8 @@ class EditProfilePage extends StatefulWidget {
 
 // * ---------------- * (STATE) CLASS _EditProfilePageState (STATE) * ---------------- *
 class _EditProfilePageState extends State<EditProfilePage> {
+  // ? Creating instance of user document
+  NiftiFirestoreFunctions userProfile = NiftiFirestoreFunctions();
   // ? Grabbing user
   final currentUser = FirebaseAuth.instance.currentUser!;
   late Map<String, Object?> details = {};
@@ -75,6 +77,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // ? Get user's data and store in Map<> details and text controllers
   _getProfileData() async {
     details = await NiftiFirestoreFunctions.getUserProfileData();
+    late Map<String, Object?> updatedDetails;
     if (details.isNotEmpty) {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
@@ -95,7 +98,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _githubController.text = '${details['github']}';
       _phoneController.text = '${details['phone']}';
     }
-    return details;
+    updatedDetails = details;
+    return updatedDetails;
+  }
+
+  Future saveEditProfile(Map<String, Object?> updatedDetails) async {
+    try {
+      await userProfile.updateProfileData(updatedDetails);
+    } catch (e) {
+      //
+    }
   }
 
   // ? Dispose controllers when not using - helps memory management
@@ -124,6 +136,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
     _getProfileData();
+    saveEditProfile();
   }
 
   // * * ---------------- * (BUILD WIDGET) * ---------------- *
@@ -167,7 +180,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             TextButton.icon(
                               onPressed: () {
                                 // ! Update firestore function
-                                
+                                saveEditProfile();
                                 // Pop loading context
                                 Navigator.pop(context);
                               },
@@ -444,7 +457,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                               itemsList: years,
                                               onChanged: (value) {
                                                 setState(() {
-                                                  _yearsWorked = value as String;
+                                                  _yearsWorked =
+                                                      value as String;
                                                 });
                                               },
                                             )
@@ -457,7 +471,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                               itemsList: years,
                                               onChanged: (value) {
                                                 setState(() {
-                                                  _yearsWorked = value as String;
+                                                  _yearsWorked =
+                                                      value as String;
                                                 });
                                               },
                                             ),
