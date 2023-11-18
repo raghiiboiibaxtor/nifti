@@ -1,15 +1,19 @@
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/back_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nifti_locapp/components/drop_menu.dart';
+import 'package:nifti_locapp/components/profile_card.dart';
 import 'package:nifti_locapp/components/text_display.dart';
 import 'package:nifti_locapp/components/text_field_character_limit.dart';
 import 'package:nifti_locapp/components/text_form_field.dart';
 import 'package:nifti_locapp/functions/functions.dart';
 import 'package:nifti_locapp/functions/frontend.dart';
+import 'package:nifti_locapp/pages/profile_page.dart';
+import 'package:nifti_locapp/widget_tree.dart';
 
 // ? EditProfilePage == User access to update their profile details
 
@@ -24,6 +28,8 @@ class EditProfilePage extends StatefulWidget {
 
 // * ---------------- * (STATE) CLASS _EditProfilePageState (STATE) * ---------------- *
 class _EditProfilePageState extends State<EditProfilePage> {
+  // ? Creating instance of user document
+  NiftiFirestoreFunctions userProfile = NiftiFirestoreFunctions();
   // ? Grabbing user
   final currentUser = FirebaseAuth.instance.currentUser!;
   late Map<String, Object?> details = {};
@@ -75,11 +81,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // ? Get user's data and store in Map<> details and text controllers
   _getProfileData() async {
     details = await NiftiFirestoreFunctions.getUserProfileData();
+    //late Map<String, Object?> updatedDetails;
     if (details.isNotEmpty) {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
       }
       // Assign text controllers
+      //
+      /*
       _fullNameController.text = '${details['fullName']}';
       _pronouns = '${details['pronouns']}';
       _emailController.text = '${details['email']}';
@@ -95,7 +104,37 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _githubController.text = '${details['github']}';
       _phoneController.text = '${details['phone']}';
     }
-    return details;
+    updatedDetails = details;*/
+      return details;
+    }
+  }
+
+  Future editProfile() async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
+    late Map<String, Object?> updatedDetails;
+    updatedDetails = ({
+      'fullName': _fullNameController.text,
+      'pronouns': _pronouns,
+      'email': _emailController.text,
+      'city/town': _cityController.text,
+      'bio': _bio.text,
+      'industry': _industry.text,
+      'role': _roleTitle.text,
+      'company': _companyName.text,
+      'yearsWorked': _yearsWorked,
+      'website': _websiteController.text,
+      'linkedin': _linkedinController.text,
+      'instagram': _instagramController.text,
+      'github': _githubController.text,
+      'phone': _phoneController.text,
+    });
+    try {
+      await collectionReference.doc(niftiFireUser).update(updatedDetails);
+      return updatedDetails;
+    } catch (e) {
+      return e;
+    }
   }
 
   // ? Dispose controllers when not using - helps memory management
@@ -124,6 +163,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
     _getProfileData();
+    editProfile();
   }
 
   // * * ---------------- * (BUILD WIDGET) * ---------------- *
@@ -165,11 +205,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ),
                             // ? Save Button
                             TextButton.icon(
-                              onPressed: () {
+                              onPressed: () async {
                                 // ! Update firestore function
-                                
-                                // Pop loading context
-                                Navigator.pop(context);
+                                await editProfile();
+                                _getProfileData()
+                                    .then((value) => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const WidgetTree()),
+                                        ));
                               },
                               icon: Icon(
                                 Icons.mode_edit_outline_rounded,
@@ -444,7 +489,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                               itemsList: years,
                                               onChanged: (value) {
                                                 setState(() {
-                                                  _yearsWorked = value as String;
+                                                  _yearsWorked =
+                                                      value as String;
                                                 });
                                               },
                                             )
@@ -457,7 +503,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                               itemsList: years,
                                               onChanged: (value) {
                                                 setState(() {
-                                                  _yearsWorked = value as String;
+                                                  _yearsWorked =
+                                                      value as String;
                                                 });
                                               },
                                             ),
@@ -581,3 +628,4 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
 // * ---------------- * END OF (STATE) CLASS _EditProfilePageState (STATE) * ---------------- *
+

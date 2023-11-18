@@ -208,6 +208,17 @@ class NiftiFirestoreFunctions {
 
   //  ------------------------------------------------------------------------------------------------------  U P D A T E ( )
   // ? Appending Firestore document data
+
+  static updateProfileData(Map<String, Object?> details) async {
+    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
+    var collectionReference = FirebaseFirestore.instance.collection('users');
+    try {
+      await collectionReference.doc(niftiFireUser).update(details);
+    } catch (e) {
+      return e;
+    }
+  }
+
   static addConnection(String pincode) async {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     var collectionReference = FirebaseFirestore.instance.collection('users');
