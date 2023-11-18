@@ -72,13 +72,6 @@ class _ConnectorState extends State<Connector> {
   }
 
   // ? get connections data and store in Map<> friend
-  /*_getConnectionData() async {
-    friend = await ReadUserData.getConnectionData(pincode);
-    setState(() {});
-    return friend;
-  }*/
-
-  // ? get connections data and store in Map<> friend
   _getConnectionData(String staticPin) async {
     if (staticPin != '') {
       friend =
@@ -88,6 +81,15 @@ class _ConnectorState extends State<Connector> {
     } else {
       return staticPin = 'Pin not found';
     }
+  }
+
+  // ? Function to break PIN text into chunks of 2 characters
+  List<String> chunkText(String text, int chunkSize) {
+    List<String> chunks = [];
+    for (int i = 0; i < text.length; i += chunkSize) {
+      chunks.add(text.substring(i, i + chunkSize));
+    }
+    return chunks;
   }
 
   // ? Dispose controllers when not using - helps memory management
@@ -112,6 +114,12 @@ class _ConnectorState extends State<Connector> {
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
+    // ? Variables for user PIN 2x2 format display
+    // Get the pin code from Firestore
+    String pinCode = '${details['pincode']}';
+    // Break the pin code into chunks of 2 characters each
+    List<String> pinCodeChunks = chunkText(pinCode, 2);
+    // ? Connection page
     return GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
@@ -283,8 +291,7 @@ class _ConnectorState extends State<Connector> {
                                         });
                                         hasError = false;
                                         // ? If no match found == show error
-                                        if ('${friend['fullName']}' ==
-                                            'null') {
+                                        if ('${friend['fullName']}' == 'null') {
                                           setState(() {
                                             errorMessage =
                                                 'Oops! That\'s an invalid code. Please try again!';
@@ -489,19 +496,25 @@ class _ConnectorState extends State<Connector> {
                               height: 5,
                             ),
                             // ? Pin Code Display
-                            GradientText(
-                              '${details['pincode']}',
-                              colors: const [
-                                Color.fromRGBO(209, 147, 246, 1),
-                                Color.fromRGBO(115, 142, 247, 1),
-                                Color.fromRGBO(116, 215, 247, 1),
-                              ],
-                              style: const TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 10,
-                                  height: 1.2),
-                            )
+                            Column(
+                              // ? map 2 characters per line
+                              children: pinCodeChunks.map((chunk) {
+                                return GradientText(
+                                  chunk,
+                                  colors: const [
+                                    Color.fromRGBO(209, 147, 246, 1),
+                                    Color.fromRGBO(115, 142, 247, 1),
+                                    Color.fromRGBO(116, 215, 247, 1),
+                                  ],
+                                  style: const TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 11,
+                                    height: 1.2,
+                                  ),
+                                );
+                              }).toList(),
+                            ),
                           ],
                         ),
                       )
