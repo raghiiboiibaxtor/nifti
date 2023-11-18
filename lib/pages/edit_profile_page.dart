@@ -28,8 +28,6 @@ class EditProfilePage extends StatefulWidget {
 
 // * ---------------- * (STATE) CLASS _EditProfilePageState (STATE) * ---------------- *
 class _EditProfilePageState extends State<EditProfilePage> {
-  // ? Creating instance of user document
-  NiftiFirestoreFunctions userProfile = NiftiFirestoreFunctions();
   // ? Grabbing user
   final currentUser = FirebaseAuth.instance.currentUser!;
   late Map<String, Object?> details = {};
@@ -81,7 +79,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // ? Get user's data and store in Map<> details and text controllers
   _getProfileData() async {
     details = await NiftiFirestoreFunctions.getUserProfileData();
-    //late Map<String, Object?> updatedDetails;
     if (details.isNotEmpty) {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
@@ -105,24 +102,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _phoneController.text = '${details['phone']}';
     }
     updatedDetails = details;*/
+      // updatedDetails = details;
+      // return updatedDetails;
       return details;
     }
   }
 
-  Future editProfile() async {
+  Future editProfile(Map<String, Object?> details) async {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     var collectionReference = FirebaseFirestore.instance.collection('users');
     late Map<String, Object?> updatedDetails;
+    late Map<String, Object?> saveDetails = {};
+    // ? Creating local object to append cloud document
     updatedDetails = ({
       'fullName': _fullNameController.text,
-      'pronouns': _pronouns,
+      //'pronouns': _pronouns,
       'email': _emailController.text,
       'city/town': _cityController.text,
       'bio': _bio.text,
       'industry': _industry.text,
       'role': _roleTitle.text,
       'company': _companyName.text,
-      'yearsWorked': _yearsWorked,
+      //'yearsWorked': _yearsWorked,
       'website': _websiteController.text,
       'linkedin': _linkedinController.text,
       'instagram': _instagramController.text,
@@ -130,8 +131,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
       'phone': _phoneController.text,
     });
     try {
-      await collectionReference.doc(niftiFireUser).update(updatedDetails);
-      return updatedDetails;
+      // ? Fetching data & pushing it through a range based for loop to compare map.values and make decisions based on results
+      details = await NiftiFirestoreFunctions.getUserProfileData();
+      if (details.isNotEmpty) {
+        details.forEach((key, value) async {
+          //s  if (!details.keys.every((key) => updatedDetails.containsKey(key))) {
+          // ? If the updatedDetails value is not an empty string && is different from details.map save data into saveDetails
+          if (updatedDetails[key] != '') {
+            saveDetails[key] = updatedDetails[key];
+            // collectionReference.doc(niftiFireUser).update(saveDetails);
+          } else {
+            saveDetails[key] = details[key];
+          }
+          await collectionReference.doc(niftiFireUser).update(saveDetails);
+          // }
+        });
+        // saveDetails = updatedDetails;
+      }
+
+      return saveDetails;
     } catch (e) {
       return e;
     }
@@ -163,7 +181,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
     _getProfileData();
-    editProfile();
+    //editProfile();
   }
 
   // * * ---------------- * (BUILD WIDGET) * ---------------- *
@@ -207,7 +225,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             TextButton.icon(
                               onPressed: () async {
                                 // ! Update firestore function
-                                await editProfile();
+                                await editProfile(details);
                                 _getProfileData()
                                     .then((value) => Navigator.push(
                                           context,
@@ -628,4 +646,3 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
 // * ---------------- * END OF (STATE) CLASS _EditProfilePageState (STATE) * ---------------- *
-
