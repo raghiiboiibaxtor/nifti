@@ -514,20 +514,6 @@ class _ProfileCardState extends State<ProfileCard> {
                                 ),
                               )
                             : Container(),
-                        // ? Github Link
-                        widget.github != ''
-                            ? Container(
-                                padding: const EdgeInsets.only(right: 23),
-                                child: SocialMediaButton.github(
-                                  // Open Link
-                                  onTap: () {
-                                    onLaunch(widget.github);
-                                  },
-                                  size: 25,
-                                  color: niftiGrey,
-                                ),
-                              )
-                            : Container(),
                         // ? Linkedin Link
                         widget.linkedin != ''
                             ? Container(
@@ -550,6 +536,20 @@ class _ProfileCardState extends State<ProfileCard> {
                                   // Open link
                                   onTap: () async {
                                     onLaunch(widget.instagram);
+                                  },
+                                  size: 25,
+                                  color: niftiGrey,
+                                ),
+                              )
+                            : Container(),
+                          // ? Github Link
+                        widget.github != ''
+                            ? Container(
+                                padding: const EdgeInsets.only(right: 23),
+                                child: SocialMediaButton.github(
+                                  // Open Link
+                                  onTap: () {
+                                    onLaunch(widget.github);
                                   },
                                   size: 25,
                                   color: niftiGrey,
