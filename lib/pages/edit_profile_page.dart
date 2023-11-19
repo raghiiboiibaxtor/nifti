@@ -83,6 +83,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
       }
+      _pronouns = '${details['pronouns']}';
+      _yearsWorked = '${details['yearsWorked']}';
       // Assign text controllers
       //
       /*
