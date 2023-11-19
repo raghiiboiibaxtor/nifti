@@ -101,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     fullName: '${details['fullName']}',
                     bio: '${details['bio']}',
                     industry: '${details['industry']}',
-                    city: '${details['city/town']}',
+                    city: '${details['city']}',
                     role: '${details['role']}',
                     company: '${details['company']}',
                     yearsWorked: '${details['yearsWorked']}',

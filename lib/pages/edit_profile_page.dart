@@ -50,20 +50,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _githubController;
   late TextEditingController _phoneController;
   bool _isDataLoaded = false;
-  //final _fullNameController = TextEditingController();
-  //String? _pronouns;
-  /*final _cityController = TextEditingController();
-  final _bio = TextEditingController();
-  final _industry = TextEditingController();
-  final _roleTitle = TextEditingController();
-  final _companyName = TextEditingController();*/
-  //String? _yearsWorked;
-  /*final _emailController = TextEditingController();
-  final _websiteController = TextEditingController();
-  final _linkedinController = TextEditingController();
-  final _instagramController = TextEditingController();
-  final _githubController = TextEditingController();
-  final _phoneController = TextEditingController();*/
 
   // ? Pronoun dropdown list
   final List<String> pronouns = [
@@ -101,27 +87,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
       }
-
-      // Assign text controllers
-      /*
-      _fullNameController.text = '${details['fullName']}';
-      _pronouns = '${details['pronouns']}';
-      _emailController.text = '${details['email']}';
-      _cityController.text = '${details['city/town']}';
-      _bio.text = '${details['bio']}';
-      _industry.text = '${details['industry']}';
-      _roleTitle.text = '${details['role']}';
-      _companyName.text = '${details['company']}';
-      _yearsWorked = '${details['yearsWorked']}';
-      _websiteController.text = '${details['website']}';
-      _linkedinController.text = '${details['linkedin']}';
-      _instagramController.text = '${details['instagram']}';
-      _githubController.text = '${details['github']}';
-      _phoneController.text = '${details['phone']}';
-    }
-    updatedDetails = details;*/
-      // updatedDetails = details;
-      // return updatedDetails;
       return details;
     }
   }
@@ -130,26 +95,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future<void> _loadData() async {
     // ? Delay for 2 seconds
     await Future.delayed(const Duration(seconds: 1));
-
     // ? Set text controllers & bool
     setState(() {
-      _fullNameController =
-          TextEditingController(text: '${details['fullName']}');
+      _fullNameController = TextEditingController(text: '${details['fullName']}');
       _pronouns = '${details['pronouns']}';
       _emailController = TextEditingController(text: '${details['email']}');
-      _cityController = TextEditingController(text: '${details['city/town']}');
+      _cityController = TextEditingController(text: '${details['city']}');
       _bioController = TextEditingController(text: '${details['bio']}');
-      _industryController =
-          TextEditingController(text: '${details['industry']}');
+      _industryController = TextEditingController(text: '${details['industry']}');
       _roleTitleController = TextEditingController(text: '${details['role']}');
-      _companyNameController =
-          TextEditingController(text: '${details['company']}');
+      _companyNameController = TextEditingController(text: '${details['company']}');
       _yearsWorked = '${details['yearsWorked']}';
       _websiteController = TextEditingController(text: '${details['website']}');
-      _linkedinController =
-          TextEditingController(text: '${details['linkedin']}');
-      _instagramController =
-          TextEditingController(text: '${details['instagram']}');
+      _linkedinController = TextEditingController(text: '${details['linkedin']}');
+      _instagramController = TextEditingController(text: '${details['instagram']}');
       _githubController = TextEditingController(text: '${details['github']}');
       _phoneController = TextEditingController(text: '${details['phone']}');
       // ? Update bool to true
@@ -170,7 +129,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       'fullName': _fullNameController.text,
       'pronouns': _pronouns,
       'email': _emailController.text,
-      'city/town': _cityController.text,
+      'city': _cityController.text,
       'bio': _bioController.text,
       'industry': _industryController.text,
       'role': _roleTitleController.text,
@@ -276,17 +235,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 // ? Update firestore info
                                 await editProfile(details);
                                 // ? Reload user details on profilepage
-                                Provider.of<ProfileDataProvider>(context, listen: false).getProfileData();
+                                Provider.of<ProfileDataProvider>(context,
+                                        listen: false)
+                                    .getProfileData();
                                 // ? Pop edit page to show profile
                                 Navigator.pop(context);
-                                /*
-                                _getProfileData()
-                                    .then((value) => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const WidgetTree()),
-                                        ));*/
                               },
                               icon: Icon(
                                 Icons.mode_edit_outline_rounded,
