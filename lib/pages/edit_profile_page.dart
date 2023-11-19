@@ -34,6 +34,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late var connections = [];
   // ? Text Controllers - used to access the user's input
   Uint8List? _profileImage;
+  Uint8List? memoryImage;
   final _fullNameController = TextEditingController();
   String? _pronouns;
   final _cityController = TextEditingController();
@@ -71,10 +72,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // ? Profile image selection function
   selectProfileImage() async {
     Uint8List image = await pickImage();
+    memoryImage = MemoryImage(_profileImage!) as Uint8List;
     setState(() {
       _profileImage = image;
     });
-    return _profileImage;
   }
 
   // ? Get user's data and store in Map<> details and text controllers
@@ -89,7 +90,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _yearsWorked = '${details['yearsWorked']}';
 
       // Assign text controllers
-      //
       /*
       _fullNameController.text = '${details['fullName']}';
       _pronouns = '${details['pronouns']}';
@@ -120,6 +120,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     late Map<String, Object?> updatedDetails;
     late Map<String, Object?> saveDetails = {};
     String code = '${details['pincode']}';
+
     // ? Creating local object to append cloud document
     updatedDetails = ({
       'fullName': _fullNameController.text,
@@ -138,7 +139,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       'phone': _phoneController.text,
       'pincode': code,
       'connections': connections,
-      'imageLink': _profileImage
     });
     try {
       // ? Fetching data & pushing it through a range based for loop to compare map.values and make decisions based on results
@@ -231,6 +231,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               onPressed: () async {
                                 // ! Update firestore function
                                 await editProfile(details);
+
                                 _getProfileData()
                                     .then((value) => Navigator.push(
                                           context,
