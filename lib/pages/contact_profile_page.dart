@@ -6,6 +6,8 @@ import 'package:nifti_locapp/functions/functions.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/back_app_bar.dart';
 import 'package:nifti_locapp/components/profile_card.dart';
+import 'package:nifti_locapp/pages/connection_page.dart';
+import 'package:nifti_locapp/widget_tree.dart';
 
 // ? ContactProfile == display a contact's details
 
@@ -27,6 +29,7 @@ class ContactProfile extends StatefulWidget {
   final String linkedin;
   final String instagram;
   final String phone;
+  final String pincode;
   const ContactProfile({
     super.key,
     this.imageLink = '',
@@ -44,6 +47,7 @@ class ContactProfile extends StatefulWidget {
     this.linkedin = '',
     this.instagram = '',
     this.phone = '',
+    this.pincode = '',
   });
 
   @override
@@ -74,6 +78,16 @@ class _ContactProfileState extends State<ContactProfile> {
     return contactDetails;
   }
 
+  _deleteContact() async {
+    // Extract the pincode value from the map.
+    Object? pincodeValue = contactDetails['pincode'];
+
+    // Check if the value is not null before converting it to a string.
+    if (pincodeValue != null) {
+      String hellopincode = pincodeValue.toString();
+      await NiftiFirestoreFunctions.deleteContact(hellopincode);
+    } else {}
+  }
 
   // ? Run functions on page load
   @override
@@ -261,13 +275,13 @@ class _ContactProfileState extends State<ContactProfile> {
                         CTAConfirmButton(
                           text: 'Remove',
                           onTap: () async {
+                            NiftiFirestoreFunctions.deleteContact('2917').then(
+                                (value) => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const WidgetTree())));
                             // Pops modal
-                            Navigator.pop(context);
-                            // Logs out
-                            // ! DELETE CONTACT LOGIC HERE
-                            // ! == NiftiFirestoreFunctions.deleteContact( pass something here... );
-                            // Pops page
-                            Navigator.pop(context);
                           },
                         ),
                       ]),
