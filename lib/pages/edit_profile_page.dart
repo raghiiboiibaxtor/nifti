@@ -31,7 +31,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // ? Grabbing user
   final currentUser = FirebaseAuth.instance.currentUser!;
   late Map<String, Object?> details = {};
-
+  late var connections = [];
   // ? Text Controllers - used to access the user's input
   Uint8List? _profileImage;
   final _fullNameController = TextEditingController();
@@ -79,12 +79,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // ? Get user's data and store in Map<> details and text controllers
   _getProfileData() async {
     details = await NiftiFirestoreFunctions.getUserProfileData();
+    connections = await NiftiFirestoreFunctions.getAllConnections();
     if (details.isNotEmpty) {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
       }
       _pronouns = '${details['pronouns']}';
       _yearsWorked = '${details['yearsWorked']}';
+
       // Assign text controllers
       //
       /*
@@ -134,26 +136,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
       'github': _githubController.text,
       'phone': _phoneController.text,
       'pincode': code,
+      'connections': connections
     });
     try {
       // ? Fetching data & pushing it through a range based for loop to compare map.values and make decisions based on results
 
       if (details.isNotEmpty) {
         details.forEach((key, value) async {
-          //s  if (!details.keys.every((key) => updatedDetails.containsKey(key))) {
           // ? If the updatedDetails value is not an empty string && is different from details.map save data into saveDetails
-          if (updatedDetails[key] != '') {
+          if ((updatedDetails[key] != '') && (updatedDetails[key] != null)) {
             saveDetails[key] = updatedDetails[key];
-            // collectionReference.doc(niftiFireUser).update(saveDetails);
           } else {
             saveDetails[key] = details[key];
           }
           await collectionReference.doc(niftiFireUser).update(saveDetails);
-          // }
         });
-        // saveDetails = updatedDetails;
       }
-
       return saveDetails;
     } catch (e) {
       return e;
@@ -260,7 +258,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           // ? Profile Picture Selection
                           Stack(
                             children: [
-                              details['imageLink'] != ''
+                              details['imageLink'] != '' ||
+                                      details['imageLink'] != null
                                   ? CircleAvatar(
                                       radius: 53,
                                       backgroundImage: const AssetImage(
