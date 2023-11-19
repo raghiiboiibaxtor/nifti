@@ -111,28 +111,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future editProfile(Map<String, Object?> details) async {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     var collectionReference = FirebaseFirestore.instance.collection('users');
+    details = await NiftiFirestoreFunctions.getUserProfileData();
     late Map<String, Object?> updatedDetails;
     late Map<String, Object?> saveDetails = {};
+    String code = '${details['pincode']}';
     // ? Creating local object to append cloud document
     updatedDetails = ({
       'fullName': _fullNameController.text,
-      //'pronouns': _pronouns,
+      'pronouns': _pronouns,
       'email': _emailController.text,
       'city/town': _cityController.text,
       'bio': _bio.text,
       'industry': _industry.text,
       'role': _roleTitle.text,
       'company': _companyName.text,
-      //'yearsWorked': _yearsWorked,
+      'yearsWorked': _yearsWorked,
       'website': _websiteController.text,
       'linkedin': _linkedinController.text,
       'instagram': _instagramController.text,
       'github': _githubController.text,
       'phone': _phoneController.text,
+      'pincode': code,
     });
     try {
       // ? Fetching data & pushing it through a range based for loop to compare map.values and make decisions based on results
-      details = await NiftiFirestoreFunctions.getUserProfileData();
+
       if (details.isNotEmpty) {
         details.forEach((key, value) async {
           //s  if (!details.keys.every((key) => updatedDetails.containsKey(key))) {
