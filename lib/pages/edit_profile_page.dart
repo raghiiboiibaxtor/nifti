@@ -276,7 +276,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 // ? Update firestore info
                                 await editProfile(details);
                                 // ? Reload user details on profilepage
-                                Provider.of<ProfileDataProvider>(context, listen: false).getProfileData();
+                                Provider.of<ProfileDataProvider>(context,
+                                        listen: false)
+                                    .getProfileData();
                                 // ? Pop edit page to show profile
                                 Navigator.pop(context);
                                 /*

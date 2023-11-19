@@ -256,10 +256,6 @@ class NiftiFirestoreFunctions {
     }
   }
 
-  static updateEmail(String email) {
-    FirebaseAuth.instance.currentUser!.updateEmail('hello@email.com');
-  }
-
   // ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
   // ? Update ImageUrl in firestore (change profile picture)
   Future updateFirestoreImageLink(Uint8List file) async {

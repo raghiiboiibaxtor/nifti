@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:nifti_locapp/auth/auth.dart';
 import 'package:nifti_locapp/components/profile_data_provider.dart';
+import 'package:nifti_locapp/functions/functions.dart';
 import 'package:provider/provider.dart';
 
 // ? MyApp == root of application
@@ -9,12 +10,16 @@ import 'package:provider/provider.dart';
 // * ---------------- * (main)* ---------------- * */
 void main() async {
   // ? Access to native code
+  //NiftiSystemSettings.getFaceID();
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
-  runApp(ChangeNotifierProvider(
+  runApp(
+    ChangeNotifierProvider(
       create: (context) => ProfileDataProvider(),
       child: const MyApp(),
-    ),);
+    ),
+  );
 }
 
 // * ---------------- * (STATELESS WIDGET) CLASS MyApp (STATELESS WIDGET) * ---------------- *
