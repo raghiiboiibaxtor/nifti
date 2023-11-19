@@ -103,7 +103,7 @@ class NiftiFirestoreFunctions {
         'role': 'Role',
         'industry': 'Industry',
         'company': 'Company',
-        'yearsWorked': '< 1',
+        'yearsWorked': '< 1 year',
         // ? Socials
         'phone': 'Phone number',
         'website': 'Enter portfolio or website',

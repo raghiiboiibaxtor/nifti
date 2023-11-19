@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,12 +7,13 @@ import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/back_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nifti_locapp/components/drop_menu.dart';
+import 'package:nifti_locapp/components/profile_data_provider.dart';
 import 'package:nifti_locapp/components/text_display.dart';
 import 'package:nifti_locapp/components/text_field_character_limit.dart';
 import 'package:nifti_locapp/components/text_form_field.dart';
 import 'package:nifti_locapp/functions/functions.dart';
 import 'package:nifti_locapp/functions/frontend.dart';
-import 'package:nifti_locapp/widget_tree.dart';
+import 'package:provider/provider.dart';
 
 // ? EditProfilePage == User access to update their profile details
 
@@ -271,15 +273,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             // ? Save Button
                             TextButton.icon(
                               onPressed: () async {
-                                // ! Update firestore function
+                                // ? Update firestore info
                                 await editProfile(details);
+                                // ? Reload user details on profilepage
+                                Provider.of<ProfileDataProvider>(context, listen: false).getProfileData();
+                                // ? Pop edit page to show profile
+                                Navigator.pop(context);
+                                /*
                                 _getProfileData()
                                     .then((value) => Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   const WidgetTree()),
-                                        ));
+                                        ));*/
                               },
                               icon: Icon(
                                 Icons.mode_edit_outline_rounded,
@@ -298,15 +305,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         _isDataLoaded
                             ? editContent()
                             : Container(
-                              height: 550,
-                              width: 400,
-                              padding: const EdgeInsets.all(20),
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  
-                                    CircularProgressIndicator(),
-                                  ]),),
+                                height: 550,
+                                width: 400,
+                                padding: const EdgeInsets.all(20),
+                                child: const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CircularProgressIndicator(),
+                                    ]),
+                              ),
                         // Space between
                         const SizedBox(
                           height: 15,

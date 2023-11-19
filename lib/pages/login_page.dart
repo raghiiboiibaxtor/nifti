@@ -75,7 +75,12 @@ class _LoginPageState extends State<LoginPage> {
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return WillPopScope(
+      onWillPop: () async {
+        // If you want to allow pop, return true. Otherwise, return false.
+        return false;
+      },
+      child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
       resizeToAvoidBottomInset: false,
@@ -146,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-    ));
+    )));
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
