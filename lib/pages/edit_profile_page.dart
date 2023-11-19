@@ -69,11 +69,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   ];
 
   // ? Profile image selection function
-  void selectProfileImage() async {
+  selectProfileImage() async {
     Uint8List image = await pickImage();
     setState(() {
       _profileImage = image;
     });
+    return _profileImage;
   }
 
   // ? Get user's data and store in Map<> details and text controllers
@@ -136,7 +137,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       'github': _githubController.text,
       'phone': _phoneController.text,
       'pincode': code,
-      'connections': connections
+      'connections': connections,
+      'imageLink': _profileImage
     });
     try {
       // ? Fetching data & pushing it through a range based for loop to compare map.values and make decisions based on results
