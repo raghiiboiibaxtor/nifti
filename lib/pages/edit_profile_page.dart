@@ -231,7 +231,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               onPressed: () async {
                                 // ! Update firestore function
                                 await editProfile(details);
-
                                 _getProfileData()
                                     .then((value) => Navigator.push(
                                           context,
