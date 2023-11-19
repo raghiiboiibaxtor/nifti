@@ -145,7 +145,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     });
     try {
       // ? Fetching data & pushing it through a range based for loop to compare map.values and make decisions based on results
-
       if (details.isNotEmpty) {
         details.forEach((key, value) async {
           // ? If the updatedDetails value is not an empty string && is different from details.map save data into saveDetails
