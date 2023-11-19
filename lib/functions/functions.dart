@@ -97,16 +97,16 @@ class NiftiFirestoreFunctions {
         'fullName': fullName,
         'email': email,
         'city/town': '',
-        'pronouns': '',
+        'pronouns': 'They / Them',
         'imageLink': '',
-        'bio': '',
-        'role': '',
-        'industry': '',
-        'company': '',
-        'yearsWorked': '',
+        'bio': 'Hey! I just joined Nifti :)',
+        'role': 'Role',
+        'industry': 'Industry',
+        'company': 'Company',
+        'yearsWorked': '< 1 year',
         // ? Socials
-        'phone': '',
-        'website': '',
+        'phone': 'Phone number',
+        'website': 'Enter portfolio or website',
         'linkedin': '',
         'instagram': '',
         'github': '',
@@ -208,16 +208,6 @@ class NiftiFirestoreFunctions {
 
   //  ------------------------------------------------------------------------------------------------------  U P D A T E ( )
   // ? Appending Firestore document data
-
-  static updateProfileData(Map<String, Object?> details) async {
-    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-    var collectionReference = FirebaseFirestore.instance.collection('users');
-    try {
-      await collectionReference.doc(niftiFireUser).update(details);
-    } catch (e) {
-      return e;
-    }
-  }
 
   static addConnection(String pincode) async {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
