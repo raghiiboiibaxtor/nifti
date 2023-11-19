@@ -61,7 +61,7 @@ class _ProfileCardState extends State<ProfileCard> {
       children: [
         // Gradient "border container"
         Container(
-          height: 590,
+          height: 594,
           decoration: BoxDecoration(
             gradient: niftiGradient,
             boxShadow: [
@@ -83,7 +83,7 @@ class _ProfileCardState extends State<ProfileCard> {
         // Profile Container
         Container(
           width: 357,
-          height: 587,
+          height: 591,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(1),
@@ -166,9 +166,6 @@ class _ProfileCardState extends State<ProfileCard> {
                 letterSpacing: 1,
               ),
               // Divider + spacing
-              const SizedBox(
-                height: 5,
-              ),
               Divider(
                 thickness: 1,
                 indent: 20,
