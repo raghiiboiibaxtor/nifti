@@ -10,9 +10,7 @@ import 'package:provider/provider.dart';
 // * ---------------- * (main)* ---------------- * */
 void main() async {
   // ? Access to native code
-  //NiftiSystemSettings.getFaceID();
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp();
   runApp(
     ChangeNotifierProvider(

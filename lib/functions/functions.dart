@@ -12,10 +12,6 @@ import 'package:local_auth/local_auth.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // ? ---------------------------------------------------------------------------------------------------------------------- * GLOBAL VARIABLES
-// ? Initialising global variables
-//String userRef = '';
-//final collectionReference = FirebaseFirestore.instance.collection('users');
-//final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
 
 //  ------------------------------------------------------------------------------------------------------------------------ 🚀 FUNCTIONS 🚀
 
@@ -271,9 +267,7 @@ class NiftiFirestoreFunctions {
   // ! ------------------------------------------ 💿🔥
 
   //  ------------------------------------------------------------------------------------------------------  D E L E T E ( )
-  // ! => Enter password to approve account delete
-  // ! => Enter new email / password to change data (pass the parameters)
-  // ! => FaceID check, login? save login data in private class?
+
   static deleteAccount() async {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     var collectionReference = FirebaseFirestore.instance.collection('users');

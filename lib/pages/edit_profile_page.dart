@@ -50,20 +50,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _githubController;
   late TextEditingController _phoneController;
   bool _isDataLoaded = false;
-  //final _fullNameController = TextEditingController();
-  //String? _pronouns;
-  /*final _cityController = TextEditingController();
-  final _bio = TextEditingController();
-  final _industry = TextEditingController();
-  final _roleTitle = TextEditingController();
-  final _companyName = TextEditingController();*/
-  //String? _yearsWorked;
-  /*final _emailController = TextEditingController();
-  final _websiteController = TextEditingController();
-  final _linkedinController = TextEditingController();
-  final _instagramController = TextEditingController();
-  final _githubController = TextEditingController();
-  final _phoneController = TextEditingController();*/
 
   // ? Pronoun dropdown list
   final List<String> pronouns = [
@@ -101,27 +87,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       for (int i = 0; i < details.length; i++) {
         setState(() {});
       }
-
-      // Assign text controllers
-      /*
-      _fullNameController.text = '${details['fullName']}';
-      _pronouns = '${details['pronouns']}';
-      _emailController.text = '${details['email']}';
-      _cityController.text = '${details['city/town']}';
-      _bio.text = '${details['bio']}';
-      _industry.text = '${details['industry']}';
-      _roleTitle.text = '${details['role']}';
-      _companyName.text = '${details['company']}';
-      _yearsWorked = '${details['yearsWorked']}';
-      _websiteController.text = '${details['website']}';
-      _linkedinController.text = '${details['linkedin']}';
-      _instagramController.text = '${details['instagram']}';
-      _githubController.text = '${details['github']}';
-      _phoneController.text = '${details['phone']}';
-    }
-    updatedDetails = details;*/
-      // updatedDetails = details;
-      // return updatedDetails;
       return details;
     }
   }
@@ -186,7 +151,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     });
     try {
       // ? Fetching data & pushing it through a range based for loop to compare map.values and make decisions based on results
-
       if (details.isNotEmpty) {
         details.forEach((key, value) async {
           // ? If the updatedDetails value is not an empty string && is different from details.map save data into saveDetails

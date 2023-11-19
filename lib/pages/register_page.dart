@@ -113,6 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
       // ? pop loading circle
       if (context.mounted) Navigator.pop(context);
       _createCode = await GeneratePincode.createNewPincode();

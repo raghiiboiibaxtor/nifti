@@ -172,7 +172,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Button(
                 onTap: () {
                   // ? Popup modal
-                  confirmLogoutModal(context);           
+                  confirmLogoutModal(context);
                 },
                 text: 'Logout',
                 icon: Icons.logout_rounded,
@@ -183,11 +183,11 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               // ? Delete Account Button
               Button(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(
+                onTap: () => Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
                     return const DeleteAccount();
                   },
-                )),        
+                )),
                 text: 'Delete Account',
                 icon: CupertinoIcons.delete,
                 iconColor: niftiError,
