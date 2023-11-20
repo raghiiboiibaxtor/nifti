@@ -7,7 +7,6 @@ import 'package:nifti_locapp/components/text_form_field.dart';
 import 'package:nifti_locapp/components/cta_cancel_button.dart';
 import 'package:nifti_locapp/components/cta_confirm_button.dart';
 import 'package:nifti_locapp/functions/frontend.dart';
-import 'package:nifti_locapp/functions/functions.dart';
 
 // ? ChangeEmail == User access to update account email
 

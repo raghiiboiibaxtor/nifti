@@ -6,7 +6,6 @@ import 'package:nifti_locapp/functions/functions.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/back_app_bar.dart';
 import 'package:nifti_locapp/components/profile_card.dart';
-import 'package:nifti_locapp/pages/connection_page.dart';
 import 'package:nifti_locapp/widget_tree.dart';
 
 // ? ContactProfile == display a contact's details
@@ -76,17 +75,6 @@ class _ContactProfileState extends State<ContactProfile> {
       }
     }
     return contactDetails;
-  }
-
-  _deleteContact() async {
-    // Extract the pincode value from the map.
-    Object? pincodeValue = contactDetails['pincode'];
-
-    // Check if the value is not null before converting it to a string.
-    if (pincodeValue != null) {
-      String hellopincode = pincodeValue.toString();
-      await NiftiFirestoreFunctions.deleteContact(hellopincode);
-    } else {}
   }
 
   // ? Run functions on page load
@@ -276,11 +264,7 @@ class _ContactProfileState extends State<ContactProfile> {
                           text: 'Remove',
                           onTap: () async {
                             NiftiFirestoreFunctions.deleteContact('2917').then(
-                                (value) => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const WidgetTree())));
+                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const WidgetTree(),), (route) => false));
                             // Pops modal
                           },
                         ),

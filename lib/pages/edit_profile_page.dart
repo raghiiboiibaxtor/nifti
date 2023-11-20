@@ -71,9 +71,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   ];
 
   // ? Profile image selection function
-  selectProfileImage() async {
+  void selectProfileImage() async {
     Uint8List image = await pickImage();
-    memoryImage = MemoryImage(_profileImage!) as Uint8List;
     setState(() {
       _profileImage = image;
     });
@@ -97,18 +96,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
     await Future.delayed(const Duration(seconds: 1));
     // ? Set text controllers & bool
     setState(() {
-      _fullNameController = TextEditingController(text: '${details['fullName']}');
+      _fullNameController =
+          TextEditingController(text: '${details['fullName']}');
       _pronouns = '${details['pronouns']}';
       _emailController = TextEditingController(text: '${details['email']}');
       _cityController = TextEditingController(text: '${details['city']}');
       _bioController = TextEditingController(text: '${details['bio']}');
-      _industryController = TextEditingController(text: '${details['industry']}');
+      _industryController =
+          TextEditingController(text: '${details['industry']}');
       _roleTitleController = TextEditingController(text: '${details['role']}');
-      _companyNameController = TextEditingController(text: '${details['company']}');
+      _companyNameController =
+          TextEditingController(text: '${details['company']}');
       _yearsWorked = '${details['yearsWorked']}';
       _websiteController = TextEditingController(text: '${details['website']}');
-      _linkedinController = TextEditingController(text: '${details['linkedin']}');
-      _instagramController = TextEditingController(text: '${details['instagram']}');
+      _linkedinController =
+          TextEditingController(text: '${details['linkedin']}');
+      _instagramController =
+          TextEditingController(text: '${details['instagram']}');
       _githubController = TextEditingController(text: '${details['github']}');
       _phoneController = TextEditingController(text: '${details['phone']}');
       // ? Update bool to true
@@ -143,6 +147,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       'pincode': code,
       'connections': connections,
     });
+
     try {
       // ? Fetching data & pushing it through a range based for loop to compare map.values and make decisions based on results
       if (details.isNotEmpty) {
@@ -180,6 +185,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _instagramController.dispose();
     _githubController.dispose();
     _phoneController.dispose();
+    _profileImage!.clear();
     super.dispose();
   }
 
@@ -233,6 +239,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               onPressed: () async {
                                 // ? Update firestore info
                                 await editProfile(details);
+                                // ? If profileImage has been selected
+                                if (_profileImage != null) {
+                                  // Loading circle
+                                  displayLoadingCircle(context);
+                                  // ? Save profileImage to storage
+                                  await NiftiFirestoreFunctions()
+                                      .addUserImage(_profileImage!);
+                                  // ? update firestore imageLink
+                                  await NiftiFirestoreFunctions()
+                                      .updateFirestoreImageLink(_profileImage!);
+                                  // Pop loading circle
+                                  Navigator.pop(context);
+                                }
                                 // ? Reload user details on profilepage
                                 Provider.of<ProfileDataProvider>(context,
                                         listen: false)
@@ -276,12 +295,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
   Widget editContent() {
-    return Column(children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(children: [
         // ? Profile Picture Selection
         Stack(
           children: [
-            details['imageLink'] != '' || details['imageLink'] != null
+            details['imageLink'] != null
                 ? CircleAvatar(
                     radius: 53,
                     backgroundImage:
