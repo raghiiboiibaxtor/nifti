@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/back_app_bar.dart';
@@ -32,6 +33,16 @@ class _ChangePasswordState extends State<ChangePassword> {
   String? _confirmPasswordError;
   bool isError = false;
 
+  Future _updatePassword() async {
+    try {
+      late dynamic userRef = FirebaseAuth.instance.currentUser!;
+      late dynamic password = _confirmPasswordController.text;
+      await userRef.updatePassword(password);
+    } catch (e) {
+      //
+    }
+  }
+
   // ? Dispose controllers when not using - helps memory management
   @override
   void dispose() {
@@ -57,161 +68,162 @@ class _ChangePasswordState extends State<ChangePassword> {
             // ? Page UI & logic starts here
             body: SingleChildScrollView(
                 child: Container(
-              alignment: AlignmentDirectional.topStart,
-              padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // ? Illustration
-                  SizedBox(
-                    height: 300,
-                    width: 400,
-                    child: Image.asset('images/password.png'),
-                  ),
-                  // Space between
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  // ? Title
-                  Text(
-                    'Update Password',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                      color: niftiGrey,
-                    ),
-                  ),
-                  // Space between
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  // ? Description
-                  const TextDisplay(
-                    text: 'This will replace your current password',
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  // Space between
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Form(
-                    key: _formKey,
+                    alignment: AlignmentDirectional.topStart,
+                    padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
                     child: Column(
-                      children: [
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // ? Illustration
+                          SizedBox(
+                            height: 300,
+                            width: 400,
+                            child: Image.asset('images/password.png'),
+                          ),
+                          // Space between
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          // ? Title
+                          Text(
+                            'Update Password',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: niftiGrey,
+                            ),
+                          ),
+                          // Space between
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          // ? Description
+                          const TextDisplay(
+                            text: 'This will replace your current password',
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          // Space between
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                // ? Current Password Field
+                                TextFieldComponent(
+                                  controller: _passwordController,
+                                  labelText: 'Current Password',
+                                  obscureText: true,
+                                  hasError: _currentPasswordError == null,
+                                  errorText: _currentPasswordError,
+                                ),
+                                // Space between
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                // ? New Password Field
+                                TextFieldComponent(
+                                  controller: _newPasswordController,
+                                  labelText: 'New Password',
+                                  obscureText: true,
+                                  hasError: _passwordError == null,
+                                  errorText: _passwordError,
+                                ),
+                                // Space between
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                // ? Confirm Password Field
+                                TextFieldComponent(
+                                  controller: _confirmPasswordController,
+                                  labelText: 'Confirm Password',
+                                  obscureText: true,
+                                  hasError: _confirmPasswordError != null,
+                                  errorText: _confirmPasswordError,
+                                ),
+                                // Space between
+                                const SizedBox(
+                                  height: 40,
+                                ),
+                                // ? Buttons
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      // ? Cancel Button
+                                      CTACancelButton(
+                                        onTap: () {
+                                          // ? Closes modal
+                                          if (context.mounted) {
+                                            Navigator.pop(context);
+                                          }
+                                        },
+                                      ),
+                                      // ? Update Button
+                                      CTAConfirmButton(
+                                        text: 'Update',
+                                        onTap: () {
+                                          // ? Validate the form using the _formKey
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            // Current Password
+                                            bool isCurrentPasswordValid =
+                                                validateAndHandleError(
+                                                    _passwordController.text,
+                                                    emptyPasswordErrorMessage,
+                                                    (error) => setState(() =>
+                                                        _currentPasswordError =
+                                                            error));
 
-                  // ? Current Password Field
-                  TextFieldComponent(
-                    controller: _passwordController,
-                    labelText: 'Current Password',
-                    obscureText: true,
-                    hasError: _currentPasswordError == null,
-                    errorText: _currentPasswordError,
-                  ),
-                  // Space between
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  // ? New Password Field
-                  TextFieldComponent(
-                    controller: _newPasswordController,
-                    labelText: 'New Password',
-                    obscureText: true,
-                    hasError: _passwordError == null,
-                    errorText: _passwordError,
-                  ),
-                  // Space between
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  // ? Confirm Password Field
-                  TextFieldComponent(
-                    controller: _confirmPasswordController,
-                    labelText: 'Confirm Password',
-                    obscureText: true,
-                    hasError: _confirmPasswordError != null,
-                    errorText: _confirmPasswordError,
-                  ),
-                  // Space between
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  // ? Buttons
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        // ? Cancel Button
-                        CTACancelButton(
-                          onTap: () {
-                            // ? Closes modal
-                            if (context.mounted) {
-                              Navigator.pop(context);
-                            }
-                          },
-                        ),
-                        // ? Update Button
-                        CTAConfirmButton(
-                          text: 'Update',
-                          onTap: () {
-                            // ? Validate the form using the _formKey
-                            if (_formKey.currentState!.validate()) {
-                              // Current Password
-                              bool isCurrentPasswordValid = validateAndHandleError(
-                                  _passwordController.text,
-                                  emptyPasswordErrorMessage,
-                                  (error) =>
-                                      setState(() => _currentPasswordError = error));
+                                            // New Password
+                                            bool isNewPasswordValid =
+                                                validateAndHandleError(
+                                                    _newPasswordController.text,
+                                                    emptyPasswordErrorMessage,
+                                                    (error) => setState(() =>
+                                                        _passwordError =
+                                                            error));
 
-                              // New Password
-                              bool isNewPasswordValid = validateAndHandleError(
-                                  _newPasswordController.text,
-                                  emptyPasswordErrorMessage,
-                                  (error) =>
-                                      setState(() => _passwordError = error));
+                                            // Confirm password
+                                            bool isConfirmPasswordlValid =
+                                                validateAndHandleError(
+                                                    _confirmPasswordController
+                                                        .text,
+                                                    emptyConfirmPasswordErrorMessage,
+                                                    (error) => setState(() =>
+                                                        _confirmPasswordError =
+                                                            error));
 
-                              // Confirm password
-                              bool isConfirmPasswordlValid = validateAndHandleError(
-                                  _confirmPasswordController.text,
-                                  emptyConfirmPasswordErrorMessage,
-                                  (error) => setState(
-                                      () => _confirmPasswordError = error));
+                                            // Match Passwords
+                                            bool arePasswordsMatching = fieldsMatch(
+                                                _newPasswordController.text,
+                                                _confirmPasswordController.text,
+                                                passwordsNotMatchingErrorMessage,
+                                                (error) => setState(() =>
+                                                    _confirmPasswordError =
+                                                        error));
 
-                              // Match Current Passwords
-                              // ! Need to match to auth password = adjust code and add bool name in to if statement
-                             /* bool isCurrentPasswordMatching = matchCurrentValue(
-                                  _passwordController.text,
-                                  _passwordController.text,
-                                  incorrectPassword,
-                                  (error) => setState(
-                                      () => _currentPasswordError = error));*/
-
-                              // Match Passwords
-                              bool arePasswordsMatching = fieldsMatch(
-                                  _newPasswordController.text,
-                                  _confirmPasswordController.text,
-                                  passwordsNotMatchingErrorMessage,
-                                  (error) => setState(
-                                      () => _confirmPasswordError = error));
-
-                              // If all fields are valid == proceed with registration
-                              if (isCurrentPasswordValid && isNewPasswordValid &&
-                                  isConfirmPasswordlValid &&
-                                  arePasswordsMatching) {
-                                // ! Update firestore function
-                                
-                                // Pop loading context
-                                Navigator.pop(context);
-                              }
-                            }
-                          },
-                        ),
-                      ]),
-                  // Space
-                  const SizedBox(height: 20),
-                ],
-              ),
-            )])))));
+                                            // If all fields are valid == proceed with registration
+                                            if (isCurrentPasswordValid &&
+                                                isNewPasswordValid &&
+                                                isConfirmPasswordlValid &&
+                                                arePasswordsMatching) {
+                                              // ! Update firestore function
+                                              _updatePassword();
+                                              // Pop loading context
+                                              Navigator.pop(context);
+                                            }
+                                          }
+                                        },
+                                      ),
+                                    ]),
+                                // Space
+                                const SizedBox(height: 20),
+                              ],
+                            ),
+                          )
+                        ])))));
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }

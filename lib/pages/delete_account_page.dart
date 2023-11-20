@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:nifti_locapp/auth/login_or_register.dart';
+import 'package:nifti_locapp/auth/auth.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/back_app_bar.dart';
 import 'package:nifti_locapp/components/text_display.dart';
@@ -41,7 +41,6 @@ class _DeleteAccountState extends State<DeleteAccount> {
   Future login() async {
     // ? Loading Animation
     displayLoadingCircle(context);
-    //await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
     // ? Sign in check
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -50,14 +49,9 @@ class _DeleteAccountState extends State<DeleteAccount> {
       );
       // ? Delete account
       NiftiFirestoreFunctions.deleteAccount();
-      // ? pop loading circle
-      if (context.mounted) Navigator.pop(context);
-      // ? Redirects to Login Page
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) {
-          return const LoginOrRegister();
-        },
-      ));
+      // ? Redirects to Login Page and remove previous page history
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const AuthPage(),), (route) => false);
+
     } on FirebaseAuthException catch (error) {
       if (context.mounted) Navigator.pop(context);
       // ? Handle specific error codes and display custom messages

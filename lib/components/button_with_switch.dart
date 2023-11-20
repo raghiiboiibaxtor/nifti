@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/text_display.dart';
+import 'package:nifti_locapp/functions/functions.dart';
 
 // ? ButtonSwitch == display toggle switch on button
 
@@ -34,7 +35,7 @@ class ButtonSwitch extends StatefulWidget {
     this.height = 45,
     this.showSwitch = false,
   });
-
+  
   @override
   State<ButtonSwitch> createState() => _ButtonSwitchState();
 }
@@ -43,7 +44,7 @@ class ButtonSwitch extends StatefulWidget {
 // * ---------------- * (STATE) CLASS _ButtonSwitchState (STATE) * ---------------- *
 class _ButtonSwitchState extends State<ButtonSwitch> {
   // ? Variables
-  bool activated = false;
+  bool activated = true;
 
   // * * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
@@ -95,7 +96,10 @@ class _ButtonSwitchState extends State<ButtonSwitch> {
                       ),
                       onChanged: (bool value) {
                         // ! FaceID Logic here
-
+                        if (value == true) {
+                          NiftiSystemSettings.getFaceID();
+                        }
+                        // NiftiSystemSettings.getFaceID;
                         // Change appearance on toggle
                         setState(() {
                           activated = value;
@@ -150,6 +154,6 @@ class _ButtonSwitchState extends State<ButtonSwitch> {
       ],
     );
   }
-    // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
+  // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
 // * ---------------- * END OF (STATE) CLASS _ButtonSwitchState (STATE) * ---------------- *

@@ -12,10 +12,6 @@ import 'package:local_auth/local_auth.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // ? ---------------------------------------------------------------------------------------------------------------------- * GLOBAL VARIABLES
-// ? Initialising global variables
-//String userRef = '';
-//final collectionReference = FirebaseFirestore.instance.collection('users');
-//final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
 
 //  ------------------------------------------------------------------------------------------------------------------------ 🚀 FUNCTIONS 🚀
 
@@ -96,7 +92,7 @@ class NiftiFirestoreFunctions {
         // ? Personal Data
         'fullName': fullName,
         'email': email,
-        'city/town': '',
+        'city': '',
         'pronouns': '',
         'imageLink': '',
         'bio': '',
@@ -209,16 +205,6 @@ class NiftiFirestoreFunctions {
   //  ------------------------------------------------------------------------------------------------------  U P D A T E ( )
   // ? Appending Firestore document data
 
-  static updateProfileData(Map<String, Object?> details) async {
-    final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
-    var collectionReference = FirebaseFirestore.instance.collection('users');
-    try {
-      await collectionReference.doc(niftiFireUser).update(details);
-    } catch (e) {
-      return e;
-    }
-  }
-
   static addConnection(String pincode) async {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     var collectionReference = FirebaseFirestore.instance.collection('users');
@@ -266,10 +252,6 @@ class NiftiFirestoreFunctions {
     }
   }
 
-  static updateEmail(String email) {
-    FirebaseAuth.instance.currentUser!.updateEmail('hello@email.com');
-  }
-
   // ! FIREBASE-STORAGE 🔥💿 ------------------------------------------- 💿🔥
   // ? Update ImageUrl in firestore (change profile picture)
   Future updateFirestoreImageLink(Uint8List file) async {
@@ -285,9 +267,7 @@ class NiftiFirestoreFunctions {
   // ! ------------------------------------------ 💿🔥
 
   //  ------------------------------------------------------------------------------------------------------  D E L E T E ( )
-  // ! => Enter password to approve account delete
-  // ! => Enter new email / password to change data (pass the parameters)
-  // ! => FaceID check, login? save login data in private class?
+
   static deleteAccount() async {
     final niftiFireUser = FirebaseAuth.instance.currentUser?.uid;
     var collectionReference = FirebaseFirestore.instance.collection('users');

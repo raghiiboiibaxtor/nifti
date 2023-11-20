@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nifti_locapp/components/profile_card.dart';
+import 'package:nifti_locapp/components/profile_data_provider.dart';
 import 'package:nifti_locapp/functions/functions.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/pages/edit_profile_page.dart';
+import 'package:provider/provider.dart';
 
 // ? ProfilePage == display user's details + edit to choose banner images
 
@@ -37,12 +39,15 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+    // ? Reload user details on profilepage
+    Provider.of<ProfileDataProvider>(context, listen: false).getProfileData();
     _getProfileData();
   }
 
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
+    Map<String, Object?> details = Provider.of<ProfileDataProvider>(context).details;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Container(
@@ -95,7 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     fullName: '${details['fullName']}',
                     bio: '${details['bio']}',
                     industry: '${details['industry']}',
-                    city: '${details['city/town']}',
+                    city: '${details['city']}',
                     role: '${details['role']}',
                     company: '${details['company']}',
                     yearsWorked: '${details['yearsWorked']}',

@@ -6,6 +6,7 @@ import 'package:nifti_locapp/functions/functions.dart';
 import 'package:nifti_locapp/components/app_theme.dart';
 import 'package:nifti_locapp/components/back_app_bar.dart';
 import 'package:nifti_locapp/components/profile_card.dart';
+import 'package:nifti_locapp/widget_tree.dart';
 
 // ? ContactProfile == display a contact's details
 
@@ -27,6 +28,7 @@ class ContactProfile extends StatefulWidget {
   final String linkedin;
   final String instagram;
   final String phone;
+  final String pincode;
   const ContactProfile({
     super.key,
     this.imageLink = '',
@@ -44,12 +46,13 @@ class ContactProfile extends StatefulWidget {
     this.linkedin = '',
     this.instagram = '',
     this.phone = '',
+    this.pincode = '',
   });
 
   @override
   State<ContactProfile> createState() => _ContactProfileState();
 }
-// * ---------------- * END OF (STATE) CLASS SettingdPage (STATE) * ---------------- *
+// * ---------------- * END OF (STATE) CLASS ContactProfile (STATE) * ---------------- *
 
 // * ---------------- * (STATE) CLASS _ContactProfileState (STATE) * ---------------- *
 class _ContactProfileState extends State<ContactProfile> {
@@ -74,7 +77,6 @@ class _ContactProfileState extends State<ContactProfile> {
     return contactDetails;
   }
 
-
   // ? Run functions on page load
   @override
   void initState() {
@@ -90,7 +92,7 @@ class _ContactProfileState extends State<ContactProfile> {
         resizeToAvoidBottomInset: false,
         // ? Top bar that contains Nifti Logo
         appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(40), // Adjust the height as needed
+          preferredSize: Size.fromHeight(40),
           child: BackAppBar(),
         ),
         // *** Contact Profile page UI & logic starts here
@@ -261,13 +263,9 @@ class _ContactProfileState extends State<ContactProfile> {
                         CTAConfirmButton(
                           text: 'Remove',
                           onTap: () async {
+                            NiftiFirestoreFunctions.deleteContact('2917').then(
+                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const WidgetTree(),), (route) => false));
                             // Pops modal
-                            Navigator.pop(context);
-                            // Logs out
-                            // ! DELETE CONTACT LOGIC HERE
-                            // ! == NiftiFirestoreFunctions.deleteContact( pass something here... );
-                            // Pops page
-                            Navigator.pop(context);
                           },
                         ),
                       ]),

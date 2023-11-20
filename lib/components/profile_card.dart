@@ -7,8 +7,11 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:social_media_buttons/social_media_buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// ? ProfileCard == Component to display user or contact profile card
+
+// * ---------------- * (STATEFUL WIDGET) CLASS ProfileCard (STATEFUL WIDGET) * ---------------- *
 class ProfileCard extends StatefulWidget {
-  // Component Variables
+  // ? Component Variables
   final String imageLink;
   final String pronouns;
   final String fullName;
@@ -47,13 +50,15 @@ class ProfileCard extends StatefulWidget {
   @override
   State<ProfileCard> createState() => _ProfileCardState();
 }
+// * ---------------- * END OF (STATE) CLASS ProfileCard (STATE) * ---------------- *
 
+// * ---------------- * (STATE) CLASS _ProfileCardState (STATE) * ---------------- *
 class _ProfileCardState extends State<ProfileCard> {
-  // Function to open links
+  // ? Function to open social, email, & phone links
   onLaunch(url) async {
     await launchUrl(Uri.parse(url));
   }
-
+  // * * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -61,7 +66,7 @@ class _ProfileCardState extends State<ProfileCard> {
       children: [
         // Gradient "border container"
         Container(
-          height: 590,
+          height: 594,
           decoration: BoxDecoration(
             gradient: niftiGradient,
             boxShadow: [
@@ -69,7 +74,7 @@ class _ProfileCardState extends State<ProfileCard> {
                 color: niftiGreyShadow,
                 spreadRadius: 1.0,
                 blurRadius: 3.0,
-                offset: const Offset(0, 1),
+                offset: const Offset(1, 3),
               ),
             ],
             borderRadius: const BorderRadius.only(
@@ -83,7 +88,7 @@ class _ProfileCardState extends State<ProfileCard> {
         // Profile Container
         Container(
           width: 357,
-          height: 587,
+          height: 591,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(1),
@@ -166,9 +171,6 @@ class _ProfileCardState extends State<ProfileCard> {
                 letterSpacing: 1,
               ),
               // Divider + spacing
-              const SizedBox(
-                height: 5,
-              ),
               Divider(
                 thickness: 1,
                 indent: 20,
@@ -405,9 +407,9 @@ class _ProfileCardState extends State<ProfileCard> {
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
-                                      spreadRadius: 1.0,
-                                      blurRadius: 3.0,
+                                      color: Colors.grey.withOpacity(0.2),
+                                      spreadRadius: 0.5,
+                                      blurRadius: 2.0,
                                       offset: const Offset(0, 1),
                                     ),
                                   ],
@@ -427,9 +429,9 @@ class _ProfileCardState extends State<ProfileCard> {
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
+                                      color: Colors.grey.withOpacity(0.2),
                                       spreadRadius: 0.5,
-                                      blurRadius: 3.0,
+                                      blurRadius: 2.0,
                                       offset: const Offset(0, 1),
                                     ),
                                   ],
@@ -584,8 +586,9 @@ class _ProfileCardState extends State<ProfileCard> {
       ],
     );
   }
-  // * ---------------- * END OF (PROFILE DISPLAY) * ---------------- *
+  // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }
+// * ---------------- * END OF (PROFILE DISPLAY) * ---------------- *
 
 // ? Custom tooltip appearance
 class ToolTipCustomShape extends ShapeBorder {

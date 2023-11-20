@@ -8,6 +8,7 @@ import 'package:nifti_locapp/components/button.dart';
 import 'package:nifti_locapp/functions/functions.dart';
 //import 'package:nifti_locapp/pages/connection_page.dart';
 
+// ? Function testing page
 class BlankPage extends StatefulWidget {
   const BlankPage({super.key});
 
@@ -72,7 +73,6 @@ class _BlankPageState extends State<BlankPage> {
               Text(password),
               Button(
                 onTap: () {
-                  NiftiFirestoreFunctions.updateEmail(email);
                   Navigator.pop(context);
                 },
                 text: 'Update Account',

@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nifti_locapp/components/cta_button.dart';
 import 'package:nifti_locapp/components/text_field.dart';
 import 'package:nifti_locapp/functions/frontend.dart';
+import 'package:nifti_locapp/functions/functions.dart';
 
 // ? LoginPage == display for existing user to login
 
@@ -38,7 +38,8 @@ class _LoginPageState extends State<LoginPage> {
   Future login() async {
     // ? Loading Animation
     displayLoadingCircle(context);
-    //await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+    // ? Check FaceID
+    NiftiSystemSettings.getFaceID();
     // ? Sign in check
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -75,78 +76,84 @@ class _LoginPageState extends State<LoginPage> {
   // * ---------------- * (BUILD WIDGET) * ---------------- *
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: DecoratedBox(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('images/background_gradient.png'),
-              fit: BoxFit.cover),
-        ),
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Padding(padding: EdgeInsets.only(top: 150)),
-            // ? Nifti Logo
-            const Image(image: AssetImage('images/nifti_logo_white.png')),
-
-            // ? Email Textfield
-            TextFieldComponent(
-                controller: _emailController,
-                hintText: 'Email',
-                obscureText: false),
-            // ? Space between next widget
-            const SizedBox(height: 20),
-
-            // ? Password Textfield
-            TextFieldComponent(
-                controller: _passwordController,
-                hintText: 'Password',
-                obscureText: true),
-            // ? Space between next widget
-            const SizedBox(height: 25),
-
-            // ? Login Button
-            CTAButton(
-              onTap: login,
-              text: 'LOGIN',
-              color: const Color.fromRGBO(79, 219, 245, 1),
-              width: 340,
-            ),
-            // ? Space between next widget
-            const SizedBox(height: 30),
-
-            // ? Register button - Redirects user to registration process
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Don\'t have an account? ',
-                  style: TextStyle(
-                    color: Color.fromRGBO(252, 250, 245, 1),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
-                  ),
+    return WillPopScope(
+        // ? Stop user from being able to swipe back after logging out or deleting account
+        onWillPop: () async {
+          return false;
+        },
+        // ? Page UI
+        child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              body: DecoratedBox(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('images/background_gradient.png'),
+                      fit: BoxFit.cover),
                 ),
-                GestureDetector(
-                  onTap: widget.onTap,
-                  child: const Text(
-                    'Register now',
-                    style: TextStyle(
-                        color: Color.fromRGBO(79, 219, 245, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                        letterSpacing: 0.5),
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    ));
+                child: Column(
+                  children: [
+                    const Padding(padding: EdgeInsets.only(top: 150)),
+                    // ? Nifti Logo
+                    const Image(
+                        image: AssetImage('images/nifti_logo_white.png')),
+
+                    // ? Email Textfield
+                    TextFieldComponent(
+                        controller: _emailController,
+                        hintText: 'Email',
+                        obscureText: false),
+                    // ? Space between next widget
+                    const SizedBox(height: 20),
+
+                    // ? Password Textfield
+                    TextFieldComponent(
+                        controller: _passwordController,
+                        hintText: 'Password',
+                        obscureText: true),
+                    // ? Space between next widget
+                    const SizedBox(height: 25),
+
+                    // ? Login Button
+                    CTAButton(
+                      onTap: login,
+                      text: 'LOGIN',
+                      color: const Color.fromRGBO(79, 219, 245, 1),
+                      width: 340,
+                    ),
+                    // ? Space between next widget
+                    const SizedBox(height: 30),
+
+                    // ? Register button - Redirects user to registration process
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Don\'t have an account? ',
+                          style: TextStyle(
+                            color: Color.fromRGBO(252, 250, 245, 1),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: widget.onTap,
+                          child: const Text(
+                            'Register now',
+                            style: TextStyle(
+                                color: Color.fromRGBO(79, 219, 245, 1),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                letterSpacing: 0.5),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )));
   }
   // * ---------------- * END OF (BUILD WIDGET) * ---------------- *
 }

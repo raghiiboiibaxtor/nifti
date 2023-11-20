@@ -46,40 +46,6 @@ class _RegisterPageState extends State<RegisterPage> {
   String _createCode = '';
   final String _userID = '';
 
-  // ? Stepper Variable
-  int currentStep = 0;
-  // ? Pronoun dropdown list
-  final List<String> pronouns = [
-    'They / Them',
-    'He / Him',
-    'She / Her',
-    'He / They',
-    'She / They',
-    'Prefer not to say'
-  ];
-  // ? Years in company dropdown list
-  final List<String> years = [
-    '< 1 year',
-    '1+ year',
-    '2+ years',
-    '3+ years',
-    '4+ years',
-    '5+ years',
-    '6+ years',
-    '7+ years',
-    '8+ years',
-    '9+ years',
-    '10+ years',
-  ];
-
-  // ? Profile image selection function
-  /*void selectProfileImage() async {
-    Uint8List image = await pickImage();
-    setState(() {
-      _profileImage = image;
-    });
-  }*/
-
   // ? Dispose controllers when not using - helps memory management
   @override
   void dispose() {
@@ -90,17 +56,6 @@ class _RegisterPageState extends State<RegisterPage> {
     _createCode = '';
     super.dispose();
   }
-
-  // ? Check if Password & Confirm Password fields match
-  /*bool passwordConfirmed() {
-    if (_passwordController.text.trim() ==
-        _confirmPasswordController.text.trim()) {
-      return true;
-    } else {
-      displayErrorMessage(context, 'Passwords don\'t match. Please try again.');
-      return false;
-    }
-  }*/
 
   // ? Method to register user in Firebase / Firestore
   Future register() async {
@@ -113,6 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
       // ? pop loading circle
       if (context.mounted) Navigator.pop(context);
       _createCode = await GeneratePincode.createNewPincode();

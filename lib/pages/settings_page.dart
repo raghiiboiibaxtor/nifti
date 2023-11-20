@@ -33,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
         resizeToAvoidBottomInset: false,
         // ? Top bar that contains Nifti Logo
         appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(40), // Adjust the height as needed
+          preferredSize: Size.fromHeight(40),
           child: BackAppBar(),
         ),
         // *** Settings page UI & logic starts here
@@ -172,7 +172,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Button(
                 onTap: () {
                   // ? Popup modal
-                  confirmLogoutModal(context);           
+                  confirmLogoutModal(context);
                 },
                 text: 'Logout',
                 icon: Icons.logout_rounded,
@@ -183,11 +183,11 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               // ? Delete Account Button
               Button(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(
+                onTap: () => Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
                     return const DeleteAccount();
                   },
-                )),        
+                )),
                 text: 'Delete Account',
                 icon: CupertinoIcons.delete,
                 iconColor: niftiError,

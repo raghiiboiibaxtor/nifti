@@ -74,7 +74,6 @@ class _WidgetTreeState extends State<WidgetTree> {
           ),
           // ? Settings
           actions: [
-            //const Padding(padding: EdgeInsets.only(right: 7)),
             IconButton(
               // ? Settings page redirection
               onPressed: () => Navigator.push(context, MaterialPageRoute(
@@ -82,7 +81,6 @@ class _WidgetTreeState extends State<WidgetTree> {
                   return const SettingsPage();
                 },
               )),
-              //icon: Image.asset('images/settings_icon.png'),
               icon: const Icon(
                 CupertinoIcons.gear,
                 semanticLabel: 'Settings',
@@ -110,8 +108,6 @@ class _WidgetTreeState extends State<WidgetTree> {
                 activeIndex: currentPage,
                 height: 80,
                 circleWidth: 53,
-
-                //gradient: niftiGradientSemiOpaque,
                 gradient: const LinearGradient(
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight,
@@ -119,7 +115,6 @@ class _WidgetTreeState extends State<WidgetTree> {
                       Color.fromRGBO(209, 147, 246, .7),
                       Color.fromRGBO(209, 147, 246, .7),
                       Color.fromRGBO(115, 142, 247, .7),
-                      //Color.fromRGBO(115, 142, 247, 1),
                       Color.fromRGBO(116, 215, 247, .7),
                       Color.fromRGBO(116, 215, 247, .7)
                     ]),
