@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nifti_locapp/components/cta_button.dart';
@@ -39,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
   Future login() async {
     // ? Loading Animation
     displayLoadingCircle(context);
-    // ! Documenting code additions
+    // ? Check FaceID
     NiftiSystemSettings.getFaceID();
     // ? Sign in check
     try {
@@ -78,10 +77,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+        // ? Stop user from being able to swipe back after logging out or deleting account
         onWillPop: () async {
-          // If you want to allow pop, return true. Otherwise, return false.
           return false;
         },
+        // ? Page UI
         child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
@@ -93,7 +93,6 @@ class _LoginPageState extends State<LoginPage> {
                       fit: BoxFit.cover),
                 ),
                 child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Padding(padding: EdgeInsets.only(top: 150)),
                     // ? Nifti Logo

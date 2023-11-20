@@ -27,7 +27,6 @@ class DropdownMenuComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      //padding: const EdgeInsets.only(left: 20),
       width: width,
       child: DropdownButtonFormField<String>(
           value: savedValue,
@@ -42,7 +41,7 @@ class DropdownMenuComponent extends StatelessWidget {
               labelStyle: TextStyle(
                   color: niftiGrey, fontSize: 13, fontWeight: FontWeight.w500),
               floatingLabelStyle: TextStyle(
-                  color: niftiGrey, fontSize: 13, fontWeight: FontWeight.w500), // The label you want to display
+                  color: niftiGrey, fontSize: 13, fontWeight: FontWeight.w500),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: niftiGrey,
@@ -56,8 +55,6 @@ class DropdownMenuComponent extends StatelessWidget {
                   width: 1.5,
                 ),
               ),
-
-            //contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
           ),
           icon: const Icon(Icons.arrow_drop_down),
           items: itemsList

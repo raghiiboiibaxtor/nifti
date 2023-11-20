@@ -35,11 +35,7 @@ class ButtonSwitch extends StatefulWidget {
     this.height = 45,
     this.showSwitch = false,
   });
-
-  /*_faceIDAuthenticated() async {
-    await NiftiSystemSettings.getFaceID();
-  }*/
-
+  
   @override
   State<ButtonSwitch> createState() => _ButtonSwitchState();
 }
@@ -48,7 +44,7 @@ class ButtonSwitch extends StatefulWidget {
 // * ---------------- * (STATE) CLASS _ButtonSwitchState (STATE) * ---------------- *
 class _ButtonSwitchState extends State<ButtonSwitch> {
   // ? Variables
-  bool activated = false;
+  bool activated = true;
 
   // * * ---------------- * (BUILD WIDGET) * ---------------- *
   @override

@@ -41,7 +41,6 @@ class _DeleteAccountState extends State<DeleteAccount> {
   Future login() async {
     // ? Loading Animation
     displayLoadingCircle(context);
-    //await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
     // ? Sign in check
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(

@@ -9,7 +9,6 @@ import 'package:nifti_locapp/pages/contact_profile_page.dart';
 class ContactsPage extends StatefulWidget {
   const ContactsPage({
     super.key,
-    
   });
 
   @override
@@ -45,47 +44,47 @@ class _ContactsPageState extends State<ContactsPage> {
 
   // ? display connection data in ListDisplay
   List<Widget> _friendListDisplay() {
-  List<Widget> friendsList = [];
-  for (int i = 0; i < friends.length; i++) {
-    Map<String, Object?> friend = friends[i];
+    List<Widget> friendsList = [];
+    for (int i = 0; i < friends.length; i++) {
+      Map<String, Object?> friend = friends[i];
 
-    friendsList.add(
+      friendsList.add(
         ListDisplay(
           name: '${friend['fullName']}',
           industry: '${friend['industry']}',
           pronouns: '${friend['pronouns']}',
           profileImageUrl: '${friend['imageLink']}',
           onTap: () {
-          // Navigate to the profile page with the selected contact's details
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ContactProfile(
-                    // ? Passing variables to contact profile
-                    imageLink: '${friend['imageLink']}',
-                    pronouns: '${friend['pronouns']}',
-                    fullName: '${friend['fullName']}',
-                    bio: '${friend['bio']}',
-                    industry: '${friend['industry']}',
-                    city: '${friend['city/town']}',
-                    role: '${friend['role']}',
-                    company: '${friend['company']}',
-                    yearsWorked: '${friend['yearsWorked']}',
-                    email: '${friend['email']}',
-                    website: '${friend['website']}',
-                    github: '${friend['github']}',
-                    linkedin: '${friend['linkedin']}',
-                    instagram: '${friend['instagram']}',
-                    phone: '${friend['phone']}',
-                  ),
-            ),
-          );
-        },
+            // Navigate to the profile page with the selected contact's details
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ContactProfile(
+                  // ? Passing variables to contact profile
+                  imageLink: '${friend['imageLink']}',
+                  pronouns: '${friend['pronouns']}',
+                  fullName: '${friend['fullName']}',
+                  bio: '${friend['bio']}',
+                  industry: '${friend['industry']}',
+                  city: '${friend['city/town']}',
+                  role: '${friend['role']}',
+                  company: '${friend['company']}',
+                  yearsWorked: '${friend['yearsWorked']}',
+                  email: '${friend['email']}',
+                  website: '${friend['website']}',
+                  github: '${friend['github']}',
+                  linkedin: '${friend['linkedin']}',
+                  instagram: '${friend['instagram']}',
+                  phone: '${friend['phone']}',
+                ),
+              ),
+            );
+          },
         ),
-    );
+      );
+    }
+    return friendsList;
   }
-  return friendsList;
-}
 
   // ? Run functions on page load
   @override

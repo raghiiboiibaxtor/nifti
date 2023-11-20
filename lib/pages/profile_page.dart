@@ -23,7 +23,6 @@ class _ProfilePageState extends State<ProfilePage> {
   // ? Grabbing user
   final currentUser = FirebaseAuth.instance.currentUser!;
   late Map<String, Object?> details = {};
-  
 
   // ? Get user's data and store in Map<> details
   _getProfileData() async {

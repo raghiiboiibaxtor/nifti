@@ -195,15 +195,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                                                         _confirmPasswordError =
                                                             error));
 
-                                            // Match Current Passwords
-                                            // ! Need to match to auth password = adjust code and add bool name in to if statement
-                                            /* bool isCurrentPasswordMatching = matchCurrentValue(
-                                  _passwordController.text,
-                                  _passwordController.text,
-                                  incorrectPassword,
-                                  (error) => setState(
-                                      () => _currentPasswordError = error));*/
-
                                             // Match Passwords
                                             bool arePasswordsMatching = fieldsMatch(
                                                 _newPasswordController.text,

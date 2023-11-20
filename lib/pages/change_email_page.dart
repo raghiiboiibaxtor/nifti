@@ -24,7 +24,6 @@ class _ChangeEmailState extends State<ChangeEmail> {
   // ? Text Controllers - used to access the user's input
   final _emailController = TextEditingController();
   final _confirmEmailController = TextEditingController();
-  //late String _email = _emailController.text;
 
   // ? Validation Variables
   final _formKey = GlobalKey<FormState>();

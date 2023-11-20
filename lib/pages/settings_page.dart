@@ -33,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
         resizeToAvoidBottomInset: false,
         // ? Top bar that contains Nifti Logo
         appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(40), // Adjust the height as needed
+          preferredSize: Size.fromHeight(40),
           child: BackAppBar(),
         ),
         // *** Settings page UI & logic starts here

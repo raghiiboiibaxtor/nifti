@@ -52,7 +52,7 @@ class ContactProfile extends StatefulWidget {
   @override
   State<ContactProfile> createState() => _ContactProfileState();
 }
-// * ---------------- * END OF (STATE) CLASS SettingdPage (STATE) * ---------------- *
+// * ---------------- * END OF (STATE) CLASS ContactProfile (STATE) * ---------------- *
 
 // * ---------------- * (STATE) CLASS _ContactProfileState (STATE) * ---------------- *
 class _ContactProfileState extends State<ContactProfile> {
@@ -92,7 +92,7 @@ class _ContactProfileState extends State<ContactProfile> {
         resizeToAvoidBottomInset: false,
         // ? Top bar that contains Nifti Logo
         appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(40), // Adjust the height as needed
+          preferredSize: Size.fromHeight(40),
           child: BackAppBar(),
         ),
         // *** Contact Profile page UI & logic starts here
